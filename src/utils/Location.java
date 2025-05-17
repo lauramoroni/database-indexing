@@ -10,5 +10,5 @@ public enum Location {
    MACEIO,
    JOAO_PESSOA,
    ARACAJU,
-   BELO_HORIZONTE
+   MOSSORO
 }
