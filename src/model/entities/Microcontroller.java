@@ -1,5 +1,6 @@
 package model.entities;
 
+import utils.Color;
 import utils.Location;
 
 public class Microcontroller {
@@ -33,12 +34,11 @@ public class Microcontroller {
 
    @Override
    public String toString() {
-      return String.format(
-            "Microcontroller [%s]\n" +
+      return String.format(Color.infoMessage("Microcontroller [%s]\n" +
                   "├─ Name: %s\n" +
                   "├─ Location: %s\n" +
                   "├─ IP: %s\n" +
-                  "└─ Climate Records: %d",
+                  "└─ Climate Records: %d"),
             id,
             name,
             location,

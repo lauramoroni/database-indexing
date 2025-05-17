@@ -6,6 +6,7 @@ import java.util.Map;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
 import utils.Color;
+import utils.Location;
 
 public class MicrocontrollerService {
    private Map<String, Microcontroller> microcontrollers;
@@ -14,18 +15,17 @@ public class MicrocontrollerService {
       this.microcontrollers = new HashMap<>();
    }
 
-   public void addMicrocontroller(Microcontroller microcontroller) {
-      if (microcontrollers.containsKey(microcontroller.getId())) {
-            throw new IllegalArgumentException(Color.RED + "Microcontroller already exists: " + microcontroller.getId() + Color.RESET);
+   public void addMicrocontroller(String id, String name, Location location, String ipAddress) throws Exception {
+      if (microcontrollers.containsKey(id)) {
+            throw new Exception("Microcontroller " + id + " already exists");
       }
-      microcontrollers.put(microcontroller.getId(), microcontroller);
+      microcontrollers.put(id, new Microcontroller(id, name, location, ipAddress));
    }
 
-   public ClimateRecord createRegister(String microcontrollerId, ClimateRecord record) {
+   public ClimateRecord createRegister(String microcontrollerId, ClimateRecord record) throws Exception {
 
       if (!microcontrollers.containsKey(microcontrollerId)) {
-         System.out.println(Color.RED + "Microcontroller not found: " + microcontrollerId + Color.RESET);
-         return null;
+         throw new Exception("Microcontroller " + microcontrollerId + " not found");
       }
 
       Microcontroller microcontroller = microcontrollers.get(microcontrollerId);
@@ -44,11 +44,10 @@ public class MicrocontrollerService {
       return record;
    }
 
-   public ClimateRecord updateRegister(int id, ClimateRecord newRecord) {
+   public ClimateRecord updateRegister(int id, ClimateRecord newRecord) throws Exception {
 
       if (!microcontrollers.containsKey(newRecord.getMicrocontrollerId())) {
-         System.out.println(Color.RED + "Microcontroller not found: " + newRecord.getMicrocontrollerId() + Color.RESET);
-         return null;
+         throw new Exception("Microcontroller " + newRecord.getMicrocontrollerId() + " not found");
       }
       Microcontroller microcontroller = microcontrollers.get(newRecord.getMicrocontrollerId());
 
@@ -66,12 +65,12 @@ public class MicrocontrollerService {
       
    }
 
-   public void printMicrocontroller(String id) {
+   public void printMicrocontroller(String id) throws Exception {
       Microcontroller microcontroller = microcontrollers.get(id);
       if (microcontroller != null) {
          System.out.println(microcontroller.toString());
       } else {
-         System.out.println(Color.RED + "Microcontroller not found: " + id + Color.RESET);
+         throw new Exception("Microcontroller " + id + " not found");
       }
    }
 
