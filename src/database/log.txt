@@ -114,3 +114,13 @@
 18/05/2025 15:55:55  | [INSERT]   | ClimateRecord{id=13, microcontrollerId='MC011', timestamp=18/05/2025 15:55:55, temperature=23,0°C, humidity=65,0%, pressure=1015,0 hPa}
 18/05/2025 15:55:55  | [INSERT]   | ClimateRecord{id=14, microcontrollerId='MC011', timestamp=18/05/2025 15:55:55, temperature=24,0°C, humidity=70,0%, pressure=1020,0 hPa}
 18/05/2025 15:55:55  | [INSERT]   | ClimateRecord{id=15, microcontrollerId='MC011', timestamp=18/05/2025 15:55:55, temperature=26,0°C, humidity=75,0%, pressure=1025,0 hPa}
+18/05/2025 16:09:17  | [UPDATE]   | ClimateRecord{id=41, microcontrollerId='MC05', timestamp=18/05/2025 16:09:17, temperature=60,0°C, humidity=60,0%, pressure=60,0 hPa}
+18/05/2025 16:15:17  | [UPDATE]   | ClimateRecord{id=41, microcontrollerId='MC05', timestamp=18/05/2025 16:15:17, temperature=60,0°C, humidity=60,0%, pressure=60,0 hPa}
+18/05/2025 16:19:45  | [UPDATE]   | ClimateRecord{id=41, microcontrollerId='MC05', timestamp=18/05/2025 16:19:45, temperature=60,0°C, humidity=60,0%, pressure=60,0 hPa}
+18/05/2025 16:21:27  | [UPDATE]   | ClimateRecord{id=41, microcontrollerId='MC05', timestamp=18/05/2025 16:21:27, temperature=60,0°C, humidity=60,0%, pressure=60,0 hPa}
+18/05/2025 16:21:47  | [INFO]     | User Laura created.
+18/05/2025 16:23:31  | [UPDATE]   | ClimateRecord{id=41, microcontrollerId='MC05', timestamp=18/05/2025 16:23:31, temperature=60,0°C, humidity=60,0%, pressure=60,0 hPa}
+18/05/2025 16:23:44  | [INFO]     | User Laura created.
+18/05/2025 16:23:47  | [INFO]     | User Laura logged in.
+18/05/2025 16:25:35  | [UPDATE]   | ClimateRecord{id=41, microcontrollerId='MC05', timestamp=18/05/2025 16:25:35, temperature=60,0°C, humidity=60,0%, pressure=60,0 hPa}
+18/05/2025 16:25:38  | [INFO]     | User Laura logged in.

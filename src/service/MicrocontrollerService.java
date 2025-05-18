@@ -79,6 +79,8 @@ public class MicrocontrollerService {
 
       climateRecordDAO.update(newRecord);
 
+      LogDAO.saveLog(newRecord.toString(), "UPDATE");
+
       return null;
    }
 

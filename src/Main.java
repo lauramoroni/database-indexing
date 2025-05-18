@@ -49,7 +49,7 @@ public class Main {
         microcontrollerController.createRegister(14, "MC011", 24.0, 70.0, 1020.0);
         microcontrollerController.createRegister(15, "MC011", 26.0, 75.0, 1025.0);
 
-        microcontrollerController.updateRegister(42, "MC05", 60, 60, 60);
+        microcontrollerController.updateRegister(41, "MC05", 60, 60, 60);
 
         // User interaction
         clearScreen();
