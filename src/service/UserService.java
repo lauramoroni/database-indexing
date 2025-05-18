@@ -1,16 +1,14 @@
 package service;
 
-import model.entities.ClimateRecord;
 import model.entities.User;
+
 import model.DAO.LogDAO;
 import model.DAO.UserDAO;
 
 public class UserService {
-   //private final Map<String, User> users; // não precisa mais, pois já está no DAO
    private final UserDAO userDAO;
 
    public UserService() {
-      //this.users = new HashMap<>();
       this.userDAO = new UserDAO();
    }
 

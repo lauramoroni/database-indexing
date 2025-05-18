@@ -2,6 +2,7 @@ package service;
 
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
+import datastructures.AVL;
 import model.DAO.ClimateRecordDAO;
 import model.DAO.LogDAO;
 import model.DAO.MicrocontrollerDAO;
@@ -10,9 +11,11 @@ import utils.Location;
 public class MicrocontrollerService {
    private MicrocontrollerDAO microcontrollerDAO;
    private ClimateRecordDAO climateRecordDAO = new ClimateRecordDAO();
+   private AVL avl;
 
    public MicrocontrollerService() {
       this.microcontrollerDAO = new MicrocontrollerDAO();
+      this.avl = new AVL();
    }
 
    public void addMicrocontroller(String id, String name, Location location, String ipAddress) throws Exception {
@@ -24,7 +27,7 @@ public class MicrocontrollerService {
 
       microcontrollerDAO.save(microcontroller);
 
-      LogDAO.saveLog(microcontroller.toString(), "INSERT");
+      LogDAO.saveLog(microcontroller.toString(), "BD INSERT");
    }
 
    public ClimateRecord createRegister(String microcontrollerId, int id, double temperature, double humidity,
@@ -41,6 +44,7 @@ public class MicrocontrollerService {
 
       ClimateRecord record = new ClimateRecord(id, microcontrollerId, temperature, humidity, pressure);
 
+      // linked list logic
       if (microcontroller.head == null) {
          microcontroller.head = record;
          microcontroller.tail = record;
@@ -54,7 +58,11 @@ public class MicrocontrollerService {
       
       climateRecordDAO.save(record);
 
-      LogDAO.saveLog(record.toString(), "INSERT");
+      LogDAO.saveLog(record.toString(), "BD INSERT");
+
+      // update the AVL tree
+      avl.insert(record.getId(), record);
+      LogDAO.saveLog("Inserted record  " + record.getId() + " into AVL tree", "AVL INSERT");
       
       return record;
    }
@@ -79,7 +87,10 @@ public class MicrocontrollerService {
 
       climateRecordDAO.update(newRecord);
 
-      LogDAO.saveLog(newRecord.toString(), "UPDATE");
+      LogDAO.saveLog(newRecord.toString(), "BD UPDATE");
+
+      // update the AVL tree
+      LogDAO.saveLog("Updated record " + newRecord.getId() + " in AVL tree", "AVL UPDATE");
 
       return null;
    }

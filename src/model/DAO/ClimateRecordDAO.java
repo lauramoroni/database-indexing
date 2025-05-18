@@ -71,4 +71,5 @@ public class ClimateRecordDAO {
          e.printStackTrace();
       }
    }
+
 }

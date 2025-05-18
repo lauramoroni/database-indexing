@@ -124,3 +124,222 @@
 18/05/2025 16:23:47  | [INFO]     | User Laura logged in.
 18/05/2025 16:25:35  | [UPDATE]   | ClimateRecord{id=41, microcontrollerId='MC05', timestamp=18/05/2025 16:25:35, temperature=60,0°C, humidity=60,0%, pressure=60,0 hPa}
 18/05/2025 16:25:38  | [INFO]     | User Laura logged in.
+18/05/2025 17:25:27  | [BD INSERT] | Microcontroller[MC01] Name:Microcontroller 1 Location:NATAL IP:192.168.0.1 Records:0
+18/05/2025 17:25:27  | [BD INSERT] | Microcontroller[MC02] Name:Microcontroller 2 Location:FORTALEZA IP:192.168.0.2 Records:0
+18/05/2025 17:25:27  | [BD INSERT] | Microcontroller[MC03] Name:Microcontroller 3 Location:RECIFE IP:192.168.0.3 Records:0
+18/05/2025 17:25:27  | [BD INSERT] | Microcontroller[MC04] Name:Microcontroller 4 Location:SALVADOR IP:192.168.0.4 Records:0
+18/05/2025 17:25:27  | [BD INSERT] | Microcontroller[MC05] Name:Microcontroller 5 Location:TERESINA IP:192.168.0.5 Records:0
+18/05/2025 17:25:27  | [BD INSERT] | Microcontroller[MC06] Name:Microcontroller 6 Location:SAO_LUIS IP:192.168.0.6 Records:0
+18/05/2025 17:25:27  | [BD INSERT] | Microcontroller[MC07] Name:Microcontroller 7 Location:MACEIO IP:192.168.0.7 Records:0
+18/05/2025 17:25:27  | [BD INSERT] | Microcontroller[MC08] Name:Microcontroller 8 Location:JOAO_PESSOA IP:192.168.0.8 Records:0
+18/05/2025 17:25:27  | [BD INSERT] | Microcontroller[MC09] Name:Microcontroller 9 Location:ARACAJU IP:192.168.0.9 Records:0
+18/05/2025 17:25:27  | [BD INSERT] | Microcontroller[MC010] Name:Microcontroller 10 Location:MOSSORO IP:192.168.0.10 Records:0
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=1, microcontrollerId='MC01', timestamp=18/05/2025 17:25:27, temperature=20,8°C, humidity=59,8%, pressure=1049,6 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  1 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=2, microcontrollerId='MC01', timestamp=18/05/2025 17:25:27, temperature=20,9°C, humidity=65,5%, pressure=1036,4 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  2 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=3, microcontrollerId='MC01', timestamp=18/05/2025 17:25:27, temperature=27,2°C, humidity=61,0%, pressure=1013,6 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  3 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=4, microcontrollerId='MC01', timestamp=18/05/2025 17:25:27, temperature=26,2°C, humidity=53,7%, pressure=1017,2 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  4 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=5, microcontrollerId='MC01', timestamp=18/05/2025 17:25:27, temperature=29,2°C, humidity=61,1%, pressure=1018,1 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  5 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=6, microcontrollerId='MC01', timestamp=18/05/2025 17:25:27, temperature=25,0°C, humidity=64,1%, pressure=1032,3 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  6 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=7, microcontrollerId='MC01', timestamp=18/05/2025 17:25:27, temperature=24,4°C, humidity=69,9%, pressure=1045,2 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  7 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=8, microcontrollerId='MC01', timestamp=18/05/2025 17:25:27, temperature=29,2°C, humidity=59,7%, pressure=1021,6 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  8 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=9, microcontrollerId='MC01', timestamp=18/05/2025 17:25:27, temperature=23,3°C, humidity=62,9%, pressure=1030,5 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  9 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=10, microcontrollerId='MC01', timestamp=18/05/2025 17:25:27, temperature=26,7°C, humidity=59,8%, pressure=1008,2 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  10 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=11, microcontrollerId='MC02', timestamp=18/05/2025 17:25:27, temperature=24,4°C, humidity=56,8%, pressure=1006,6 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  11 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=12, microcontrollerId='MC02', timestamp=18/05/2025 17:25:27, temperature=22,9°C, humidity=54,9%, pressure=1038,2 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  12 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=13, microcontrollerId='MC02', timestamp=18/05/2025 17:25:27, temperature=25,8°C, humidity=64,9%, pressure=1039,9 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  13 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=14, microcontrollerId='MC02', timestamp=18/05/2025 17:25:27, temperature=26,8°C, humidity=54,6%, pressure=1048,2 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  14 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=15, microcontrollerId='MC02', timestamp=18/05/2025 17:25:27, temperature=20,8°C, humidity=66,0%, pressure=1048,1 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  15 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=16, microcontrollerId='MC02', timestamp=18/05/2025 17:25:27, temperature=20,4°C, humidity=56,5%, pressure=1009,4 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  16 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=17, microcontrollerId='MC02', timestamp=18/05/2025 17:25:27, temperature=26,6°C, humidity=58,6%, pressure=1024,7 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  17 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=18, microcontrollerId='MC02', timestamp=18/05/2025 17:25:27, temperature=21,3°C, humidity=52,3%, pressure=1038,3 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  18 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=19, microcontrollerId='MC02', timestamp=18/05/2025 17:25:27, temperature=20,3°C, humidity=53,4%, pressure=1028,4 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  19 into AVL tree
+18/05/2025 17:25:27  | [BD INSERT] | ClimateRecord{id=20, microcontrollerId='MC02', timestamp=18/05/2025 17:25:27, temperature=27,3°C, humidity=54,1%, pressure=1040,4 hPa}
+18/05/2025 17:25:27  | [AVL INSERT] | Inserted record  20 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=21, microcontrollerId='MC03', timestamp=18/05/2025 17:25:27, temperature=27,1°C, humidity=68,3%, pressure=1025,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  21 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=22, microcontrollerId='MC03', timestamp=18/05/2025 17:25:28, temperature=22,6°C, humidity=61,2%, pressure=1018,6 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  22 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=23, microcontrollerId='MC03', timestamp=18/05/2025 17:25:28, temperature=24,5°C, humidity=65,4%, pressure=1041,6 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  23 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=24, microcontrollerId='MC03', timestamp=18/05/2025 17:25:28, temperature=22,6°C, humidity=53,9%, pressure=1039,5 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  24 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=25, microcontrollerId='MC03', timestamp=18/05/2025 17:25:28, temperature=23,7°C, humidity=51,7%, pressure=1024,1 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  25 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=26, microcontrollerId='MC03', timestamp=18/05/2025 17:25:28, temperature=25,1°C, humidity=53,6%, pressure=1044,4 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  26 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=27, microcontrollerId='MC03', timestamp=18/05/2025 17:25:28, temperature=22,8°C, humidity=54,0%, pressure=1006,4 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  27 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=28, microcontrollerId='MC03', timestamp=18/05/2025 17:25:28, temperature=25,2°C, humidity=52,3%, pressure=1045,7 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  28 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=29, microcontrollerId='MC03', timestamp=18/05/2025 17:25:28, temperature=26,1°C, humidity=57,7%, pressure=1013,9 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  29 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=30, microcontrollerId='MC03', timestamp=18/05/2025 17:25:28, temperature=22,7°C, humidity=69,0%, pressure=1041,1 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  30 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=31, microcontrollerId='MC04', timestamp=18/05/2025 17:25:28, temperature=26,8°C, humidity=51,9%, pressure=1043,9 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  31 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=32, microcontrollerId='MC04', timestamp=18/05/2025 17:25:28, temperature=24,6°C, humidity=61,5%, pressure=1000,8 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  32 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=33, microcontrollerId='MC04', timestamp=18/05/2025 17:25:28, temperature=25,1°C, humidity=68,5%, pressure=1029,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  33 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=34, microcontrollerId='MC04', timestamp=18/05/2025 17:25:28, temperature=21,6°C, humidity=58,3%, pressure=1014,1 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  34 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=35, microcontrollerId='MC04', timestamp=18/05/2025 17:25:28, temperature=25,4°C, humidity=59,3%, pressure=1044,5 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  35 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=36, microcontrollerId='MC04', timestamp=18/05/2025 17:25:28, temperature=29,5°C, humidity=56,9%, pressure=1017,6 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  36 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=37, microcontrollerId='MC04', timestamp=18/05/2025 17:25:28, temperature=25,1°C, humidity=64,8%, pressure=1043,5 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  37 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=38, microcontrollerId='MC04', timestamp=18/05/2025 17:25:28, temperature=27,9°C, humidity=67,9%, pressure=1003,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  38 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=39, microcontrollerId='MC04', timestamp=18/05/2025 17:25:28, temperature=28,4°C, humidity=52,5%, pressure=1011,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  39 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=40, microcontrollerId='MC04', timestamp=18/05/2025 17:25:28, temperature=24,3°C, humidity=56,6%, pressure=1024,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  40 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=41, microcontrollerId='MC05', timestamp=18/05/2025 17:25:28, temperature=25,3°C, humidity=65,1%, pressure=1049,5 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  41 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=42, microcontrollerId='MC05', timestamp=18/05/2025 17:25:28, temperature=28,5°C, humidity=67,3%, pressure=1007,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  42 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=43, microcontrollerId='MC05', timestamp=18/05/2025 17:25:28, temperature=20,3°C, humidity=59,0%, pressure=1023,7 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  43 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=44, microcontrollerId='MC05', timestamp=18/05/2025 17:25:28, temperature=23,1°C, humidity=57,7%, pressure=1019,9 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  44 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=45, microcontrollerId='MC05', timestamp=18/05/2025 17:25:28, temperature=29,4°C, humidity=68,7%, pressure=1046,8 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  45 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=46, microcontrollerId='MC05', timestamp=18/05/2025 17:25:28, temperature=23,1°C, humidity=61,2%, pressure=1043,8 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  46 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=47, microcontrollerId='MC05', timestamp=18/05/2025 17:25:28, temperature=23,3°C, humidity=64,6%, pressure=1042,0 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  47 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=48, microcontrollerId='MC05', timestamp=18/05/2025 17:25:28, temperature=23,2°C, humidity=55,4%, pressure=1012,5 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  48 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=49, microcontrollerId='MC05', timestamp=18/05/2025 17:25:28, temperature=27,7°C, humidity=62,9%, pressure=1016,1 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  49 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=50, microcontrollerId='MC05', timestamp=18/05/2025 17:25:28, temperature=22,3°C, humidity=64,1%, pressure=1003,6 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  50 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=51, microcontrollerId='MC06', timestamp=18/05/2025 17:25:28, temperature=29,0°C, humidity=54,8%, pressure=1007,6 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  51 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=52, microcontrollerId='MC06', timestamp=18/05/2025 17:25:28, temperature=27,6°C, humidity=54,1%, pressure=1023,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  52 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=53, microcontrollerId='MC06', timestamp=18/05/2025 17:25:28, temperature=22,0°C, humidity=61,2%, pressure=1048,0 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  53 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=54, microcontrollerId='MC06', timestamp=18/05/2025 17:25:28, temperature=23,9°C, humidity=64,3%, pressure=1006,0 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  54 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=55, microcontrollerId='MC06', timestamp=18/05/2025 17:25:28, temperature=22,0°C, humidity=60,4%, pressure=1009,7 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  55 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=56, microcontrollerId='MC06', timestamp=18/05/2025 17:25:28, temperature=27,8°C, humidity=56,7%, pressure=1041,1 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  56 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=57, microcontrollerId='MC06', timestamp=18/05/2025 17:25:28, temperature=21,8°C, humidity=54,0%, pressure=1032,3 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  57 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=58, microcontrollerId='MC06', timestamp=18/05/2025 17:25:28, temperature=22,0°C, humidity=60,2%, pressure=1019,1 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  58 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=59, microcontrollerId='MC06', timestamp=18/05/2025 17:25:28, temperature=26,2°C, humidity=56,5%, pressure=1006,3 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  59 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=60, microcontrollerId='MC06', timestamp=18/05/2025 17:25:28, temperature=24,8°C, humidity=56,7%, pressure=1031,7 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  60 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=61, microcontrollerId='MC07', timestamp=18/05/2025 17:25:28, temperature=23,1°C, humidity=58,6%, pressure=1039,7 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  61 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=62, microcontrollerId='MC07', timestamp=18/05/2025 17:25:28, temperature=26,4°C, humidity=50,1%, pressure=1011,8 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  62 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=63, microcontrollerId='MC07', timestamp=18/05/2025 17:25:28, temperature=24,9°C, humidity=52,8%, pressure=1036,7 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  63 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=64, microcontrollerId='MC07', timestamp=18/05/2025 17:25:28, temperature=26,6°C, humidity=64,2%, pressure=1009,6 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  64 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=65, microcontrollerId='MC07', timestamp=18/05/2025 17:25:28, temperature=29,3°C, humidity=61,4%, pressure=1049,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  65 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=66, microcontrollerId='MC07', timestamp=18/05/2025 17:25:28, temperature=24,3°C, humidity=67,0%, pressure=1022,7 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  66 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=67, microcontrollerId='MC07', timestamp=18/05/2025 17:25:28, temperature=20,9°C, humidity=60,7%, pressure=1015,3 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  67 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=68, microcontrollerId='MC07', timestamp=18/05/2025 17:25:28, temperature=21,3°C, humidity=54,5%, pressure=1020,1 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  68 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=69, microcontrollerId='MC07', timestamp=18/05/2025 17:25:28, temperature=20,8°C, humidity=67,5%, pressure=1033,0 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  69 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=70, microcontrollerId='MC07', timestamp=18/05/2025 17:25:28, temperature=29,3°C, humidity=64,2%, pressure=1044,9 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  70 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=71, microcontrollerId='MC08', timestamp=18/05/2025 17:25:28, temperature=28,8°C, humidity=52,9%, pressure=1030,3 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  71 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=72, microcontrollerId='MC08', timestamp=18/05/2025 17:25:28, temperature=23,5°C, humidity=62,6%, pressure=1036,5 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  72 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=73, microcontrollerId='MC08', timestamp=18/05/2025 17:25:28, temperature=25,1°C, humidity=65,1%, pressure=1018,4 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  73 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=74, microcontrollerId='MC08', timestamp=18/05/2025 17:25:28, temperature=29,7°C, humidity=59,7%, pressure=1049,5 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  74 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=75, microcontrollerId='MC08', timestamp=18/05/2025 17:25:28, temperature=26,4°C, humidity=61,0%, pressure=1007,5 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  75 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=76, microcontrollerId='MC08', timestamp=18/05/2025 17:25:28, temperature=20,1°C, humidity=63,3%, pressure=1025,6 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  76 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=77, microcontrollerId='MC08', timestamp=18/05/2025 17:25:28, temperature=24,0°C, humidity=60,3%, pressure=1040,1 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  77 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=78, microcontrollerId='MC08', timestamp=18/05/2025 17:25:28, temperature=23,7°C, humidity=54,8%, pressure=1047,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  78 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=79, microcontrollerId='MC08', timestamp=18/05/2025 17:25:28, temperature=20,5°C, humidity=53,7%, pressure=1016,3 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  79 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=80, microcontrollerId='MC08', timestamp=18/05/2025 17:25:28, temperature=23,6°C, humidity=62,4%, pressure=1003,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  80 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=81, microcontrollerId='MC09', timestamp=18/05/2025 17:25:28, temperature=26,6°C, humidity=50,1%, pressure=1033,9 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  81 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=82, microcontrollerId='MC09', timestamp=18/05/2025 17:25:28, temperature=26,9°C, humidity=61,2%, pressure=1020,0 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  82 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=83, microcontrollerId='MC09', timestamp=18/05/2025 17:25:28, temperature=27,8°C, humidity=69,5%, pressure=1020,1 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  83 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=84, microcontrollerId='MC09', timestamp=18/05/2025 17:25:28, temperature=23,6°C, humidity=53,6%, pressure=1009,9 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  84 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=85, microcontrollerId='MC09', timestamp=18/05/2025 17:25:28, temperature=28,1°C, humidity=56,0%, pressure=1007,1 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  85 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=86, microcontrollerId='MC09', timestamp=18/05/2025 17:25:28, temperature=25,7°C, humidity=68,8%, pressure=1040,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  86 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=87, microcontrollerId='MC09', timestamp=18/05/2025 17:25:28, temperature=26,6°C, humidity=59,4%, pressure=1017,7 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  87 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=88, microcontrollerId='MC09', timestamp=18/05/2025 17:25:28, temperature=25,7°C, humidity=58,4%, pressure=1013,9 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  88 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=89, microcontrollerId='MC09', timestamp=18/05/2025 17:25:28, temperature=22,5°C, humidity=56,2%, pressure=1038,5 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  89 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=90, microcontrollerId='MC09', timestamp=18/05/2025 17:25:28, temperature=20,5°C, humidity=60,4%, pressure=1035,0 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  90 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=91, microcontrollerId='MC010', timestamp=18/05/2025 17:25:28, temperature=23,8°C, humidity=50,2%, pressure=1039,9 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  91 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=92, microcontrollerId='MC010', timestamp=18/05/2025 17:25:28, temperature=26,7°C, humidity=65,9%, pressure=1013,7 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  92 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=93, microcontrollerId='MC010', timestamp=18/05/2025 17:25:28, temperature=28,4°C, humidity=51,0%, pressure=1029,5 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  93 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=94, microcontrollerId='MC010', timestamp=18/05/2025 17:25:28, temperature=20,2°C, humidity=52,1%, pressure=1001,9 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  94 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=95, microcontrollerId='MC010', timestamp=18/05/2025 17:25:28, temperature=28,6°C, humidity=64,7%, pressure=1037,7 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  95 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=96, microcontrollerId='MC010', timestamp=18/05/2025 17:25:28, temperature=22,9°C, humidity=68,7%, pressure=1003,8 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  96 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=97, microcontrollerId='MC010', timestamp=18/05/2025 17:25:28, temperature=27,9°C, humidity=57,6%, pressure=1034,2 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  97 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=98, microcontrollerId='MC010', timestamp=18/05/2025 17:25:28, temperature=24,3°C, humidity=63,9%, pressure=1029,9 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  98 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=99, microcontrollerId='MC010', timestamp=18/05/2025 17:25:28, temperature=25,6°C, humidity=52,1%, pressure=1003,0 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  99 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=100, microcontrollerId='MC010', timestamp=18/05/2025 17:25:28, temperature=29,9°C, humidity=61,9%, pressure=1039,5 hPa}
+18/05/2025 17:25:28  | [AVL INSERT] | Inserted record  100 into AVL tree
+18/05/2025 17:25:28  | [BD INSERT] | Microcontroller[MC011] Name:Microcontroller 11 Location:SALVADOR IP:192.168.0.11 Records:0
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=11, microcontrollerId='MC011', timestamp=18/05/2025 17:25:28, temperature=25,0°C, humidity=60,0%, pressure=1010,0 hPa}
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=12, microcontrollerId='MC011', timestamp=18/05/2025 17:25:28, temperature=22,0°C, humidity=55,0%, pressure=1005,0 hPa}
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=13, microcontrollerId='MC011', timestamp=18/05/2025 17:25:28, temperature=23,0°C, humidity=65,0%, pressure=1015,0 hPa}
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=14, microcontrollerId='MC011', timestamp=18/05/2025 17:25:28, temperature=24,0°C, humidity=70,0%, pressure=1020,0 hPa}
+18/05/2025 17:25:28  | [BD INSERT] | ClimateRecord{id=15, microcontrollerId='MC011', timestamp=18/05/2025 17:25:28, temperature=26,0°C, humidity=75,0%, pressure=1025,0 hPa}
+18/05/2025 17:25:28  | [BD UPDATE] | ClimateRecord{id=41, microcontrollerId='MC05', timestamp=18/05/2025 17:25:28, temperature=60,0°C, humidity=60,0%, pressure=60,0 hPa}
+18/05/2025 17:25:28  | [AVL UPDATE] | Updated record 41 in AVL tree
+18/05/2025 17:25:54  | [INFO]     | User Laura logged in.

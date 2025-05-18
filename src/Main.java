@@ -1,17 +1,10 @@
-import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import controller.MicrocontrollerController;
 import controller.UserController;
-import datastructures.AVL;
-import datastructures.Node;
-import model.entities.ClimateRecord;
-import model.entities.Microcontroller;
 import model.entities.User;
 import utils.Color;
 import utils.Location;
-
-import utils.Color;
 
 public class Main {
     public static int ID_COUNTER = 1;

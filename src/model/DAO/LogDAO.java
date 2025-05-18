@@ -15,7 +15,7 @@ public class LogDAO {
 
       // Formatação com largura fixa para melhor leitura
       String logEntry = String.format(
-            "%-20s | %-10s | %s%n",
+            "%-20s | %-15s | %s%n",
             formattedDate,
             "[" + operation + "]",
             message);

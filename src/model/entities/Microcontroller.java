@@ -1,6 +1,5 @@
 package model.entities;
 
-import utils.Color;
 import utils.Location;
 
 public class Microcontroller {
