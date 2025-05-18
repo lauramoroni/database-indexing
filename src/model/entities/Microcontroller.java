@@ -28,21 +28,24 @@ public class Microcontroller {
       return id;
    }
 
+   public String getName() {
+      return name;
+   }
+
+   public Location getLocation() {
+      return location;
+   }
+
+   public String getIpAddress() {
+      return ipAddress;
+   }
+
    public int getRecordCount() {
       return recordCount;
    }
 
    @Override
    public String toString() {
-      return String.format(Color.infoMessage("Microcontroller [%s]\n" +
-                  "├─ Name: %s\n" +
-                  "├─ Location: %s\n" +
-                  "├─ IP: %s\n" +
-                  "└─ Climate Records: %d"),
-            id,
-            name,
-            location,
-            ipAddress,
-            recordCount);
+      return String.format("Microcontroller[%s] Name:%s Location:%s IP:%s Records:%d", id, name, location, ipAddress, recordCount);
    }
 }
