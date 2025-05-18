@@ -23,8 +23,7 @@ public class MicrocontrollerController {
 
    public ClimateRecord createRegister(int id, String microcontrollerId, double temperature, double humidity, double pressure) throws Exception {
       try {
-         ClimateRecord record = new ClimateRecord(id, microcontrollerId, temperature, humidity, pressure);
-         microcontrollerService.createRegister(microcontrollerId, record);
+         ClimateRecord record = microcontrollerService.createRegister(microcontrollerId, id, temperature, humidity, pressure);
          System.out.println(Color.successMessage("Register created successfully!"));
          return record;
       } catch (Exception e) {

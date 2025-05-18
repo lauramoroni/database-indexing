@@ -81,12 +81,7 @@ public class ClimateRecord {
 
    @Override
    public String toString() {
-      return String.format(Color.infoMessage("Climate Register #%d\n" +
-                  "├─ Microcontroller: %s\n" +
-                  "├─ Date/Time: %s\n" +
-                  "├─ Temperature: %.1f°C\n" +
-                  "├─ Humidity: %.1f%%\n" +
-                  "└─ Pressure: %.1f hPa"), 
+      return String.format("ClimateRecord{id=%d, microcontrollerId='%s', timestamp=%s, temperature=%.1f°C, humidity=%.1f%%, pressure=%.1f hPa}",
             id,
             microcontrollerId,
             timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")),

@@ -1,34 +1,45 @@
 package service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
-import utils.Color;
+import model.DAO.ClimateRecordDAO;
+import model.DAO.LogDAO;
+import model.DAO.MicrocontrollerDAO;
 import utils.Location;
 
 public class MicrocontrollerService {
-   private Map<String, Microcontroller> microcontrollers;
+   private MicrocontrollerDAO microcontrollerDAO;
+   private ClimateRecordDAO climateRecordDAO = new ClimateRecordDAO();
 
    public MicrocontrollerService() {
-      this.microcontrollers = new HashMap<>();
+      this.microcontrollerDAO = new MicrocontrollerDAO();
    }
 
    public void addMicrocontroller(String id, String name, Location location, String ipAddress) throws Exception {
-      if (microcontrollers.containsKey(id)) {
-            throw new Exception("Microcontroller " + id + " already exists");
+      if (microcontrollerDAO.exists(id)) {
+         throw new Exception("Microcontroller " + id + " already exists");
       }
-      microcontrollers.put(id, new Microcontroller(id, name, location, ipAddress));
+
+      Microcontroller microcontroller = new Microcontroller(id, name, location, ipAddress);
+
+      microcontrollerDAO.save(microcontroller);
+
+      LogDAO.saveLog(microcontroller.toString(), "INSERT");
    }
 
-   public ClimateRecord createRegister(String microcontrollerId, ClimateRecord record) throws Exception {
-
-      if (!microcontrollers.containsKey(microcontrollerId)) {
+   public ClimateRecord createRegister(String microcontrollerId, int id, double temperature, double humidity,
+         double pressure) throws Exception {
+      if (!microcontrollerDAO.exists(microcontrollerId)) {
          throw new Exception("Microcontroller " + microcontrollerId + " not found");
       }
 
-      Microcontroller microcontroller = microcontrollers.get(microcontrollerId);
+      if (climateRecordDAO.exists(id, microcontrollerId)) {
+         throw new Exception("Climate record " + id + " already exists for microcontroller " + microcontrollerId);
+      }
+
+      Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(microcontrollerId);
+
+      ClimateRecord record = new ClimateRecord(id, microcontrollerId, temperature, humidity, pressure);
 
       if (microcontroller.head == null) {
          microcontroller.head = record;
@@ -40,16 +51,20 @@ public class MicrocontrollerService {
 
       microcontroller.recordsIds[microcontroller.recordCount] = record.getId();
       microcontroller.recordCount++;
+      
+      climateRecordDAO.save(record);
 
+      LogDAO.saveLog(record.toString(), "INSERT");
+      
       return record;
    }
 
    public ClimateRecord updateRegister(int id, ClimateRecord newRecord) throws Exception {
 
-      if (!microcontrollers.containsKey(newRecord.getMicrocontrollerId())) {
+      if (!microcontrollerDAO.exists(newRecord.getMicrocontrollerId())) {
          throw new Exception("Microcontroller " + newRecord.getMicrocontrollerId() + " not found");
       }
-      Microcontroller microcontroller = microcontrollers.get(newRecord.getMicrocontrollerId());
+      Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(newRecord.getMicrocontrollerId());
 
       ClimateRecord current = microcontroller.head;
       while (current != null) {
@@ -61,12 +76,14 @@ public class MicrocontrollerService {
          }
          current = current.getNext();
       }
+
+      climateRecordDAO.update(newRecord);
+
       return null;
-      
    }
 
    public void printMicrocontroller(String id) throws Exception {
-      Microcontroller microcontroller = microcontrollers.get(id);
+      Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(id);
       if (microcontroller != null) {
          System.out.println(microcontroller.toString());
       } else {

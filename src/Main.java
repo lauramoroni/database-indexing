@@ -14,10 +14,44 @@ import utils.Location;
 import utils.Color;
 
 public class Main {
-    public static void main(String[] args) {
+    public static int ID_COUNTER = 1;
+    public static void main(String[] args) throws Exception {
+        // Initialize controllers
         Scanner sc = new Scanner(System.in);
         UserController userController = new UserController();
+        MicrocontrollerController microcontrollerController = new MicrocontrollerController();
 
+        // Create 10 microcontrollers
+        for (int i = 0; i < 10; i++) {
+            String id = "MC0" + (i + 1);
+            String name = "Microcontroller " + (i + 1);
+            Location location = Location.values()[i % Location.values().length];
+            String ipAddress = "192.168.0." + (i + 1);
+            microcontrollerController.addMicrocontroller(id, name, location, ipAddress);
+        }
+
+        // Create 10 climate records for each microcontroller
+        for (int i = 0; i < 10; i++) {
+            String microcontrollerId = "MC0" + (i + 1);
+            for (int j = 0; j < 10; j++) {
+                int recordId = ID_COUNTER++;
+                double temperature = 20 + Math.random() * 10;
+                double humidity = 50 + Math.random() * 20;
+                double pressure = 1000 + Math.random() * 50;
+                microcontrollerController.createRegister(recordId, microcontrollerId, temperature, humidity, pressure);
+            }
+        }
+
+        microcontrollerController.addMicrocontroller("MC011", "Microcontroller 11", Location.SALVADOR, "192.168.0.11");
+        microcontrollerController.createRegister(11, "MC011", 25.0, 60.0, 1010.0);
+        microcontrollerController.createRegister(12, "MC011", 22.0, 55.0, 1005.0);
+        microcontrollerController.createRegister(13, "MC011", 23.0, 65.0, 1015.0);
+        microcontrollerController.createRegister(14, "MC011", 24.0, 70.0, 1020.0);
+        microcontrollerController.createRegister(15, "MC011", 26.0, 75.0, 1025.0);
+
+        microcontrollerController.updateRegister(42, "MC05", 60, 60, 60);
+
+        // User interaction
         clearScreen();
         System.out.println(Color.header("Welcome to the Ambiental Monitoring System!"));
         sc.nextLine();
