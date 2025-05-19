@@ -2,13 +2,11 @@ package model.DAO;
 
 import model.entities.ClimateRecord;
 
-import java.time.format.DateTimeFormatter;
-
 import datastructures.AVL;
 
 public class ClimateRecordDAO {
    //private final String FILE = "src/database/records.txt";
-   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+   //private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
    private AVL<ClimateRecord> avl;
 
    public ClimateRecordDAO(AVL<ClimateRecord> avl) {

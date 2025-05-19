@@ -3,7 +3,6 @@ package datastructures;
 import model.DAO.LogDAO;
 import utils.Color;
 
-@SuppressWarnings("unchecked")
 public class AVL<T> {
    private Node<T> root;
 
