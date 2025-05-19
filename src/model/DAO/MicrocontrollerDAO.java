@@ -1,58 +1,75 @@
 package model.DAO;
 
-import java.io.*;
-import java.util.*;
+import datastructures.AVL;
 import model.entities.Microcontroller;
-import utils.Location;
 
 public class MicrocontrollerDAO {
-   private final String FILE = "src/database/microcontrollers.dat";
-   private Map<String, Microcontroller> microcontrollers;
+   // private final String FILE = "src/database/microcontrollers.txt";
+   private AVL<Microcontroller> avl;
 
-   public MicrocontrollerDAO() {
-      this.microcontrollers = new HashMap<>();
+   public MicrocontrollerDAO(AVL<Microcontroller> avl) {
+      this.avl = avl;
+      // populateAVL();
    }
 
-   public void save(Microcontroller microcontroller) {
-      microcontrollers.put(microcontroller.getId(), microcontroller);
-      if (!exists(microcontroller.getId())) {
-         try (FileOutputStream fos = new FileOutputStream(FILE, true)) {
-            String data = microcontroller.getId() + "," +
-                  microcontroller.getName() + "," +
-                  microcontroller.getLocation() + "," +
-                  microcontroller.getIpAddress() + "\n";
-            fos.write(data.getBytes());
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
+   public void save(Microcontroller microcontroller) throws Exception {
+      if (exists(microcontroller.getId())) {
+         throw new Exception("Microcontroller " + microcontroller.getId() + " already exists");
       }
+
+      avl.insert(microcontroller.getId(), microcontroller);
    }
 
-   public boolean exists(String id) {
-      try (BufferedReader reader = new BufferedReader(new FileReader(FILE))) {
-         String line;
-         while ((line = reader.readLine()) != null) {
-            if (line.startsWith(id + ","))
-               return true;
-         }
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-      return false;
+   public boolean exists(int id) {
+      return avl.exists(id);
    }
 
-   public Microcontroller getMicrocontroller(String id) {
-      try (BufferedReader reader = new BufferedReader(new FileReader(FILE))) {
-         String line;
-         while ((line = reader.readLine()) != null) {
-            String[] data = line.split(",");
-            if (data[0].equals(id)) {
-               return new Microcontroller(data[0], data[1], Location.valueOf(data[2]), data[3]);
-            }
-         }
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-      return null;
+   public Microcontroller getMicrocontroller(int id) {
+      return avl.search(id).getValue();
    }
+
+   public void update(Microcontroller microcontroller) {
+      avl.remove(microcontroller.getId());
+      avl.insert(microcontroller.getId(), microcontroller);
+   }
+
+   // public void writeToFile() {
+   // try {
+   // File file = new File(FILE);
+   // try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+   // for (int i = 0; i < avl.size(); i++) {
+   // Microcontroller microcontroller = avl.search(i).getValue();
+   // if (microcontroller == null) {
+   // continue;
+   // }
+   // writer.write(microcontroller.getId() + "," +
+   // microcontroller.getName() + "," +
+   // microcontroller.getLocation() + "," +
+   // microcontroller.getIpAddress());
+   // writer.newLine();
+   // }
+   // }
+   // } catch (IOException e) {
+   // e.printStackTrace();
+   // }
+   // }
+   //
+   // public void populateAVL() {
+   // try (BufferedReader reader = new BufferedReader(new FileReader(FILE))) {
+   // String line;
+   // while ((line = reader.readLine()) != null) {
+   // String[] data = line.split(",");
+   // int id = Integer.parseInt(data[0]);
+   // String name = data[1];
+   // Location location = Location.valueOf(data[2]);
+   // String ipAddress = data[3];
+   //
+   // Microcontroller microcontroller = new Microcontroller(id, name, location,
+   // ipAddress);
+   // avl.insert(id, microcontroller);
+   // }
+   // } catch (IOException e) {
+   // e.printStackTrace();
+   // }
+   // }
 }

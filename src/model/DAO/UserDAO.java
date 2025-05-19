@@ -10,7 +10,7 @@ import java.util.Map;
 import model.entities.User;
 
 public class UserDAO {
-   private final String FILE = "src/database/users.dat";
+   private final String FILE = "src/database/users.txt";
    private Map<String, User> users;
 
    public UserDAO() {

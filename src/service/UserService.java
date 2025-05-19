@@ -1,15 +1,19 @@
 package service;
 
+import model.entities.ClimateRecord;
 import model.entities.User;
-
+import datastructures.AVL;
+import model.DAO.ClimateRecordDAO;
 import model.DAO.LogDAO;
 import model.DAO.UserDAO;
 
 public class UserService {
    private final UserDAO userDAO;
+   private ClimateRecordDAO climateRecordDAO;
 
-   public UserService() {
+   public UserService(AVL<ClimateRecord> avl) {
       this.userDAO = new UserDAO();
+      this.climateRecordDAO = new ClimateRecordDAO(avl);
    }
 
    public void addUser(String id, String name, String password) throws Exception {
@@ -58,6 +62,18 @@ public class UserService {
       }
 
       System.out.println(user.toString());
+   }
+
+   public void getAllRecords() throws Exception {
+      climateRecordDAO.getAllRecords();
+   }
+
+   public ClimateRecord getRecordById(int id) throws Exception {
+      ClimateRecord record = climateRecordDAO.getRecordById(id);
+      if (record == null) {
+         throw new Exception("Record " + id + " not found.");
+      }
+      return record;
    }
 
 }

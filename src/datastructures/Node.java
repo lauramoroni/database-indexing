@@ -1,17 +1,15 @@
 package datastructures;
 
-import model.entities.ClimateRecord;
-
-public class Node {
+public class Node<T> {
    int key;
-   Node left, right;
+   Node<T> left, right;
    int height;
-   ClimateRecord recordAddress; // node value
+   T value; // ClimateRecord or Microcontroller
 
    // create root node
-   public Node(int key, ClimateRecord recordAddress) {
+   public Node(int key, T value) {
       this.key = key;
-      this.recordAddress = recordAddress;
+      this.value = value;
       this.left = null;
       this.right = null;
       this.height = 1; 
@@ -25,19 +23,19 @@ public class Node {
       this.key = key;
    }
 
-   public Node getLeft() {
+   public Node<T> getLeft() {
       return left;
    }
 
-   public void setLeft(Node left) {
+   public void setLeft(Node<T> left) {
       this.left = left;
    }
 
-   public Node getRight() {
+   public Node<T> getRight() {
       return right;
    }
 
-   public void setRight(Node right) {
+   public void setRight(Node<T> right) {
       this.right = right;
    }
 
@@ -49,12 +47,12 @@ public class Node {
       this.height = height;
    }
 
-   public ClimateRecord getRecordAddress() {
-      return recordAddress;
+   public T getValue() {
+      return value;
    }
 
-   public void setRecordAddress(ClimateRecord recordAddress) {
-      this.recordAddress = recordAddress;
+   public void setValue(T value) {
+      this.value = value;
    }
 
 }

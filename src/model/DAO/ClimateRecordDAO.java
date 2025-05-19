@@ -2,74 +2,54 @@ package model.DAO;
 
 import model.entities.ClimateRecord;
 
-import java.io.*;
-import java.nio.file.*;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+
+import datastructures.AVL;
 
 public class ClimateRecordDAO {
-   private final String FILE = "src/database/records.dat";
+   //private final String FILE = "src/database/records.txt";
    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+   private AVL<ClimateRecord> avl;
 
-   public void save(ClimateRecord record) {
-      if (!exists(record.getId(), record.getMicrocontrollerId())) {
-         try (FileOutputStream fos = new FileOutputStream(FILE, true)) {
-            String data = record.getId() + "," +
-                  record.getMicrocontrollerId() + "," +
-                  record.getTimestamp().format(formatter) + "," +
-                  record.getTemperature() + "," +
-                  record.getHumidity() + "," +
-                  record.getPressure() + "\n";
-            fos.write(data.getBytes());
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
+   public ClimateRecordDAO(AVL<ClimateRecord> avl) {
+      this.avl = avl;
+   }
+   
+   // operations
+
+   public void save(ClimateRecord record) throws Exception {
+      if (exists(record.getId())) {
+         throw new Exception("Climate record " + record.getId() + " already exists");
+      } else {
+         avl.insert(record.getId(), record);
       }
    }
 
-   public boolean exists(int id, String microcontrollerId) {
-      try (BufferedReader reader = new BufferedReader(new FileReader(FILE))) {
-         String line;
-         while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(",");
-            if (Integer.parseInt(parts[0]) == id &&
-                  parts[1].equals(microcontrollerId)) {
-               return true;
-            }
-         }
-      } catch (IOException e) {
-         e.printStackTrace();
+   public ClimateRecord getRecordById(int id) throws Exception {
+      if (!exists(id)) {
+         throw new Exception("Record " + id + " not found");
       }
-      return false;
+      return avl.search(id).getValue();
    }
 
-   public void update(ClimateRecord updatedRecord) {
-      try {
-         List<String> lines = Files.readAllLines(Paths.get(FILE));
-         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE))) {
-            for (String line : lines) {
-               String[] parts = line.split(",");
-
-               int recordId = Integer.parseInt(parts[0]);
-               String microId = parts[1];
-
-               if (recordId == updatedRecord.getId() && microId.equals(updatedRecord.getMicrocontrollerId())) {
-                  String newLine = updatedRecord.getId() + "," +
-                        updatedRecord.getMicrocontrollerId() + "," +
-                        updatedRecord.getTimestamp().format(formatter) + "," +
-                        updatedRecord.getTemperature() + "," +
-                        updatedRecord.getHumidity() + "," +
-                        updatedRecord.getPressure();
-                  writer.write(newLine);
-               } else {
-                  writer.write(line);
-               }
-               writer.newLine();
-            }
-         }
-      } catch (IOException e) {
-         e.printStackTrace();
+   public void removeRecord(int id) throws Exception {
+      if (!exists(id)) {
+         throw new Exception("Record " + id + " not found");
+      } else {
+         avl.remove(id);
       }
+   }
+
+   public void getAllRecords() {
+      avl.inOrder();
+   }
+
+   public int getRecordCount() {
+      return avl.size();
+   }
+
+   public boolean exists(int id) {
+      return avl.exists(id);
    }
 
 }
