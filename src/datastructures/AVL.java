@@ -23,6 +23,7 @@ public class AVL<T> {
    public void insert(int key, T t) {
       root = insert(root, key, t);
    }
+
    private Node<T> insert(Node<T> node, int key, T t) {
 
       if (node == null) {
@@ -36,7 +37,7 @@ public class AVL<T> {
          throw new IllegalArgumentException(Color.errorMessage("Duplicate key: " + key));
       }
 
-      verifyBalance(node);
+      node = verifyBalance(node);
 
       return node;
    }
@@ -44,6 +45,7 @@ public class AVL<T> {
    public Node<T> remove(int key) {
       return root = remove(root, key);
    }
+
    private Node<T> remove(Node<T> node, int key) {
       if (node == null) {
          return node;
@@ -57,7 +59,7 @@ public class AVL<T> {
          Node<T> temp = node;
          node = temp.getRight();
          temp = null;
-      } 
+      }
       // 3°: node with one left child
       else if (node.getRight() == null) {
          Node<T> temp = node;
@@ -67,12 +69,14 @@ public class AVL<T> {
       // 4°: node with two children
       else {
          Node<T> temp = smallest(node.getRight());
+
          node.setKey(temp.getKey());
          node.setValue(temp.getValue());
 
          temp.setKey(key);
 
-         node.setRight(remove(node.getRight(), key));
+         node.setRight(remove(node.getRight(), temp.getKey()));
+
       }
 
       if (node == null) {
@@ -87,6 +91,7 @@ public class AVL<T> {
    public void inOrder() {
       inOrder(root);
    }
+
    private void inOrder(Node<T> node) {
       if (node != null) {
          inOrder(node.getLeft());
@@ -99,6 +104,7 @@ public class AVL<T> {
    public Node<T> search(int key) {
       return search(root, key);
    }
+
    private Node<T> search(Node<T> node, int key) {
       if (node == null || node.getKey() == key) {
          return node;
@@ -114,6 +120,7 @@ public class AVL<T> {
    public boolean exists(int key) {
       return exists(root, key);
    }
+
    private boolean exists(Node<T> node, int key) {
       if (node == null) {
          return false;
@@ -147,14 +154,16 @@ public class AVL<T> {
       // rotação esquerda simples
       if (balance < -1 && rightBalance <= 0) {
 
-         LogDAO.saveLog("RES " + node.getKey(), "AVL", "ROTATION");
+         LogDAO.saveLogAVL("RES " + node.getKey(), "ROTATION", node.getHeight(), "AVL");
+         LogDAO.logAVLTreeStructure(this);
 
          return leftRotation(node);
       }
       // rotação direita simples
       if (balance > 1 && leftBalance >= 0) {
 
-         LogDAO.saveLog("RDS " + node.getKey(), "AVL", "ROTATION");
+         LogDAO.saveLogAVL("RDS " + node.getKey(), "ROTATION", node.getHeight(), "AVL");
+         LogDAO.logAVLTreeStructure(this);
 
          return rightRotation(node);
       }
@@ -162,7 +171,8 @@ public class AVL<T> {
       if (balance < -1 && rightBalance > 0) {
          node.setRight(rightRotation(node.getRight()));
 
-         LogDAO.saveLog("RDE " + node.getKey(), "AVL", "ROTATION");
+         LogDAO.saveLogAVL("RDE " + node.getKey(), "ROTATION", node.getHeight(), "AVL");
+         LogDAO.logAVLTreeStructure(this);
 
          return leftRotation(node);
       }
@@ -170,7 +180,8 @@ public class AVL<T> {
       if (balance > 1 && leftBalance < 0) {
          node.setLeft(leftRotation(node.getLeft()));
 
-         LogDAO.saveLog("RDD " + node.getKey(), "AVL", "ROTATION");
+         LogDAO.saveLogAVL("RDD " + node.getKey(), "ROTATION", node.getHeight(), "AVL");
+         LogDAO.logAVLTreeStructure(this);
 
          return rightRotation(node);
       }
@@ -230,10 +241,29 @@ public class AVL<T> {
    public int size() {
       return size(root);
    }
+
    private int size(Node<T> node) {
       if (node == null) {
          return 0;
       }
       return 1 + size(node.getLeft()) + size(node.getRight());
+   }
+
+   public void print() {
+      print(root, "", true, "ROOT");
+   }
+
+   private void print(Node<T> node, String prefix, boolean isLeft, String label) {
+      if (node == null) {
+         return;
+      }
+
+      System.out.println(prefix
+            + (label.equals("ROOT") ? "└── " : (isLeft ? "├── " : "└── "))
+            + label + ": [key=" + node.getKey() + ", h=" + node.getHeight() + "]");
+
+      String childPrefix = prefix + (label.equals("ROOT") ? "    " : (isLeft ? "│   " : "    "));
+      print(node.getLeft(), childPrefix, true, "L");
+      print(node.getRight(), childPrefix, false, "R");
    }
 }

@@ -46,12 +46,9 @@ public class MicrocontrollerService {
          microcontroller.setTail(record);
       }
 
-      //microcontroller.incrementRecord(record.getId());
+      // microcontroller.incrementRecord(record.getId());
 
-      // update microcontroller in the AVL tree
-      microcontrollerDAO.update(microcontroller);
-
-      LogDAO.saveLog(record.toLog(),  "CR","BD INSERT");
+      LogDAO.saveLog(record.toLog(), "CR", "BD INSERT");
 
       try {
          climateRecordDAO.save(record);

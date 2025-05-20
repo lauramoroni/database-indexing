@@ -22,7 +22,8 @@ public class MicrocontrollerDAO {
       }
 
       avl.insert(microcontroller.getId(), microcontroller);
-      LogDAO.saveLog(microcontroller.toLog(), "MC" ,"AVL INSERT");
+      LogDAO.saveLogAVL(microcontroller.toLog(), "INSERT", avl.search(microcontroller.getId()).getHeight(), "MICROCONTROLLER");
+      LogDAO.logAVLTreeStructure(avl);
 
       writeFile(microcontroller);
    }
@@ -46,8 +47,11 @@ public class MicrocontrollerDAO {
 
    public void writeFile(Microcontroller microcontroller) {
       try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE, true))) {
-         writer.write(microcontroller.getId() + "," + microcontroller.getName() + ","
-               + microcontroller.getLocation().toString() + "," + microcontroller.getIpAddress());
+         writer.write(microcontroller.getId() + "," +
+               microcontroller.getName() + "," +
+               microcontroller.getLocation() + "," +
+               microcontroller.getIpAddress() + "," +
+               microcontroller.getRecordCount());
          writer.newLine();
       } catch (IOException e) {
          e.printStackTrace();

@@ -25,7 +25,8 @@ public class ClimateRecordDAO {
          throw new Exception("Climate record " + record.getId() + " already exists");
       } else {
          avl.insert(record.getId(), record);
-         LogDAO.saveLog("Inserted record " + record.getId() + " in AVL tree", "CR", "AVL INSERT");
+         LogDAO.saveLogAVL("Inserted record " + record.getId() + " in AVL tree", "INSERT", avl.search(record.getId()).getHeight(), "REGISTER");
+         LogDAO.logAVLTreeStructure(avl);
          writeFile(record);
       }
    }
@@ -34,7 +35,7 @@ public class ClimateRecordDAO {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       }
-      return avl.search(id).getValue();
+      return avl.search(id).getValue(); // search(id) returns a node (AVL search), and get the value ('search' LL)
    }
 
    public void removeRecord(int id) throws Exception {
@@ -42,6 +43,8 @@ public class ClimateRecordDAO {
          throw new Exception("Record " + id + " not found");
       } else {
          avl.remove(id);
+         LogDAO.saveLogAVL("Removed record " + id + " from AVL tree", "REMOVE", avl.search(id).getHeight(), "REGISTER");
+         LogDAO.logAVLTreeStructure(avl);
       }
    }
 
