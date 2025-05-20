@@ -69,11 +69,14 @@ public class UserService {
    }
 
    public ClimateRecord getRecordById(int id) throws Exception {
-      ClimateRecord record = climateRecordDAO.getRecordById(id);
+      ClimateRecord record = climateRecordDAO.getRecordById(id); // search AVL
       if (record == null) {
          throw new Exception("Record " + id + " not found.");
-      }
+      }      
       return record;
    }
 
+   public void removeRecord(int id) throws Exception {
+      climateRecordDAO.removeRecord(id);
+   }
 }

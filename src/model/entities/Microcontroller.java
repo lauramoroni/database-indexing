@@ -25,17 +25,6 @@ public class Microcontroller {
       this.recordCount = 0;
    }
 
-   public Microcontroller(int id, String name, Location location, String ipAddress) {
-      id = id;
-      this.recordsIds = new int[100];
-      this.name = name;
-      this.location = location;
-      this.ipAddress = ipAddress;
-      this.head = null;
-      this.tail = null;
-      this.recordCount = 0;
-   }
-
    public int getId() {
       return id;
    }

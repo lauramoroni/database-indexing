@@ -55,4 +55,13 @@ public class UserController {
       }
    }
 
+   public void removeRecord(int id) {
+      try {
+         userService.removeRecord(id);
+         System.out.println(Color.successMessage("Record removed successfully!"));
+      } catch (Exception e) {
+         System.out.println(Color.errorMessage(e.getMessage()));
+      }
+   }
+
 }
