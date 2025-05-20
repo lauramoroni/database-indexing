@@ -42,9 +42,10 @@ public class ClimateRecordDAO {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       } else {
-         avl.remove(id);
          LogDAO.saveLogAVL("Removed record " + id + " from AVL tree", "REMOVE", avl.search(id).getHeight(), "REGISTER");
+         avl.remove(id);
          LogDAO.logAVLTreeStructure(avl);
+
       }
    }
 

@@ -1,6 +1,7 @@
 package controller;
 
 import datastructures.AVL;
+import datastructures.LinkedList;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
 import service.MicrocontrollerService;
@@ -10,8 +11,8 @@ import utils.Location;
 public class MicrocontrollerController {
    private MicrocontrollerService microcontrollerService;
 
-   public MicrocontrollerController(AVL<Microcontroller> avl, AVL<ClimateRecord> avlRecords) {
-      this.microcontrollerService = new MicrocontrollerService(avl, avlRecords);
+   public MicrocontrollerController(AVL<Microcontroller> avl, AVL<ClimateRecord> avlRecords, LinkedList<ClimateRecord> linkedList) {
+      this.microcontrollerService = new MicrocontrollerService(avl, avlRecords, linkedList);
    }
 
    public void addMicrocontroller(String name, Location location, String ipAddress) {

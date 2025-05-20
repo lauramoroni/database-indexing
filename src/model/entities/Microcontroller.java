@@ -10,8 +10,6 @@ public class Microcontroller {
    private String name;
    private Location location;
    private String ipAddress;
-   private ClimateRecord head;
-   private ClimateRecord tail;
    private int recordCount;
 
    public Microcontroller(String name, Location location, String ipAddress) {
@@ -20,8 +18,6 @@ public class Microcontroller {
       this.name = name;
       this.location = location;
       this.ipAddress = ipAddress;
-      this.head = null;
-      this.tail = null;
       this.recordCount = 0;
    }
 
@@ -45,22 +41,6 @@ public class Microcontroller {
       return recordCount;
    }
 
-   public ClimateRecord getHead() {
-      return head;
-   }
-
-   public ClimateRecord getTail() {
-      return tail;
-   }
-
-   public void setHead(ClimateRecord head) {
-      this.head = head;
-   }
-
-   public void setTail(ClimateRecord tail) {
-      this.tail = tail;
-   }
-
    public void setRecordCount(int recordCount) {
       this.recordCount = recordCount;
    }
@@ -76,6 +56,16 @@ public class Microcontroller {
    public void incrementRecord(int id) {
       this.recordCount++;
       this.recordsIds[recordCount - 1] = id;
+   }
+
+   public void decrementRecord(int id) {
+      for (int i = 0; i < recordCount; i++) {
+         if (recordsIds[i] == id) {
+            recordsIds[i] = recordsIds[recordCount - 1];
+            recordCount--;
+            break;
+         }
+      }
    }
 
    @Override

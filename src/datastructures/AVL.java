@@ -50,37 +50,40 @@ public class AVL<T> {
       if (node == null) {
          return node;
       }
-      // 1°: node without child
-      if (node.getLeft() == null && node.getRight() == null) {
-         return null;
-      }
-      // 2°: node with one right child
-      else if (node.getLeft() == null) {
-         Node<T> temp = node;
-         node = temp.getRight();
-         temp = null;
-      }
-      // 3°: node with one left child
-      else if (node.getRight() == null) {
-         Node<T> temp = node;
-         node = temp.getLeft();
-         temp = null;
-      }
-      // 4°: node with two children
-      else {
-         Node<T> temp = smallest(node.getRight());
 
-         node.setKey(temp.getKey());
-         node.setValue(temp.getValue());
+      if (key < node.getKey()) {
+         node.setLeft(remove(node.getLeft(), key));
+      } else if (key > node.getKey()) {
+         node.setRight(remove(node.getRight(), key));
+      } else {
+         // find node
 
-         temp.setKey(key);
+         // 1°: node without child
+         if (node.getLeft() == null && node.getRight() == null) {
+            return null;
+         }
+         // 2°: node with one right child
+         else if (node.getLeft() == null) {
+            Node<T> temp = node;
+            node = temp.getRight();
+            temp = null;
+         }
+         // 3°: node with one left child
+         else if (node.getRight() == null) {
+            Node<T> temp = node;
+            node = temp.getLeft();
+            temp = null;
+         }
+         // 4°: node with two children
+         else {
+            Node<T> temp = smallest(node.getRight());
 
-         node.setRight(remove(node.getRight(), temp.getKey()));
+            node.setKey(temp.getKey());
+            node.setValue(temp.getValue());
 
-      }
+            node.setRight(remove(node.getRight(), temp.getKey()));
 
-      if (node == null) {
-         return node;
+         }
       }
 
       node = verifyBalance(node);

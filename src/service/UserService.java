@@ -1,19 +1,26 @@
 package service;
 
 import model.entities.ClimateRecord;
+import model.entities.Microcontroller;
 import model.entities.User;
 import datastructures.AVL;
+import datastructures.LinkedList;
 import model.DAO.ClimateRecordDAO;
 import model.DAO.LogDAO;
+import model.DAO.MicrocontrollerDAO;
 import model.DAO.UserDAO;
 
 public class UserService {
    private final UserDAO userDAO;
    private ClimateRecordDAO climateRecordDAO;
+   private MicrocontrollerDAO microcontrollerDAO;
+   private LinkedList<ClimateRecord> linkedList;
 
-   public UserService(AVL<ClimateRecord> avl) {
+   public UserService(AVL<Microcontroller> avlMicrocontrollers, AVL<ClimateRecord> avlRecords, LinkedList<ClimateRecord> linkedList) {
       this.userDAO = new UserDAO();
-      this.climateRecordDAO = new ClimateRecordDAO(avl);
+      this.climateRecordDAO = new ClimateRecordDAO(avlRecords);
+      this.microcontrollerDAO = new MicrocontrollerDAO(avlMicrocontrollers);
+      this.linkedList = linkedList;
    }
 
    public void addUser(String id, String name, String password) throws Exception {
@@ -77,6 +84,16 @@ public class UserService {
    }
 
    public void removeRecord(int id) throws Exception {
+      if (!climateRecordDAO.exists(id)) {
+         throw new Exception("Record " + id + " not found.");
+      }
+
+      linkedList.remove(id); 
+
+      Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(id);
+
+      microcontroller.decrementRecord(id);
+
       climateRecordDAO.removeRecord(id);
    }
 }

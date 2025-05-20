@@ -1,7 +1,9 @@
 package controller;
 
 import datastructures.AVL;
+import datastructures.LinkedList;
 import model.entities.ClimateRecord;
+import model.entities.Microcontroller;
 import model.entities.User;
 import service.UserService;
 import utils.Color;
@@ -9,8 +11,8 @@ import utils.Color;
 public class UserController {
    UserService userService;
 
-   public UserController(AVL<ClimateRecord> avl) {
-      this.userService = new UserService(avl);
+   public UserController(AVL<Microcontroller> avlMicrocontroller, AVL<ClimateRecord> avlRecords, LinkedList<ClimateRecord> linkedlist) {
+      this.userService = new UserService(avlMicrocontroller, avlRecords, linkedlist);
    }
 
    public void addUser(String id, String name, String password) {

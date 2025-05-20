@@ -6,6 +6,7 @@ import java.util.Scanner;
 import controller.MicrocontrollerController;
 import controller.UserController;
 import datastructures.AVL;
+import datastructures.LinkedList;
 import model.DAO.LogDAO;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
@@ -17,22 +18,22 @@ public class Main {
     private static Scanner sc = new Scanner(System.in);
     private static AVL<ClimateRecord> avlRecords = new AVL<>();
     private static AVL<Microcontroller> avlMicrocontroller = new AVL<>();
-    private static UserController userController = new UserController(avlRecords);
+    private static LinkedList<ClimateRecord> linkedList = new LinkedList<>(); // simulação do armazenamento físico
+    private static UserController userController = new UserController(avlMicrocontroller, avlRecords, linkedList);
     private static MicrocontrollerController microcontrollerController = new MicrocontrollerController(
-            avlMicrocontroller, avlRecords);
-
+            avlMicrocontroller, avlRecords, linkedList);
     public static void main(String[] args) throws Exception {
         clearFile();
 
         // Create 10 microcontrollers
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 3; i++) {
             microcontrollerController.addMicrocontroller("Microcontroller " + i, Location.MACEIO,
                     "192.168.0." + i);
         }
 
         // Create 10 records for each microcontroller
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
+        for (int i = 1; i <= 3; i++) {
+            for (int j = 1; j <= 3; j++) {
                 microcontrollerController.createRegister(i, 25.0 + j, 60.0 + j, 1013.0 + j);
             }
         }
@@ -95,7 +96,8 @@ public class Main {
                 "Show all microcontrollers",
                 "Show microcontroller details",
                 "Remove records",
-                "Quantity of records"
+                "Quantity of records",
+                "Clear logs"
         };
 
         int ans = -1;
@@ -157,9 +159,9 @@ public class Main {
                 case 6:
                     // Remove records
                     System.out.print(Color.inputPrompt("Enter the record ID to remove: "));
-                    int recordIdToRemove = sc.nextInt();
-                    userController.removeRecord(recordIdToRemove);
-                    LogDAO.saveLog("Removed record " + recordIdToRemove, "CR", "REMOVE");
+                    int removeRecordId = sc.nextInt();
+                    userController.removeRecord(removeRecordId);
+                    LogDAO.saveLog("Removed record " + removeRecordId, "CR", "REMOVE");
                     break;
                 case 7:
                     // Show record count
@@ -168,6 +170,17 @@ public class Main {
                     LogDAO.saveLog("User " + userName + " viewed the record count.", "USER", "INFO");
                     break;
                 case 8:
+                    // Clear logs
+                    System.out.print(Color.warningMessage("Are you sure you want to clear the logs? (y/n): "));
+                    String clearLogs = sc.next().toLowerCase();
+                    if (clearLogs.equals("y")) {
+                        clearFile();
+                        System.out.println(Color.successMessage("Logs cleared successfully!"));
+                    } else {
+                        System.out.println(Color.warningMessage("Log clearing cancelled."));
+                    }
+                    break;
+                case 9:
                     // Exit
                     LogDAO.saveLog("User " + userName + " exited the system.", "USER", "INFO");
                     clearScreen();
@@ -191,7 +204,12 @@ public class Main {
         System.out.flush();
     }
 
-    public static void clearFile(String fileMicrocontrollers, String fileRecords, String fileAVL) {
+    public static void clearFile(String fileLog, String fileMicrocontrollers, String fileRecords, String fileAVL) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileLog))) {
+            writer.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileMicrocontrollers))) {
             writer.write("");
         } catch (IOException e) {
@@ -210,6 +228,6 @@ public class Main {
     }
 
     public static void clearFile() {
-        clearFile("src/database/microcontrollers.txt", "src/database/records.txt", "src/database/avl.txt");
+        clearFile("src/database/log.txt", "src/database/microcontrollers.txt", "src/database/records.txt", "src/database/avl.txt");
     }
 }
