@@ -3,6 +3,7 @@ import java.util.Scanner;
 import controller.MicrocontrollerController;
 import controller.UserController;
 import datastructures.AVL;
+import model.DAO.LogDAO;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
 import model.entities.User;
@@ -19,23 +20,21 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         // Create 10 microcontrollers
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             String name = "MC " + (i + 1);
             Location location = Location.values()[i % Location.values().length];
             String ipAddress = "192.168.0." + (i + 1);
             microcontrollerController.addMicrocontroller(name, location, ipAddress);
         }
 
-        // Create 10 climate records for each microcontroller
-        for (int i = 0; i < 3; i++) {
-            int microcontrollerId = i + 1;
-            for (int j = 0; j < 3; j++) {
-                double temperature = 20 + Math.random() * 10;
-                double humidity = 50 + Math.random() * 20;
-                double pressure = 1000 + Math.random() * 50;
-                microcontrollerController.createRegister(microcontrollerId, temperature, humidity, pressure);
-            }
-        }
+        microcontrollerController.createRegister(1, 10, 10, 10);
+        microcontrollerController.createRegister(1, 20, 20, 20);    
+        microcontrollerController.createRegister(1, 30, 30, 30);
+        microcontrollerController.createRegister(2, 40, 40, 40);
+        microcontrollerController.createRegister(2, 50, 50, 50);
+        microcontrollerController.createRegister(3, 60, 60, 60);
+        microcontrollerController.createRegister(3, 70, 70, 70);
+        microcontrollerController.createRegister(4, 80, 80, 80);
 
         // User interaction
         clearScreen();
@@ -115,7 +114,9 @@ public class Main {
 
             switch (ans) {
                 case 1:
+                    System.out.println(Color.header("All Records:"));
                     userController.getAllRecords();
+                    LogDAO.saveLog("User " + userName + " viewed all records.", "USER", "INFO");
                     break;
                 case 2:
                     System.out.print(Color.inputPrompt("Enter the record ID: "));
@@ -124,16 +125,51 @@ public class Main {
                     if (record != null) {
                         System.out.println(record.toString());
                     }
+                    LogDAO.saveLog("User " + userName + " viewed record " + recordId, "USER", "INFO");
                     break;
                 case 3:
                     System.out.print(Color.inputPrompt("Enter the Microcontroller ID: "));
                     int microcontrollerId = sc.nextInt();
-                    ClimateRecord[] records = microcontrollerController.getRecordsByMicrocontrollerId(microcontrollerId);
+                    ClimateRecord[] records = microcontrollerController
+                            .getRecordsByMicrocontrollerId(microcontrollerId);
                     if (records != null) {
                         for (ClimateRecord rec : records) {
                             System.out.println(rec.toString());
                         }
                     }
+                    LogDAO.saveLog("User " + userName + " viewed records for Microcontroller " + microcontrollerId,
+                            "USER", "INFO");
+                    break;
+                case 4:
+                    // Show all microcontrollers
+                    System.out.println(Color.header("Microcontrollers:"));
+                    microcontrollerController.printAllMicrocontrollers();
+                    LogDAO.saveLog("User " + userName + " viewed all microcontrollers.", "USER", "INFO");
+                    break;
+                case 5:
+                    // Show microcontroller details
+                    System.out.print(Color.inputPrompt("Enter the Microcontroller ID: "));
+                    int mcId = sc.nextInt();
+                    microcontrollerController.printMicrocontroller(mcId);
+                    LogDAO.saveLog("User " + userName + " viewed microcontroller " + mcId, "USER", "INFO");
+                    break;
+                case 6:
+                    // Remove records
+                    System.out.print(Color.inputPrompt("Enter the record ID to remove: "));
+                    int recordIdToRemove = sc.nextInt();
+                    //userController.removeRecord(recordIdToRemove);
+                    LogDAO.saveLog("Removed record " + recordIdToRemove, "CR", "REMOVE");
+                    break;
+                case 7:
+                    System.out.println(Color.header("Microcontroller Record Count"));
+                    System.out.println(Color.infoMessage("Total records: " + microcontrollerController.getRecordCount()));
+                    LogDAO.saveLog("User " + userName + " viewed the record count.", "USER", "INFO");
+                    break;
+                case 8:
+                    LogDAO.saveLog("User " + userName + " exited the system.", "USER", "INFO");
+                    System.out.println(Color.successMessage("Exiting the system..."));
+                    System.out.println(Color.highlight("Thank you for using the Ambient Monitoring System!"));
+                    System.exit(0);
                     break;
                 default:
                     break;

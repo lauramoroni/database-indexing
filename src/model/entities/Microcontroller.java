@@ -1,9 +1,11 @@
 package model.entities;
 
+import utils.Color;
 import utils.Location;
 
 public class Microcontroller {
-   private static int id = 0;
+   private static int nextId = 0;
+   private int id = 0;
    private int[] recordsIds;
    private String name;
    private Location location;
@@ -13,7 +15,7 @@ public class Microcontroller {
    private int recordCount;
 
    public Microcontroller(String name, Location location, String ipAddress) {
-      id = ++id;
+      this.id = ++nextId;
       this.recordsIds = new int[100];
       this.name = name;
       this.location = location;
@@ -25,7 +27,7 @@ public class Microcontroller {
 
    public Microcontroller(int id, String name, Location location, String ipAddress) {
       id = id;
-      this.recordsIds = recordsIds;
+      this.recordsIds = new int[100];
       this.name = name;
       this.location = location;
       this.ipAddress = ipAddress;
@@ -82,8 +84,21 @@ public class Microcontroller {
       this.recordsIds = recordsIds;
    }
 
+   public void incrementRecord(int id) {
+      this.recordCount++;
+      this.recordsIds[recordCount - 1] = id;
+   }
+
    @Override
    public String toString() {
+      return String.format(Color.infoMessage("Microcontroller #%d\n" +
+            "├─ Name: %s\n" +
+            "├─ Location: %s\n" +
+            "├─ IP Address: %s\n" +
+            "└─ Record Count: %d\n"), id, name, location, ipAddress, recordCount);
+   }
+
+   public String toLog() {
       return String.format("Microcontroller[%d] Name:%s Location:%s IP:%s Records:%d", id, name, location, ipAddress, recordCount);
    }
 }

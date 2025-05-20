@@ -1,10 +1,14 @@
 package model.DAO;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import datastructures.AVL;
 import model.entities.Microcontroller;
 
 public class MicrocontrollerDAO {
-   // private final String FILE = "src/database/microcontrollers.txt";
+   private final String FILE = "src/database/microcontrollers.txt";
    private AVL<Microcontroller> avl;
 
    public MicrocontrollerDAO(AVL<Microcontroller> avl) {
@@ -18,6 +22,9 @@ public class MicrocontrollerDAO {
       }
 
       avl.insert(microcontroller.getId(), microcontroller);
+      LogDAO.saveLog(microcontroller.toLog(), "MC" ,"AVL INSERT");
+
+      writeFile(microcontroller);
    }
 
    public boolean exists(int id) {
@@ -33,27 +40,19 @@ public class MicrocontrollerDAO {
       avl.insert(microcontroller.getId(), microcontroller);
    }
 
-   // public void writeToFile() {
-   // try {
-   // File file = new File(FILE);
-   // try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-   // for (int i = 0; i < avl.size(); i++) {
-   // Microcontroller microcontroller = avl.search(i).getValue();
-   // if (microcontroller == null) {
-   // continue;
-   // }
-   // writer.write(microcontroller.getId() + "," +
-   // microcontroller.getName() + "," +
-   // microcontroller.getLocation() + "," +
-   // microcontroller.getIpAddress());
-   // writer.newLine();
-   // }
-   // }
-   // } catch (IOException e) {
-   // e.printStackTrace();
-   // }
-   // }
-   //
+   public void printMicrocontrollers() {
+      avl.inOrder();
+   }
+
+   public void writeFile(Microcontroller microcontroller) {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE, true))) {
+         writer.write(microcontroller.getId() + "," + microcontroller.getName() + ","
+               + microcontroller.getLocation().toString() + "," + microcontroller.getIpAddress());
+         writer.newLine();
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+   }
    // public void populateAVL() {
    // try (BufferedReader reader = new BufferedReader(new FileReader(FILE))) {
    // String line;

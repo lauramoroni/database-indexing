@@ -24,7 +24,7 @@ public class UserService {
       User user = new User(id, name, password);
       userDAO.save(user);
 
-      LogDAO.saveLog("User " + user.getName() + " created.", "INFO");
+      LogDAO.saveLog("User " + user.getName() + " created.", "USER", "INFO");
    }
 
    public User login(String id, String password) throws Exception {
@@ -38,7 +38,7 @@ public class UserService {
          throw new Exception("Invalid password.");
       }
 
-      LogDAO.saveLog("User " + user.getName() + " logged in.", "INFO");
+      LogDAO.saveLog("User " + user.getName() + " logged in.", "USER", "INFO");
 
       return user;
    }

@@ -36,7 +36,7 @@ public class AVL<T> {
          throw new IllegalArgumentException(Color.errorMessage("Duplicate key: " + key));
       }
 
-      node.setHeight(1 + biggest(height(node.getLeft()), height(node.getRight())));
+      verifyBalance(node);
 
       return node;
    }
@@ -147,14 +147,14 @@ public class AVL<T> {
       // rotação esquerda simples
       if (balance < -1 && rightBalance <= 0) {
 
-         LogDAO.saveLog("RES " + node.getKey(), "AVL ROTATION");
+         LogDAO.saveLog("RES " + node.getKey(), "AVL", "ROTATION");
 
          return leftRotation(node);
       }
       // rotação direita simples
       if (balance > 1 && leftBalance >= 0) {
 
-         LogDAO.saveLog("RDS " + node.getKey(), "AVL ROTATION");
+         LogDAO.saveLog("RDS " + node.getKey(), "AVL", "ROTATION");
 
          return rightRotation(node);
       }
@@ -162,7 +162,7 @@ public class AVL<T> {
       if (balance < -1 && rightBalance > 0) {
          node.setRight(rightRotation(node.getRight()));
 
-         LogDAO.saveLog("RDE " + node.getKey(), "AVL ROTATION");
+         LogDAO.saveLog("RDE " + node.getKey(), "AVL", "ROTATION");
 
          return leftRotation(node);
       }
@@ -170,7 +170,7 @@ public class AVL<T> {
       if (balance > 1 && leftBalance < 0) {
          node.setLeft(leftRotation(node.getLeft()));
 
-         LogDAO.saveLog("RDD " + node.getKey(), "AVL ROTATION");
+         LogDAO.saveLog("RDD " + node.getKey(), "AVL", "ROTATION");
 
          return rightRotation(node);
       }

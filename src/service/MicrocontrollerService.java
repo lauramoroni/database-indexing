@@ -20,8 +20,8 @@ public class MicrocontrollerService {
    public void addMicrocontroller(String name, Location location, String ipAddress) throws Exception {
       Microcontroller microcontroller = new Microcontroller(name, location, ipAddress);
       try {
+         LogDAO.saveLog(microcontroller.toLog(), "MC", "BD INSERT");
          microcontrollerDAO.save(microcontroller);
-         LogDAO.saveLog(microcontroller.toString(), "BD INSERT");
       } catch (Exception e) {
          e.getMessage();
       }
@@ -46,13 +46,15 @@ public class MicrocontrollerService {
          microcontroller.setTail(record);
       }
 
-      microcontroller.setRecordCount(microcontroller.getRecordCount() + 1);
-      microcontroller.getRecordsIds()[microcontroller.getRecordCount()] = record.getId();
-      LogDAO.saveLog(record.toLog(), "BD INSERT");
+      //microcontroller.incrementRecord(record.getId());
+
+      // update microcontroller in the AVL tree
+      microcontrollerDAO.update(microcontroller);
+
+      LogDAO.saveLog(record.toLog(),  "CR","BD INSERT");
 
       try {
          climateRecordDAO.save(record);
-         LogDAO.saveLog("Inserted record " + record.getId() + " in AVL tree", "AVL INSERT");
       } catch (Exception e) {
          e.getMessage();
       }
@@ -60,45 +62,48 @@ public class MicrocontrollerService {
       return record;
    }
 
-   //public ClimateRecord updateRegister(int id, ClimateRecord newRecord) throws Exception {
-//
-   //   if (!microcontrollerDAO.exists(newRecord.getMicrocontrollerId())) {
-   //      throw new Exception("Microcontroller " + newRecord.getMicrocontrollerId() + " not found");
-   //   }
-   //   Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(newRecord.getMicrocontrollerId());
-//
-   //   ClimateRecord current = microcontroller.getHead();
-   //   while (current != null) {
-   //      if (current.getId() == id && current.getMicrocontrollerId().equals(newRecord.getMicrocontrollerId())) {
-   //         current.setTemperature(newRecord.getTemperature());
-   //         current.setHumidity(newRecord.getHumidity());
-   //         current.setPressure(newRecord.getPressure());
-   //         return current;
-   //      }
-   //      current = current.getNext();
-   //   }
-//
-   //   LogDAO.saveLog(newRecord.toString(), "BD UPDATE");
-//
-   //   // update the AVL tree
-   //   LogDAO.saveLog("Updated record " + newRecord.getId() + " in AVL tree", "AVL UPDATE");
-//
-   //   return null;
-   //}
+   // public ClimateRecord updateRegister(int id, ClimateRecord newRecord) throws
+   // Exception {
+   //
+   // if (!microcontrollerDAO.exists(newRecord.getMicrocontrollerId())) {
+   // throw new Exception("Microcontroller " + newRecord.getMicrocontrollerId() + "
+   // not found");
+   // }
+   // Microcontroller microcontroller =
+   // microcontrollerDAO.getMicrocontroller(newRecord.getMicrocontrollerId());
+   //
+   // ClimateRecord current = microcontroller.getHead();
+   // while (current != null) {
+   // if (current.getId() == id &&
+   // current.getMicrocontrollerId().equals(newRecord.getMicrocontrollerId())) {
+   // current.setTemperature(newRecord.getTemperature());
+   // current.setHumidity(newRecord.getHumidity());
+   // current.setPressure(newRecord.getPressure());
+   // return current;
+   // }
+   // current = current.getNext();
+   // }
+   //
+   // LogDAO.saveLog(newRecord.toString(), "BD UPDATE");
+   //
+   // // update the AVL tree
+   // LogDAO.saveLog("Updated record " + newRecord.getId() + " in AVL tree", "AVL
+   // UPDATE");
+   //
+   // return null;
+   // }
    public ClimateRecord[] getRecordsByMicrocontrollerId(int microcontrollerId) throws Exception {
       if (!microcontrollerDAO.exists(microcontrollerId)) {
          throw new Exception("Microcontroller " + microcontrollerId + " not found");
       }
 
       Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(microcontrollerId);
-      
-      int[] recordsIds = microcontroller.getRecordsIds();
-      System.out.println(microcontrollerId + " " + microcontroller.getRecordCount());
 
       ClimateRecord[] records = new ClimateRecord[microcontroller.getRecordCount()];
       for (int i = 0; i < microcontroller.getRecordCount(); i++) {
-         records[i] = climateRecordDAO.getRecordById(recordsIds[i]);
+         records[i] = climateRecordDAO.getRecordById(microcontroller.getRecordsIds()[i]);
       }
+
       return records;
    }
 
@@ -109,6 +114,14 @@ public class MicrocontrollerService {
       } else {
          throw new Exception("Microcontroller " + id + " not found");
       }
+   }
+
+   public void printAllMicrocontrollers() throws Exception {
+      microcontrollerDAO.printMicrocontrollers();
+   }
+
+   public int getRecordCount() {
+      return climateRecordDAO.getRecordCount();
    }
 
 }

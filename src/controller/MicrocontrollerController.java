@@ -62,4 +62,16 @@ public class MicrocontrollerController {
          System.out.println(Color.errorMessage(e.getMessage()));
       }
    }
+
+   public void printAllMicrocontrollers() {
+      try {
+         microcontrollerService.printAllMicrocontrollers();
+      } catch (Exception e) {
+         System.out.println(Color.errorMessage(e.getMessage()));
+      }
+   }
+
+   public int getRecordCount() {
+      return microcontrollerService.getRecordCount();
+   }
 }
