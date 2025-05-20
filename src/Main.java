@@ -170,6 +170,7 @@ public class Main {
                 case 8:
                     // Exit
                     LogDAO.saveLog("User " + userName + " exited the system.", "USER", "INFO");
+                    clearScreen();
                     System.out.println(Color.successMessage("Exiting the system..."));
                     System.out.println(Color.highlight("Thank you for using the Ambient Monitoring System!"));
                     System.exit(0);
