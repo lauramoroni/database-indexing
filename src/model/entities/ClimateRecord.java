@@ -92,7 +92,7 @@ public class ClimateRecord {
 
    @Override
    public String toString() {
-      return String.format(Color.infoMessage("Climate Register #%d\n" +
+      return String.format(Color.infoMessage("Climate Record #%d\n" +
                   "├─ Microcontroller: %d\n" +
                   "├─ Date/Time: %s\n" +
                   "├─ Temperature: %.1f°C\n" +

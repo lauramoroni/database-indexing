@@ -24,10 +24,10 @@ public class MicrocontrollerController {
       }
    }
 
-   public ClimateRecord createRegister(int microcontrollerId, double temperature, double humidity, double pressure) {
+   public ClimateRecord createRecord(int microcontrollerId, double temperature, double humidity, double pressure) {
       try {
-         ClimateRecord record = microcontrollerService.createRegister(microcontrollerId, temperature, humidity, pressure);
-         System.out.println(Color.successMessage("Register created successfully!"));
+         ClimateRecord record = microcontrollerService.createRecord(microcontrollerId, temperature, humidity, pressure);
+         System.out.println(Color.successMessage("Record created successfully!"));
          return record;
       } catch (Exception e) {
          System.out.println(Color.errorMessage(e.getMessage()));
@@ -35,15 +35,12 @@ public class MicrocontrollerController {
       }
    }
 
-   public ClimateRecord updateRegister(int id, int microcontrollerId, double temperature, double humidity, double pressure) {
+   public void updateRecord(int id, double temperature, double humidity, double pressure) {
       try {
-         ClimateRecord newRecord = new ClimateRecord(microcontrollerId, temperature, humidity, pressure);
-         //microcontrollerService.updateRegister(id, newRecord);
-         System.out.println(Color.successMessage("Register updated successfully!"));
-         return newRecord;
+         microcontrollerService.updateRecord(id, temperature, humidity, pressure);
+         System.out.println(Color.successMessage("Record updated successfully!"));
       } catch (Exception e) {
          System.out.println(Color.errorMessage(e.getMessage()));
-         return null;
       }
    }
 

@@ -31,7 +31,7 @@ public class MicrocontrollerService {
       }
    }
 
-   public ClimateRecord createRegister(int microcontrollerId, double temperature, double humidity,
+   public ClimateRecord createRecord(int microcontrollerId, double temperature, double humidity,
          double pressure) throws Exception {
       if (!microcontrollerDAO.exists(microcontrollerId)) {
          throw new Exception("Microcontroller " + microcontrollerId + " not found");
@@ -55,6 +55,28 @@ public class MicrocontrollerService {
       }
 
       return record;
+   }
+
+   public void updateRecord(int id, double temperature, double humidity, double pressure) throws Exception {
+      if (!climateRecordDAO.exists(id)) {
+         throw new Exception("Record " + id + " not found");
+      }
+
+      ClimateRecord oldRecord = climateRecordDAO.getRecordById(id);
+      oldRecord.setTemperature(temperature);
+      oldRecord.setHumidity(humidity);
+      oldRecord.setPressure(pressure);
+
+      linkedList.remove(id);
+      linkedList.insert(oldRecord);
+
+      LogDAO.saveLog(oldRecord.toLog(), "CR", "BD UPDATE");
+
+      try {
+         climateRecordDAO.updateRecord(id, temperature, humidity, pressure);
+      } catch (Exception e) {
+         e.getMessage();
+      }
    }
 
    public ClimateRecord[] getRecordsByMicrocontrollerId(int microcontrollerId) throws Exception {

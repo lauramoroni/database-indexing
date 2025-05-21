@@ -16,7 +16,8 @@ public class UserService {
    private MicrocontrollerDAO microcontrollerDAO;
    private LinkedList<ClimateRecord> linkedList;
 
-   public UserService(AVL<Microcontroller> avlMicrocontrollers, AVL<ClimateRecord> avlRecords, LinkedList<ClimateRecord> linkedList) {
+   public UserService(AVL<Microcontroller> avlMicrocontrollers, AVL<ClimateRecord> avlRecords,
+         LinkedList<ClimateRecord> linkedList) {
       this.userDAO = new UserDAO();
       this.climateRecordDAO = new ClimateRecordDAO(avlRecords);
       this.microcontrollerDAO = new MicrocontrollerDAO(avlMicrocontrollers);
@@ -79,7 +80,7 @@ public class UserService {
       ClimateRecord record = climateRecordDAO.getRecordById(id); // search AVL
       if (record == null) {
          throw new Exception("Record " + id + " not found.");
-      }      
+      }
       return record;
    }
 
@@ -88,7 +89,8 @@ public class UserService {
          throw new Exception("Record " + id + " not found.");
       }
 
-      linkedList.remove(id); 
+      linkedList.remove(id);
+      LogDAO.saveLog("Removed record " + id, "CR", "REMOVE");
 
       Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(id);
 

@@ -25,7 +25,7 @@ public class ClimateRecordDAO {
          throw new Exception("Climate record " + record.getId() + " already exists");
       } else {
          avl.insert(record.getId(), record);
-         LogDAO.saveLogAVL("Inserted record " + record.getId() + " in AVL tree", "INSERT", avl.search(record.getId()).getHeight(), "REGISTER");
+         LogDAO.saveLogAVL("Inserted record " + record.getId() + " in AVL tree", "INSERT", avl.search(record.getId()).getHeight(), "Record");
          LogDAO.logAVLTreeStructure(avl);
          writeFile(record);
       }
@@ -42,10 +42,27 @@ public class ClimateRecordDAO {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       } else {
-         LogDAO.saveLogAVL("Removed record " + id + " from AVL tree", "REMOVE", avl.search(id).getHeight(), "REGISTER");
+         LogDAO.saveLogAVL("Removed record " + id + " from AVL tree", "REMOVE", avl.search(id).getHeight(), "RECORD");
          avl.remove(id);
          LogDAO.logAVLTreeStructure(avl);
 
+         writeFile(null);
+         
+      }
+   }
+
+   public void updateRecord(int id, double temperature, double humidity, double pressure) throws Exception {
+      if (!exists(id)) {
+         throw new Exception("Record " + id + " not found");
+      } else {
+         ClimateRecord record = avl.search(id).getValue();
+         record.setTemperature(temperature);
+         record.setHumidity(humidity);
+         record.setPressure(pressure);
+         LogDAO.saveLogAVL("Updated record " + id + " in AVL tree", "UPDATE", avl.search(id).getHeight(), "RECORD");
+         LogDAO.logAVLTreeStructure(avl);
+
+         writeFile(record);
       }
    }
 

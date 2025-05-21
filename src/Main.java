@@ -22,21 +22,25 @@ public class Main {
     private static UserController userController = new UserController(avlMicrocontroller, avlRecords, linkedList);
     private static MicrocontrollerController microcontrollerController = new MicrocontrollerController(
             avlMicrocontroller, avlRecords, linkedList);
+
     public static void main(String[] args) throws Exception {
         clearFile();
 
-        // Create 10 microcontrollers
-        for (int i = 1; i <= 3; i++) {
-            microcontrollerController.addMicrocontroller("Microcontroller " + i, Location.MACEIO,
+        // Create 8 microcontrollers
+        for (int i = 1; i <= 8; i++) {
+            microcontrollerController.addMicrocontroller("Microcontroller " + i, Location.values()[(int) (Math.random() * 4)],
                     "192.168.0." + i);
         }
 
-        // Create 10 records for each microcontroller
-        for (int i = 1; i <= 3; i++) {
-            for (int j = 1; j <= 3; j++) {
-                microcontrollerController.createRegister(i, 25.0 + j, 60.0 + j, 1013.0 + j);
+        // Create 2 records for each microcontroller
+        for (int i = 1; i <= 8; i++) {
+            for (int j = 1; j <= 2; j++) {
+                microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
+                        Math.random() * 100);
             }
         }
+
+        clearAVLfile();
 
         // User interaction
         clearScreen();
@@ -97,7 +101,7 @@ public class Main {
                 "Show microcontroller details",
                 "Remove records",
                 "Quantity of records",
-                "Clear logs"
+                "Simulate",
         };
 
         int ans = -1;
@@ -161,24 +165,38 @@ public class Main {
                     System.out.print(Color.inputPrompt("Enter the record ID to remove: "));
                     int removeRecordId = sc.nextInt();
                     userController.removeRecord(removeRecordId);
-                    LogDAO.saveLog("Removed record " + removeRecordId, "CR", "REMOVE");
                     break;
                 case 7:
                     // Show record count
                     System.out.println(Color.header("Microcontroller Record Count"));
-                    System.out.println(Color.infoMessage("Total records: " + microcontrollerController.getRecordCount()));
+                    System.out
+                            .println(Color.infoMessage("Total records: " + microcontrollerController.getRecordCount()));
                     LogDAO.saveLog("User " + userName + " viewed the record count.", "USER", "INFO");
                     break;
                 case 8:
-                    // Clear logs
-                    System.out.print(Color.warningMessage("Are you sure you want to clear the logs? (y/n): "));
-                    String clearLogs = sc.next().toLowerCase();
-                    if (clearLogs.equals("y")) {
-                        clearFile();
-                        System.out.println(Color.successMessage("Logs cleared successfully!"));
-                    } else {
-                        System.out.println(Color.warningMessage("Log clearing cancelled."));
+                    // Simulate new records
+                    System.out.println(Color.header("Simulation ON"));
+                    System.out.println(Color.infoMessage("Creating 5 new records..."));
+                    for (int i = 1; i <= 5; i++) {
+                        microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
+                                Math.random() * 100);
                     }
+
+                    System.out.println(Color.highlight("=========================="));
+
+                    System.out.println(Color.infoMessage("Updating 5 records..."));
+                    for (int i = 1; i <= 5; i++) {
+                        microcontrollerController.updateRecord(i, Math.random() * 100,
+                                Math.random() * 100, Math.random() * 100);
+                    }
+
+                    System.out.println(Color.highlight("=========================="));
+
+                    System.out.println(Color.infoMessage("Removing 5 records..."));
+                    for (int i = 6; i <= 10; i++) {
+                        userController.removeRecord(i);
+                    }
+
                     break;
                 case 9:
                     // Exit
@@ -202,6 +220,14 @@ public class Main {
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    public static void clearAVLfile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/database/avl.txt"))) {
+            writer.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void clearFile(String fileLog, String fileMicrocontrollers, String fileRecords, String fileAVL) {
@@ -228,6 +254,7 @@ public class Main {
     }
 
     public static void clearFile() {
-        clearFile("src/database/log.txt", "src/database/microcontrollers.txt", "src/database/records.txt", "src/database/avl.txt");
+        clearFile("src/database/log.txt", "src/database/microcontrollers.txt", "src/database/records.txt",
+                "src/database/avl.txt");
     }
 }
