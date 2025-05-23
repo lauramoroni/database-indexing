@@ -22,7 +22,7 @@ public class MicrocontrollerDAO {
       }
 
       avl.insert(microcontroller.getId(), microcontroller);
-      LogDAO.saveLogAVL(microcontroller.toLog(), "INSERT", avl.search(microcontroller.getId()).getHeight(), "MICROCONTROLLER");
+      LogDAO.saveLogAVL(microcontroller.toLog(), "INSERT", "MICROCONTROLLER");
       LogDAO.logAVLTreeStructure(avl);
 
       writeFile(microcontroller);

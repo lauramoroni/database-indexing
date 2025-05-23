@@ -157,16 +157,14 @@ public class AVL<T> {
       // rotação esquerda simples
       if (balance < -1 && rightBalance <= 0) {
 
-         LogDAO.saveLogAVL("RES " + node.getKey(), "ROTATION", node.getHeight(), "AVL");
-         LogDAO.logAVLTreeStructure(this);
+         LogDAO.saveLogAVL("RES " + node.getKey(), "ROTATION", "AVL");
 
          return leftRotation(node);
       }
       // rotação direita simples
       if (balance > 1 && leftBalance >= 0) {
 
-         LogDAO.saveLogAVL("RDS " + node.getKey(), "ROTATION", node.getHeight(), "AVL");
-         LogDAO.logAVLTreeStructure(this);
+         LogDAO.saveLogAVL("RDS " + node.getKey(), "ROTATION", "AVL");
 
          return rightRotation(node);
       }
@@ -174,8 +172,7 @@ public class AVL<T> {
       if (balance < -1 && rightBalance > 0) {
          node.setRight(rightRotation(node.getRight()));
 
-         LogDAO.saveLogAVL("RDE " + node.getKey(), "ROTATION", node.getHeight(), "AVL");
-         LogDAO.logAVLTreeStructure(this);
+         LogDAO.saveLogAVL("RDE " + node.getKey(), "ROTATION", "AVL");
 
          return leftRotation(node);
       }
@@ -183,8 +180,7 @@ public class AVL<T> {
       if (balance > 1 && leftBalance < 0) {
          node.setLeft(leftRotation(node.getLeft()));
 
-         LogDAO.saveLogAVL("RDD " + node.getKey(), "ROTATION", node.getHeight(), "AVL");
-         LogDAO.logAVLTreeStructure(this);
+         LogDAO.saveLogAVL("RDD " + node.getKey(), "ROTATION", "AVL");
 
          return rightRotation(node);
       }

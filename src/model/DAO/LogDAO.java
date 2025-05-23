@@ -32,7 +32,7 @@ public class LogDAO {
       }
    }
 
-   public static void saveLogAVL(String message, String operation, int height, String typeAVL) {
+   public static void saveLogAVL(String message, String operation, String typeAVL) {
       LocalDateTime now = LocalDateTime.now();
       String formattedDate = now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 
@@ -42,8 +42,7 @@ public class LogDAO {
             formattedDate,
             typeAVL,
             "[" + operation + "]",
-            message, 
-            "H: " + height);
+            message);
 
       try (BufferedWriter bw = new BufferedWriter(new FileWriter(AVL_FILE, true))) {
          bw.write(logEntry);

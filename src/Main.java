@@ -24,6 +24,7 @@ public class Main {
             avlMicrocontroller, avlRecords, linkedList);
 
     public static void main(String[] args) throws Exception {
+        int value = 1;
         clearFile();
 
         // Create 8 microcontrollers
@@ -35,7 +36,7 @@ public class Main {
 
         // Create 2 records for each microcontroller
         for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
+            for (int j = 1; j <= value; j++) {
                 microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
                         Math.random() * 100);
             }

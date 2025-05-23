@@ -24,8 +24,8 @@ public class ClimateRecordDAO {
       if (exists(record.getId())) {
          throw new Exception("Climate record " + record.getId() + " already exists");
       } else {
+         LogDAO.saveLogAVL("Inserted record " + record.getId() + " in AVL tree", "INSERT", "RECORD");
          avl.insert(record.getId(), record);
-         LogDAO.saveLogAVL("Inserted record " + record.getId() + " in AVL tree", "INSERT", avl.search(record.getId()).getHeight(), "RECORD");
          LogDAO.logAVLTreeStructure(avl);
          writeFile(record);
       }
@@ -42,7 +42,7 @@ public class ClimateRecordDAO {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       } else {
-         LogDAO.saveLogAVL("Removed record " + id + " from AVL tree", "REMOVE", avl.search(id).getHeight(), "RECORD");
+         LogDAO.saveLogAVL("Removed record " + id + " from AVL tree", "REMOVE", "RECORD");
          avl.remove(id);
          LogDAO.logAVLTreeStructure(avl);
 
@@ -59,7 +59,7 @@ public class ClimateRecordDAO {
          record.setTemperature(temperature);
          record.setHumidity(humidity);
          record.setPressure(pressure);
-         LogDAO.saveLogAVL("Updated record " + id + " in AVL tree", "UPDATE", avl.search(id).getHeight(), "RECORD");
+         LogDAO.saveLogAVL("Updated record " + id + " in AVL tree", "UPDATE", "RECORD");
 
          writeFile(record);
       }
