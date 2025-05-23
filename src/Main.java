@@ -27,14 +27,15 @@ public class Main {
         clearFile();
 
         // Create 8 microcontrollers
-        for (int i = 1; i <= 8; i++) {
-            microcontrollerController.addMicrocontroller("Microcontroller " + i, Location.values()[(int) (Math.random() * 4)],
+        for (int i = 1; i <= 10; i++) {
+            microcontrollerController.addMicrocontroller("Microcontroller " + i,
+                    Location.values()[(int) (Math.random() * 4)],
                     "192.168.0." + i);
         }
 
         // Create 2 records for each microcontroller
-        for (int i = 1; i <= 8; i++) {
-            for (int j = 1; j <= 2; j++) {
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10; j++) {
                 microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
                         Math.random() * 100);
             }
@@ -44,11 +45,19 @@ public class Main {
 
         // User interaction
         clearScreen();
-        System.out.println(Color.header("Welcome to the Ambiental Monitoring System!"));
+        System.out.println(Color.infoMessage("\r\n" + //
+                        "                    _     _            _     __  __             _ _             _                _____           _                 \r\n" + //
+                        "    /\\             | |   (_)          | |   |  \\/  |           (_) |           (_)              / ____|         | |                \r\n" + //
+                        "   /  \\   _ __ ___ | |__  _  ___ _ __ | |_  | \\  / | ___  _ __  _| |_ ___  _ __ _ _ __   __ _  | (___  _   _ ___| |_ ___ _ __ ___  \r\n" + //
+                        "  / /\\ \\ | '_ ` _ \\| '_ \\| |/ _ \\ '_ \\| __| | |\\/| |/ _ \\| '_ \\| | __/ _ \\| '__| | '_ \\ / _` |  \\___ \\| | | / __| __/ _ \\ '_ ` _ \\ \r\n" + //
+                        " / ____ \\| | | | | | |_) | |  __/ | | | |_  | |  | | (_) | | | | | || (_) | |  | | | | | (_| |  ____) | |_| \\__ \\ ||  __/ | | | | |\r\n" + //
+                        "/_/    \\_\\_| |_| |_|_.__/|_|\\___|_| |_|\\__| |_|  |_|\\___/|_| |_|_|\\__\\___/|_|  |_|_| |_|\\__, | |_____/ \\__, |___/\\__\\___|_| |_| |_|\r\n" + //
+                        "                                                                                         __/ |          __/ |                      \r\n" + //
+                        "                                                                                        |___/          |___/                       \r\n" + //
+                        ""));
         sc.nextLine();
 
         User loggedUser = null;
-
         while (loggedUser == null) {
             clearScreen();
 
@@ -149,7 +158,7 @@ public class Main {
                     break;
                 case 4:
                     // Show all microcontrollers
-                    System.out.println(Color.header("Microcontrollers:"));
+                    System.out.println(Color.header("Total Microcontrollers: " + microcontrollerController.getMicrocontrollerCount()));
                     microcontrollerController.printAllMicrocontrollers();
                     LogDAO.saveLog("User " + userName + " viewed all microcontrollers.", "USER", "INFO");
                     break;
@@ -168,33 +177,47 @@ public class Main {
                     break;
                 case 7:
                     // Show record count
-                    System.out.println(Color.header("Microcontroller Record Count"));
+                    System.out.println(Color.header("Records Count"));
                     System.out
                             .println(Color.infoMessage("Total records: " + microcontrollerController.getRecordCount()));
                     LogDAO.saveLog("User " + userName + " viewed the record count.", "USER", "INFO");
                     break;
                 case 8:
                     // Simulate new records
+                    clearScreen();
+
+                    System.out.println(
+                            Color.menuOption("[1] Create new records\n[2] Update records\n[3] Remove records"));
+                    System.out.print(Color.inputPrompt("Choose an option: "));
+                    int simulationOption = sc.nextInt();
+                    if (simulationOption < 1 || simulationOption > 3) {
+                        System.out.println(Color.errorMessage("Invalid option!"));
+                        break;
+                    }
+
                     System.out.println(Color.header("Simulation ON"));
-                    System.out.println(Color.infoMessage("Creating 5 new records..."));
-                    for (int i = 1; i <= 5; i++) {
-                        microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
-                                Math.random() * 100);
-                    }
-
-                    System.out.println(Color.highlight("=========================="));
-
-                    System.out.println(Color.infoMessage("Updating 5 records..."));
-                    for (int i = 1; i <= 5; i++) {
-                        microcontrollerController.updateRecord(i, Math.random() * 100,
-                                Math.random() * 100, Math.random() * 100);
-                    }
-
-                    System.out.println(Color.highlight("=========================="));
-
-                    System.out.println(Color.infoMessage("Removing 5 records..."));
-                    for (int i = 6; i <= 10; i++) {
-                        userController.removeRecord(i);
+                    if (simulationOption == 1) {
+                        System.out.println(Color.infoMessage("Creating 5 new records..."));
+                        for (int i = 1; i <= 5; i++) {
+                            microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
+                                    Math.random() * 100);
+                        }
+                        break;
+                    } else if (simulationOption == 2) {
+                        System.out.println(Color.infoMessage("Updating records..."));
+                        System.out.println(Color.infoMessage("Updating 5 records..."));
+                        for (int i = microcontrollerController.getRecordCount() - 4; i <= microcontrollerController.getRecordCount(); i++) {
+                            microcontrollerController.updateRecord(i, Math.random() * 100,
+                                    Math.random() * 100, Math.random() * 100);
+                        }
+                        break;
+                    } else if (simulationOption == 3) {
+                        System.out.println(Color.infoMessage("Removing records..."));
+                        System.out.println(Color.infoMessage("Removing 5 records..."));
+                        for (int i = 1; i <= 5; i++) {
+                            userController.removeRecord(i);
+                        }
+                        break;
                     }
 
                     break;
