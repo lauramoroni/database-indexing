@@ -13,15 +13,14 @@ import model.entities.User;
 public class UserDAO {
    private final String FILE = "src/database/users.txt";
    private final File file;
-   private Map<String, User> users;
+   //private Map<String, User> users;
 
    public UserDAO() {
       this.file = new File(FILE);
-      this.users = new HashMap<>();
+      //this.users = new HashMap<>();
    }
 
    public void save(User user) {
-      users.put(user.getId(), user);
       if (!exists(user.getId())) {
          try (FileOutputStream fos = new FileOutputStream(file, true)) {
             String data = user.getId() + "," +
