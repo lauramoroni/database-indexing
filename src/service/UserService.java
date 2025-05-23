@@ -89,10 +89,11 @@ public class UserService {
          throw new Exception("Record " + id + " not found.");
       }
 
+      ClimateRecord record = climateRecordDAO.getRecordById(id);
+      Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(record.getMicrocontrollerId());
+
       linkedList.remove(id);
       LogDAO.saveLog("Removed record " + id, "CR", "REMOVE");
-
-      Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(id);
 
       microcontroller.decrementRecord(id);
 
