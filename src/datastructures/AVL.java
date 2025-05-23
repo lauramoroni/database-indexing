@@ -259,7 +259,7 @@ public class AVL<T> {
    private void print(Node<T> node, String prefix, boolean isLeft, String label) {
       if (node == null) {
          return;
-      }
+   }
 
       System.out.println(prefix
             + (label.equals("ROOT") ? "└── " : (isLeft ? "├── " : "└── "))

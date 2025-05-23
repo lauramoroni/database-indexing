@@ -45,6 +45,10 @@ public class MicrocontrollerDAO {
       avl.inOrder();
    }
 
+   public int countMicrocontrollers() {
+      return avl.size();
+   }
+
    public void writeFile(Microcontroller microcontroller) {
       try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE, true))) {
          writer.write(microcontroller.getId() + "," +

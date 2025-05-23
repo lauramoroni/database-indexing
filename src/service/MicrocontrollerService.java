@@ -24,7 +24,7 @@ public class MicrocontrollerService {
    public void addMicrocontroller(String name, Location location, String ipAddress) throws Exception {
       Microcontroller microcontroller = new Microcontroller(name, location, ipAddress);
       try {
-         LogDAO.saveLog(microcontroller.toLog(), "MC", "BD INSERT");
+         LogDAO.saveLog(microcontroller.toLog(), "MC", "INSERT");
          microcontrollerDAO.save(microcontroller);
       } catch (Exception e) {
          e.getMessage();
@@ -46,7 +46,7 @@ public class MicrocontrollerService {
 
       microcontroller.incrementRecord(record.getId());
 
-      LogDAO.saveLog(record.toLog(), "CR", "BD INSERT");
+      LogDAO.saveLog(record.toLog(), "CR", "INSERT");
 
       try {
          climateRecordDAO.save(record);
@@ -109,6 +109,10 @@ public class MicrocontrollerService {
 
    public int getRecordCount() {
       return climateRecordDAO.getRecordCount();
+   }
+
+   public int getMicrocontrollerCount() {
+      return microcontrollerDAO.countMicrocontrollers();
    }
 
 }

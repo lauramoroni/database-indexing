@@ -72,4 +72,8 @@ public class MicrocontrollerController {
    public int getRecordCount() {
       return microcontrollerService.getRecordCount();
    }
+
+   public int getMicrocontrollerCount() {
+      return microcontrollerService.getMicrocontrollerCount();
+   }
 }
