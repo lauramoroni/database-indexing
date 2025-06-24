@@ -12,7 +12,7 @@ public class Node<T> {
       this.value = value;
       this.left = null;
       this.right = null;
-      this.height = 1; 
+      this.height = 0; 
    }
 
    public int getKey() {
