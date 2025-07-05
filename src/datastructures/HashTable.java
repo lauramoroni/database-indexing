@@ -3,6 +3,7 @@ package datastructures;
 import java.util.Random;
 
 import model.DAO.LogDAO;
+import utils.Color;
 
 @SuppressWarnings({ "unchecked", "hiding" })
 public class HashTable<T> {
@@ -217,18 +218,30 @@ public class HashTable<T> {
 
    public void print() {
       for (int i = 0; i < size; i++) {
-         System.out.print("Index " + i + ":");
          Node<T> node = table[i];
          if (node == null) {
-            System.out.println(" empty");
+            System.out.println(i + ": empty");
          } else {
             while (node != null) {
-               System.out.print(" --> [" + node.key + ": " + node.value + "]");
+               System.out.println(Color.infoMessage(node.value.toString()));
                node = node.next;
             }
             System.out.println();
          }
       }
+   }
+
+   public boolean exists(int key) {
+      int index = hash(key);
+      Node<T> currentNode = table[index];
+
+      while (currentNode != null) {
+         if (currentNode.key == key) {
+            return true;
+         }
+         currentNode = currentNode.next;
+      }
+      return false;
    }
 
    public static void main(String[] args) {
