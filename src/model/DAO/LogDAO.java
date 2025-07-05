@@ -32,6 +32,8 @@ public class LogDAO {
       }
    }
 
+   // Logs for AVL operations
+
    public static void saveLogAVL(String message, String operation, String typeAVL) {
       LocalDateTime now = LocalDateTime.now();
       String formattedDate = now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
@@ -72,6 +74,26 @@ public class LogDAO {
       String childPrefix = prefix + (label.equals("ROOT") ? "    " : (isLeft ? "│   " : "    "));
       logAVLNode(writer, node.getLeft(), childPrefix, true, "L");
       logAVLNode(writer, node.getRight(), childPrefix, false, "R");
+   }
+
+   // Logs for HashTable operations
+   public static void saveLogHashTable(String message, String operation, String type) {
+      LocalDateTime now = LocalDateTime.now();
+      String formattedDate = now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+
+      // Formatação com largura fixa para melhor leitura
+      String logEntry = String.format(
+            "%-20s | %-4s | %-15s | %s%n",
+            formattedDate,
+            type,
+            "[" + operation + "]",
+            message);
+
+      try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE, true))) {
+         bw.write(logEntry);
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
    }
 
 }
