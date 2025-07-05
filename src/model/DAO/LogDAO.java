@@ -7,11 +7,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import datastructures.AVL;
+import datastructures.HashTable;
 import datastructures.Node;
 
 public class LogDAO {
    private static final String FILE = "src/database/log.txt";
    private static final String AVL_FILE = "src/database/avl.txt";
+   private static final String HASH_TABLE_FILE = "src/database/hash_table.txt";
 
    public static void saveLog(String message, String type, String operation) {
       LocalDateTime now = LocalDateTime.now();
@@ -55,7 +57,6 @@ public class LogDAO {
 
    public static <T> void logAVLTreeStructure(AVL<T> avl) {
       try (BufferedWriter writer = new BufferedWriter(new FileWriter(AVL_FILE, true))) {
-         writer.write("AVL Tree Structure:\n");
          logAVLNode(writer, avl.getRoot(), "", true, "ROOT");
       } catch (IOException e) {
          e.printStackTrace();
@@ -83,7 +84,7 @@ public class LogDAO {
 
       // Formatação com largura fixa para melhor leitura
       String logEntry = String.format(
-            "%-20s | %-4s | %-15s | %s%n",
+            "%-20s | %-4s | %-12s | %s%n",
             formattedDate,
             type,
             "[" + operation + "]",
@@ -91,6 +92,31 @@ public class LogDAO {
 
       try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE, true))) {
          bw.write(logEntry);
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+   }
+
+   public static <T> void saveLogHashTableStructure(HashTable<T> hashTable) {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(HASH_TABLE_FILE, true))) {
+         for (int i = 0; i < hashTable.getSize(); i++) {
+            StringBuilder lineBuilder = new StringBuilder();
+            lineBuilder.append(i).append(": ");
+
+            HashTable<T>.Node<T> currentNode = hashTable.getTable()[i];
+
+            if (currentNode == null) {
+               lineBuilder.append("[empty]");
+            } else {
+               while (currentNode != null) {
+                  lineBuilder.append("--> [key=").append(currentNode.key)
+                        .append(", value=").append(currentNode.value).append("] ");
+
+                  currentNode = currentNode.next;
+               }
+            }
+            writer.write(lineBuilder.toString() + "\n");
+         }
       } catch (IOException e) {
          e.printStackTrace();
       }
