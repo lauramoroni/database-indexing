@@ -4,16 +4,15 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import datastructures.AVL;
+import datastructures.HashTable;
 import model.entities.Microcontroller;
 
 public class MicrocontrollerDAO {
    private final String FILE = "src/database/microcontrollers.txt";
-   private AVL<Microcontroller> avl;
+   private HashTable<Microcontroller> hashTable;
 
-   public MicrocontrollerDAO(AVL<Microcontroller> avl) {
-      this.avl = avl;
-      // populateAVL();
+   public MicrocontrollerDAO(HashTable<Microcontroller> hashTableMicrocontrollers) {
+      this.hashTable = hashTableMicrocontrollers;
    }
 
    public void save(Microcontroller microcontroller) throws Exception {
@@ -21,32 +20,30 @@ public class MicrocontrollerDAO {
          throw new Exception("Microcontroller " + microcontroller.getId() + " already exists");
       }
 
-      avl.insert(microcontroller.getId(), microcontroller);
-      LogDAO.saveLogAVL(microcontroller.toLog(), "INSERT", "MICROCONTROLLER");
-      LogDAO.logAVLTreeStructure(avl);
+      hashTable.insert(microcontroller.getId(), microcontroller);
+      LogDAO.saveLogHashTableStructure(hashTable);
 
       writeFile(microcontroller);
    }
 
    public boolean exists(int id) {
-      return avl.exists(id);
+      return hashTable.exists(id);
    }
 
    public Microcontroller getMicrocontroller(int id) {
-      return avl.search(id).getValue();
+      return hashTable.search(id).value;
    }
 
    public void update(Microcontroller microcontroller) {
-      avl.remove(microcontroller.getId());
-      avl.insert(microcontroller.getId(), microcontroller);
+      hashTable.insert(microcontroller.getId(), microcontroller);
    }
 
    public void printMicrocontrollers() {
-      avl.inOrder();
+      hashTable.print();
    }
 
    public int countMicrocontrollers() {
-      return avl.size();
+      return hashTable.getOccupied();
    }
 
    public void writeFile(Microcontroller microcontroller) {
@@ -61,22 +58,4 @@ public class MicrocontrollerDAO {
          e.printStackTrace();
       }
    }
-   // public void populateAVL() {
-   // try (BufferedReader reader = new BufferedReader(new FileReader(FILE))) {
-   // String line;
-   // while ((line = reader.readLine()) != null) {
-   // String[] data = line.split(",");
-   // int id = Integer.parseInt(data[0]);
-   // String name = data[1];
-   // Location location = Location.valueOf(data[2]);
-   // String ipAddress = data[3];
-   //
-   // Microcontroller microcontroller = new Microcontroller(id, name, location,
-   // ipAddress);
-   // avl.insert(id, microcontroller);
-   // }
-   // } catch (IOException e) {
-   // e.printStackTrace();
-   // }
-   // }
 }

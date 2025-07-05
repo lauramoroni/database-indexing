@@ -1,6 +1,6 @@
 package controller;
 
-import datastructures.AVL;
+import datastructures.HashTable;
 import datastructures.LinkedList;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
@@ -11,8 +11,8 @@ import utils.Color;
 public class UserController {
    UserService userService;
 
-   public UserController(AVL<Microcontroller> avlMicrocontroller, AVL<ClimateRecord> avlRecords, LinkedList<ClimateRecord> linkedlist) {
-      this.userService = new UserService(avlMicrocontroller, avlRecords, linkedlist);
+   public UserController(HashTable<Microcontroller> hashTableMicrocontrollers, HashTable<ClimateRecord> hashTableRecords, LinkedList<ClimateRecord> linkedlist) {
+      this.userService = new UserService(hashTableMicrocontrollers, hashTableRecords, linkedlist);
    }
 
    public void addUser(String id, String name, String password) {

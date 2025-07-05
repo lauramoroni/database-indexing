@@ -7,15 +7,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
-import datastructures.AVL;
+import datastructures.HashTable;
 
 public class ClimateRecordDAO {
    private final String FILE = "src/database/records.txt";
    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-   private AVL<ClimateRecord> avl;
+   private HashTable<ClimateRecord> hashTable;
 
-   public ClimateRecordDAO(AVL<ClimateRecord> avl) {
-      this.avl = avl;
+   public ClimateRecordDAO(HashTable<ClimateRecord> hashTableRecords) {
+      this.hashTable = hashTableRecords;
    }
 
    // operations
@@ -24,9 +24,8 @@ public class ClimateRecordDAO {
       if (exists(record.getId())) {
          throw new Exception("Climate record " + record.getId() + " already exists");
       } else {
-         LogDAO.saveLogAVL("Inserted record " + record.getId() + " in AVL tree", "INSERT", "RECORD");
-         avl.insert(record.getId(), record);
-         LogDAO.logAVLTreeStructure(avl);
+         hashTable.insert(record.getId(), record);
+         LogDAO.saveLogHashTableStructure(hashTable);
          writeFile(record);
       }
    }
@@ -35,16 +34,15 @@ public class ClimateRecordDAO {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       }
-      return avl.search(id).getValue(); // search(id) returns a node (AVL search), and get the value ('search' LL)
+      return hashTable.search(id).value; 
    }
 
    public void removeRecord(int id) throws Exception {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       } else {
-         LogDAO.saveLogAVL("Removed record " + id + " from AVL tree", "REMOVE", "RECORD");
-         avl.remove(id);
-         LogDAO.logAVLTreeStructure(avl);
+         hashTable.remove(id);
+         LogDAO.saveLogHashTableStructure(hashTable);
 
          writeFile(null);
          
@@ -55,26 +53,25 @@ public class ClimateRecordDAO {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       } else {
-         ClimateRecord record = avl.search(id).getValue();
+         ClimateRecord record = hashTable.search(id).value;
          record.setTemperature(temperature);
          record.setHumidity(humidity);
          record.setPressure(pressure);
-         LogDAO.saveLogAVL("Updated record " + id + " in AVL tree", "UPDATE", "RECORD");
 
          writeFile(record);
       }
    }
 
    public void getAllRecords() {
-      avl.inOrder();
+      hashTable.print();
    }
 
    public int getRecordCount() {
-      return avl.size();
+      return hashTable.getOccupied();
    }
 
    public boolean exists(int id) {
-      return avl.exists(id);
+      return hashTable.exists(id);
    }
 
    public void writeFile(ClimateRecord record) {

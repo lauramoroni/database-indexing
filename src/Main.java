@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import controller.MicrocontrollerController;
 import controller.UserController;
-import datastructures.AVL;
+import datastructures.HashTable;
 import datastructures.LinkedList;
 import model.DAO.LogDAO;
 import model.entities.ClimateRecord;
@@ -16,33 +16,32 @@ import utils.Location;
 
 public class Main {
     private static Scanner sc = new Scanner(System.in);
-    private static AVL<ClimateRecord> avlRecords = new AVL<>();
-    private static AVL<Microcontroller> avlMicrocontroller = new AVL<>();
-    private static LinkedList<ClimateRecord> linkedList = new LinkedList<>(); // simulação do armazenamento físico
-    private static UserController userController = new UserController(avlMicrocontroller, avlRecords, linkedList);
+    private static HashTable<Microcontroller> hashTableMicrocontrollers = new HashTable<>(100);
+    private static HashTable<ClimateRecord> hashTableRecords = new HashTable<>(10);
+    private static LinkedList<ClimateRecord> linkedList = new LinkedList<>();
+    private static UserController userController = new UserController(hashTableMicrocontrollers, hashTableRecords, linkedList);
     private static MicrocontrollerController microcontrollerController = new MicrocontrollerController(
-            avlMicrocontroller, avlRecords, linkedList);
+            hashTableMicrocontrollers, hashTableRecords, linkedList);
 
     public static void main(String[] args) throws Exception {
-        int value = 1;
         clearFile();
 
-        // Create 8 microcontrollers
+        // Create 100 microcontrollers
         for (int i = 1; i <= 10; i++) {
             microcontrollerController.addMicrocontroller("Microcontroller " + i,
                     Location.values()[(int) (Math.random() * 4)],
-                    "192.168.0." + i);
+                    "192.168.0." + (100 + i));
         }
 
-        // Create 2 records for each microcontroller
+        // Create 100 records for each microcontroller
         for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= value; j++) {
+            for (int j = 1; j <= 1; j++) {
                 microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
                         Math.random() * 100);
             }
         }
 
-        clearAVLfile();
+        //clearHashTableFile();
 
         // User interaction
         clearScreen();
@@ -253,8 +252,15 @@ public class Main {
             e.printStackTrace();
         }
     }
+    public static void clearHashTableFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/database/hash_table.txt"))) {
+            writer.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    public static void clearFile(String fileLog, String fileMicrocontrollers, String fileRecords, String fileAVL) {
+    public static void clearFile(String fileLog, String fileMicrocontrollers, String fileRecords, String fileAVL, String fileHashTable) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileLog))) {
             writer.write("");
         } catch (IOException e) {
@@ -275,10 +281,15 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileHashTable))) {
+            writer.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void clearFile() {
         clearFile("src/database/log.txt", "src/database/microcontrollers.txt", "src/database/records.txt",
-                "src/database/avl.txt");
+                "src/database/avl.txt", "src/database/hash_table.txt");
     }
 }

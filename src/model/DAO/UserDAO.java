@@ -5,19 +5,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import model.entities.User;
 
 public class UserDAO {
    private final String FILE = "src/database/users.txt";
    private final File file;
-   //private Map<String, User> users;
 
    public UserDAO() {
       this.file = new File(FILE);
-      //this.users = new HashMap<>();
    }
 
    public void save(User user) {

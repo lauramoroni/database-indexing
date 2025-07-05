@@ -3,7 +3,7 @@ package service;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
 
-import datastructures.AVL;
+import datastructures.HashTable;
 import datastructures.LinkedList;
 import model.DAO.ClimateRecordDAO;
 import model.DAO.LogDAO;
@@ -15,16 +15,16 @@ public class MicrocontrollerService {
    private ClimateRecordDAO climateRecordDAO;
    private LinkedList<ClimateRecord> linkedList;
 
-   public MicrocontrollerService(AVL<Microcontroller> avlMicrocontrollers, AVL<ClimateRecord> avlRecords, LinkedList<ClimateRecord> linkedList) {
-      this.microcontrollerDAO = new MicrocontrollerDAO(avlMicrocontrollers);
-      this.climateRecordDAO = new ClimateRecordDAO(avlRecords);
+   public MicrocontrollerService(HashTable<Microcontroller> hashTableMicrocontrollers, HashTable<ClimateRecord> hashTableRecords, LinkedList<ClimateRecord> linkedList) {
+      this.microcontrollerDAO = new MicrocontrollerDAO(hashTableMicrocontrollers);
+      this.climateRecordDAO = new ClimateRecordDAO(hashTableRecords);
       this.linkedList = linkedList;
    }
 
    public void addMicrocontroller(String name, Location location, String ipAddress) throws Exception {
       Microcontroller microcontroller = new Microcontroller(name, location, ipAddress);
       try {
-         LogDAO.saveLog(microcontroller.toLog(), "MC", "INSERT");
+         LogDAO.saveLog("Inserting microcontroller " + microcontroller.getId(), "MC", "INSERT");
          microcontrollerDAO.save(microcontroller);
       } catch (Exception e) {
          e.getMessage();
@@ -46,7 +46,7 @@ public class MicrocontrollerService {
 
       microcontroller.incrementRecord(record.getId());
 
-      LogDAO.saveLog(record.toLog(), "CR", "INSERT");
+      LogDAO.saveLog("Inserting record " + record.getId() + " for microcontroller " + microcontrollerId, "CR", "INSERT");
 
       try {
          climateRecordDAO.save(record);
@@ -70,7 +70,7 @@ public class MicrocontrollerService {
       linkedList.remove(id);
       linkedList.insert(oldRecord);
 
-      LogDAO.saveLog(oldRecord.toLog(), "CR", "BD UPDATE");
+      LogDAO.saveLog("Updating record " + id + " for microcontroller " + oldRecord.getMicrocontrollerId(), "CR", "BD UPDATE");
 
       try {
          climateRecordDAO.updateRecord(id, temperature, humidity, pressure);
