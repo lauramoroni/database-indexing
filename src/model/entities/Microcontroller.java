@@ -68,16 +68,21 @@ public class Microcontroller {
       }
    }
 
-   @Override
    public String toString() {
-      return String.format(Color.infoMessage("Microcontroller #%d\n" +
-            "├─ Name: %s\n" +
-            "├─ Location: %s\n" +
-            "├─ IP Address: %s\n" +
-            "└─ Record Count: %d\n"), id, name, location, ipAddress, recordCount);
+      return toString(true);
    }
 
-   public String toLog() {
-      return String.format("Microcontroller[%d] Name:%s Location:%s IP:%s Records:%d", id, name, location, ipAddress, recordCount);
+   public String toString(boolean log) {
+      if (log) {
+         return String.format("Microcontroller{id=%d, name='%s', location=%s, ipAddress='%s', recordCount=%d}",
+               id, name, location, ipAddress, recordCount);
+      } else {
+         return String.format(Color.infoMessage("Microcontroller #%d\n" +
+               "├─ Name: %s\n" +
+               "├─ Location: %s\n" +
+               "├─ IP Address: %s\n" +
+               "└─ Record Count: %d\n"), id, name, location, ipAddress, recordCount);
+      }
    }
+
 }

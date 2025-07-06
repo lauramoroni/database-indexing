@@ -118,7 +118,7 @@ public class HashTable<T> {
       while (currentNode != null) {
          if (currentNode.key == key) {
             currentNode.value = value; // Atualiza o valor se a chave for encontrada
-            LogDAO.saveLogHashTable("Updated key " + key + " with value " + value, "UPDATE", "HASH TABLE");
+            LogDAO.saveLogHashTable("Updated key " + key + " with value " + value.toString(), "UPDATE", "HASH TABLE");
             return;
          }
          currentNode = currentNode.next;
@@ -137,8 +137,6 @@ public class HashTable<T> {
                "HASH TABLE");
       }
 
-      LogDAO.saveLogHashTable("Inserted key " + key + " with value " + value, "INSERT", "HASH TABLE");
-
       testLoadFactor(); // Verifica a necessidade de redimensionamento
    }
 
@@ -150,6 +148,7 @@ public class HashTable<T> {
       occupied++;
       if (table[index].next != null) {
          collisions++;
+         LogDAO.saveLogHashTable("N° " + collisions + " | Collision detected for key " + key, "COLLISION", "HASH TABLE");
       }
    }
 
@@ -183,7 +182,6 @@ public class HashTable<T> {
 
       while (currentNode != null) {
          if (currentNode.key == key) {
-            LogDAO.saveLogHashTable("Found key " + key + " at index " + index, "SEARCH", "HASH TABLE");
             return currentNode;
          }
          currentNode = currentNode.next;
@@ -206,7 +204,6 @@ public class HashTable<T> {
                previousNode.next = currentNode.next;
             }
             occupied--;
-            LogDAO.saveLogHashTable("Removed key " + key, "REMOVE", "HASH TABLE");
             testLoadFactor();
             return;
          }
@@ -216,19 +213,17 @@ public class HashTable<T> {
       throw new IllegalArgumentException("Key not found: " + key);
    }
 
-   public void print() {
+   public Node<T>[] print() {
+      Node<T>[] nodes = new Node[occupied];
+      int count = 0;
       for (int i = 0; i < size; i++) {
-         Node<T> node = table[i];
-         if (node == null) {
-            System.out.println(i + ": empty");
-         } else {
-            while (node != null) {
-               System.out.println(Color.infoMessage(node.value.toString()));
-               node = node.next;
-            }
-            System.out.println();
+         Node<T> currentNode = table[i];
+         while (currentNode != null) {
+            nodes[count++] = currentNode;
+            currentNode = currentNode.next;
          }
       }
+      return nodes;
    }
 
    public boolean exists(int key) {
@@ -242,49 +237,5 @@ public class HashTable<T> {
          currentNode = currentNode.next;
       }
       return false;
-   }
-
-   public static void main(String[] args) {
-      System.out.println("Initializing HashTable with a small capacity to force resizing...");
-
-      // Começa com uma capacidade pequena (resulta em tamanho 13) para garantir
-      // redimensionamentos.
-      HashTable<Integer> hashTable = new HashTable<>(10);
-      Random random = new Random();
-      int numInsertions = 100;
-
-      System.out.println("Initial table size: " + hashTable.getSize());
-      System.out.println("Performing " + numInsertions + " random insertions...");
-      System.out.println("----------------------------------------------------");
-
-      for (int i = 0; i < numInsertions; i++) {
-         // Gera chaves aleatórias entre 0 e 999.
-         // A aleatoriedade garante a ocorrência de colisões.
-         int key = random.nextInt(1000);
-         int value = random.nextInt(1000);
-
-         // Para simplificar, o valor será a própria chave.
-         hashTable.insert(key, value);
-      }
-
-      System.out.println("\nAll " + numInsertions + " insertions are complete.");
-      System.out.println("----------------------------------------------------");
-
-      // O método print() foi modificado para exibir as estatísticas finais.
-      // Ele mostrará a tabela final e os contadores de colisões e redimensionamentos.
-      hashTable.print();
-
-      // Exemplo de busca para verificar se a tabela funciona após as operações
-      System.out.println("\n--- Sanity Check: Searching for a key ---");
-      // Tenta buscar por uma chave que pode ou não ter sido inserida
-      int searchKey = 500;
-      HashTable<Integer>.Node<Integer> result = hashTable.search(searchKey);
-      if (result != null) {
-         System.out.println("Found key " + searchKey + " with value: " + result.value);
-      } else {
-         System.out.println("Key " + searchKey + " was not found in the table.");
-      }
-
-      LogDAO.saveLogHashTableStructure(hashTable);
    }
 }

@@ -1,6 +1,7 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Scanner;
 
 import controller.MicrocontrollerController;
@@ -17,7 +18,7 @@ import utils.Location;
 public class Main {
     private static Scanner sc = new Scanner(System.in);
     private static HashTable<Microcontroller> hashTableMicrocontrollers = new HashTable<>(100);
-    private static HashTable<ClimateRecord> hashTableRecords = new HashTable<>(10);
+    private static HashTable<ClimateRecord> hashTableRecords = new HashTable<>(1000);
     private static LinkedList<ClimateRecord> linkedList = new LinkedList<>();
     private static UserController userController = new UserController(hashTableMicrocontrollers, hashTableRecords, linkedList);
     private static MicrocontrollerController microcontrollerController = new MicrocontrollerController(
@@ -27,21 +28,21 @@ public class Main {
         clearFile();
 
         // Create 100 microcontrollers
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 100; i++) {
             microcontrollerController.addMicrocontroller("Microcontroller " + i,
                     Location.values()[(int) (Math.random() * 4)],
                     "192.168.0." + (100 + i));
         }
 
         // Create 100 records for each microcontroller
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 1; j++) {
+        for (int i = 1; i <= 100; i++) {
+            for (int j = 1; j <= 100; j++) {
                 microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
                         Math.random() * 100);
             }
         }
 
-        //clearHashTableFile();
+        clearHashTableFile();
 
         // User interaction
         clearScreen();
@@ -139,7 +140,7 @@ public class Main {
                     int recordId = sc.nextInt();
                     ClimateRecord record = userController.getRecordById(recordId);
                     if (record != null) {
-                        System.out.println(record.toString());
+                        System.out.println(record.toString(false));
                     }
                     LogDAO.saveLog("User " + userName + " viewed record " + recordId, "USER", "INFO");
                     break;
@@ -150,7 +151,7 @@ public class Main {
                             .getRecordsByMicrocontrollerId(microcontrollerId);
                     if (records != null) {
                         for (ClimateRecord rec : records) {
-                            System.out.println(rec.toString());
+                            System.out.println(rec.toString(false));
                         }
                     }
                     LogDAO.saveLog("User " + userName + " viewed records for Microcontroller " + microcontrollerId,
@@ -187,37 +188,51 @@ public class Main {
                     clearScreen();
 
                     System.out.println(
-                            Color.menuOption("[1] Create new records\n[2] Update records\n[3] Remove records"));
+                            Color.menuOption("[1] Create new records\n[2] Update records\n[3] Remove records\n[4] Search records\n[5] Back to menu"));
                     System.out.print(Color.inputPrompt("Choose an option: "));
                     int simulationOption = sc.nextInt();
-                    if (simulationOption < 1 || simulationOption > 3) {
+                    if (simulationOption < 1 || simulationOption > 5) {
                         System.out.println(Color.errorMessage("Invalid option!"));
                         break;
                     }
 
                     System.out.println(Color.header("Simulation ON"));
                     if (simulationOption == 1) {
-                        System.out.println(Color.infoMessage("Creating 5 new records..."));
-                        for (int i = 1; i <= 5; i++) {
-                            microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
+                        System.out.println(Color.infoMessage("Creating 10 new records..."));
+                        for (int i = 1; i <= 10; i++) {
+                            int randMC = new Random().nextInt(100) + 1; // microcontroller IDs from 1 to 100
+                            microcontrollerController.createRecord(randMC, Math.random() * 100, Math.random() * 100,
                                     Math.random() * 100);
                         }
                         break;
                     } else if (simulationOption == 2) {
                         System.out.println(Color.infoMessage("Updating records..."));
-                        System.out.println(Color.infoMessage("Updating 5 records..."));
-                        for (int i = microcontrollerController.getRecordCount() - 4; i <= microcontrollerController.getRecordCount(); i++) {
-                            microcontrollerController.updateRecord(i, Math.random() * 100,
+                        System.out.println(Color.infoMessage("Updating 10 records..."));
+                        for (int i = microcontrollerController.getRecordCount() - 9; i <= microcontrollerController.getRecordCount(); i++) {
+                            int rand = new Random().nextInt(1000) + 1;
+                            microcontrollerController.updateRecord(rand, Math.random() * 100,
                                     Math.random() * 100, Math.random() * 100);
                         }
                         break;
                     } else if (simulationOption == 3) {
                         System.out.println(Color.infoMessage("Removing records..."));
-                        System.out.println(Color.infoMessage("Removing 5 records..."));
-                        for (int i = 1; i <= 5; i++) {
-                            userController.removeRecord(i);
+                        System.out.println(Color.infoMessage("Removing 50 records..."));
+                        for (int i = 1; i <= 50; i++) {
+                            int rand = new Random().nextInt(1000) + 1;
+                            userController.removeRecord(rand);
                         }
                         break;
+                    } else if (simulationOption == 4) {
+                        System.out.println(Color.infoMessage("Searching 10 records..."));
+                        for (int i = 1; i <= 10; i++) {
+                            int rand = new Random().nextInt(1000) + 1;
+                            System.out.println(Color.infoMessage("Searching for record: " + rand));
+                            userController.getRecordById(rand);
+                        }
+                        break;
+                    } else if (simulationOption == 5) {
+                        // Back to menu
+                        System.out.println(Color.infoMessage("Returning to the main menu..."));
                     }
 
                     break;

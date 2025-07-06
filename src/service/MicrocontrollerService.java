@@ -97,7 +97,7 @@ public class MicrocontrollerService {
    public void printMicrocontroller(int id) throws Exception {
       Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(id);
       if (microcontroller != null) {
-         System.out.println(microcontroller.toString());
+         System.out.println(microcontroller.toString(true));
       } else {
          throw new Exception("Microcontroller " + id + " not found");
       }

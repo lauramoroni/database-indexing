@@ -21,7 +21,7 @@ public class LogDAO {
 
       // Formatação com largura fixa para melhor leitura
       String logEntry = String.format(
-            "%-20s | %-4s | %-15s | %s%n",
+            "%-20s | %-12s | %-10s | %s%n",
             formattedDate,
             type,
             "[" + operation + "]",
@@ -42,7 +42,7 @@ public class LogDAO {
 
       // Formatação com largura fixa para melhor leitura
       String logEntry = String.format(
-            "%-20s | %-4s | %-10s | %s%n",
+            "%-20s | %-12s | %-10s | %s%n",
             formattedDate,
             typeAVL,
             "[" + operation + "]",
@@ -84,7 +84,7 @@ public class LogDAO {
 
       // Formatação com largura fixa para melhor leitura
       String logEntry = String.format(
-            "%-20s | %-4s | %-12s | %s%n",
+            "%-20s | %-12s | %-10s | %s%n",
             formattedDate,
             type,
             "[" + operation + "]",
@@ -98,6 +98,12 @@ public class LogDAO {
    }
 
    public static <T> void saveLogHashTableStructure(HashTable<T> hashTable) {
+      // Clear the hash table log file before writing new structure
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(HASH_TABLE_FILE))) {
+         writer.write("");
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
       try (BufferedWriter writer = new BufferedWriter(new FileWriter(HASH_TABLE_FILE, true))) {
          for (int i = 0; i < hashTable.getSize(); i++) {
             StringBuilder lineBuilder = new StringBuilder();

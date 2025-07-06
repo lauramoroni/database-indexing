@@ -25,6 +25,7 @@ public class ClimateRecordDAO {
          throw new Exception("Climate record " + record.getId() + " already exists");
       } else {
          hashTable.insert(record.getId(), record);
+         LogDAO.saveLogHashTable("Inserted key " + record.getId() + " with value " + record.toString(), "INSERT", "HASH TABLE");
          LogDAO.saveLogHashTableStructure(hashTable);
          writeFile(record);
       }
@@ -34,6 +35,7 @@ public class ClimateRecordDAO {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       }
+      LogDAO.saveLogHashTable("Found key " + id + " at index " + hashTable.search(id).key, "SEARCH", "HASH TABLE");
       return hashTable.search(id).value; 
    }
 
@@ -42,6 +44,7 @@ public class ClimateRecordDAO {
          throw new Exception("Record " + id + " not found");
       } else {
          hashTable.remove(id);
+         LogDAO.saveLogHashTable("Removed key " + id, "REMOVE", "HASH TABLE");
          LogDAO.saveLogHashTableStructure(hashTable);
 
          writeFile(null);
@@ -58,12 +61,20 @@ public class ClimateRecordDAO {
          record.setHumidity(humidity);
          record.setPressure(pressure);
 
+         hashTable.insert(id, record);
+         LogDAO.saveLogHashTableStructure(hashTable);
+
          writeFile(record);
       }
    }
 
    public void getAllRecords() {
-      hashTable.print();
+      HashTable<ClimateRecord>.Node<ClimateRecord>[] nodes = hashTable.print();
+      for (HashTable<ClimateRecord>.Node<ClimateRecord> node : nodes) {
+         if (node != null) {
+            System.out.println(node.value.toString(false));
+         }
+      }
    }
 
    public int getRecordCount() {

@@ -21,6 +21,7 @@ public class MicrocontrollerDAO {
       }
 
       hashTable.insert(microcontroller.getId(), microcontroller);
+      LogDAO.saveLogHashTable("Inserted key " + microcontroller.getId() + " with value " + microcontroller.toString(true), "INSERT", "HASH TABLE");
       LogDAO.saveLogHashTableStructure(hashTable);
 
       writeFile(microcontroller);
@@ -31,6 +32,7 @@ public class MicrocontrollerDAO {
    }
 
    public Microcontroller getMicrocontroller(int id) {
+      LogDAO.saveLogHashTable("Found key " + id + " at index " + hashTable.search(id).key, "SEARCH", "HASH TABLE");
       return hashTable.search(id).value;
    }
 
@@ -39,7 +41,12 @@ public class MicrocontrollerDAO {
    }
 
    public void printMicrocontrollers() {
-      hashTable.print();
+      HashTable<Microcontroller>.Node<Microcontroller>[] nodes = hashTable.print();
+      for (HashTable<Microcontroller>.Node<Microcontroller> node : nodes) {
+         if (node != null) {
+            System.out.println(node.value.toString(false));
+         }
+      }
    }
 
    public int countMicrocontrollers() {
