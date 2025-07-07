@@ -35,6 +35,17 @@ public class MicrocontrollerController {
       }
    }
 
+   public ClimateRecord createRecord(int recordId, int microcontrollerId, double temperature, double humidity, double pressure, boolean isLog) {
+      try {
+         ClimateRecord record = microcontrollerService.createRecord(recordId, microcontrollerId, temperature, humidity, pressure, isLog);
+         System.out.println(Color.successMessage("Record created successfully!"));
+         return record;
+      } catch (Exception e) {
+         System.out.println(Color.errorMessage(e.getMessage()));
+         return null;
+      }
+   }
+
    public void updateRecord(int id, double temperature, double humidity, double pressure, boolean isLog) {
       try {
          microcontrollerService.updateRecord(id, temperature, humidity, pressure, isLog);

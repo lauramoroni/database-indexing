@@ -36,6 +36,16 @@ public class ClimateRecord {
       this.next = null;
    }
 
+   public ClimateRecord(int recordId, int microcontrollerId, double temperature, double humidity, double pressure) {
+      this.id = recordId;
+      this.microcontrollerId = microcontrollerId;
+      this.timestamp = LocalDateTime.now();
+      this.temperature = temperature;
+      this.humidity = humidity;
+      this.pressure = pressure;
+      this.next = null;
+   }
+
    public int getId() {
       return id;
    }

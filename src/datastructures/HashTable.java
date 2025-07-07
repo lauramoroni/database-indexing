@@ -93,10 +93,10 @@ public class HashTable<T> {
 
    private int hash(int key) {
       // metodo da divisão
-      //return (key & 0x7FFFFFFF) % size;
+      return (key & 0x7FFFFFFF) % size;
       // metodo da multiplicação
-      double A = (Math.sqrt(5) - 1) / 2; // constante de Knuth
-      return (int) (size * ((key * A) % 1)) & 0x7FFFFFFF; 
+      //double A = (Math.sqrt(5) - 1) / 2; // constante de Knuth
+      //return (int) (size * ((key * A) % 1)) & 0x7FFFFFFF; 
    }
 
    private void testLoadFactor() {
@@ -119,6 +119,7 @@ public class HashTable<T> {
       return (hash(index) + c1 * i + c2 * i * i) % size;
    }
 
+   // tratamento de colisão por encadeamento separado
    public void insert(int key, T value) {
       int index = hash(key);
       Node<T> currentNode = table[index];

@@ -35,6 +35,8 @@ public class Main {
                     "192.168.0." + (100 + i), false);
         }
 
+        clearFile("src/database/log.txt"); // remove os registros do microcontrolador
+
         // Create 100 records for each microcontroller
         for (int i = 1; i <= 100; i++) {
             for (int j = 1; j <= 100; j++) {
@@ -213,18 +215,13 @@ public class Main {
 
                     System.out.println(
                             Color.menuOption(
-                                    "[1] Create new records\n[2] Update records\n[3] Remove records\n[4] Search records\n[5] Back to menu"));
+                                    "[1] Create new records\n[2] Update records\n[3] Remove records\n[4] Search records\n[5] Force collision\n[6] Back to menu"));
                     System.out.print(Color.inputPrompt("Choose an option: "));
                     int simulationOption = sc.nextInt();
                     sc.nextLine();
 
-                    if (simulationOption < 1 || simulationOption > 5) {
+                    if (simulationOption < 1 || simulationOption > 6) {
                         System.out.println(Color.errorMessage("Invalid option!"));
-                        break;
-                    }
-
-                    if (simulationOption == 5) {
-                        System.out.println(Color.infoMessage("Returning to the main menu..."));
                         break;
                     }
 
@@ -271,15 +268,36 @@ public class Main {
                     } else if (simulationOption == 4) {
                         System.out.println(Color.infoMessage("Searching 10 random records..."));
                         for (int k = 0; k < 10; k++) {
-                            int currentRecordCount = microcontrollerController.getRecordCount();
-                            if (currentRecordCount == 0) {
-                                System.out.println(Color.warningMessage("No records to search."));
-                                break;
+                            int randId = new Random().nextInt(15000);
+                            ClimateRecord searchedRecord = userController.getRecordById(randId);
+                            if (searchedRecord != null) {
+                                System.out.println(searchedRecord.toString(false));
                             }
-                            int randId = new Random().nextInt(currentRecordCount) + 1;
-                            System.out.println(Color.infoMessage("Searching for record: " + randId));
-                            System.out.println(userController.getRecordById(randId).toString(false));
                         }
+                    } else if (simulationOption == 5) {
+                        System.out.println(Color.warningMessage("\n--- Collision Test ---"));
+
+                        int currentTableSize = hashTableRecords.getSize();
+                        System.out.println(Color.infoMessage("Hash table current size: " + currentTableSize));
+                        System.out.println(Color
+                                .infoMessage("Total collisions before test: " + hashTableRecords.getCollisions()));
+
+                        int baseKey = hashTableRecords.getOccupied(); // chave que já existe
+                        int collisionKey = baseKey + currentTableSize;
+
+                        System.out.println(Color.infoMessage("Inserting record with base key: " + baseKey));
+                        microcontrollerController.createRecord(baseKey, 50, 50, 50, true);
+
+                        System.out.println(
+                                Color.infoMessage("Forcing collision by inserting record with key: " + collisionKey));
+                        // o novo registro será adicionado à lista ligada no mesmo índice da chave 500.
+                        microcontrollerController.createRecord(collisionKey, hashTableMicrocontrollers.getOccupied(),
+                                99, 99, 99, true);
+
+                        System.out.println(Color
+                                .highlight("Total collisions after test: " + hashTableRecords.getCollisions()));
+                        System.out.println(Color.warningMessage("--- END OF FORCE COLLISION TEST ---\n"));
+                        sc.nextLine();
                     }
                     break;
                 case 10:
@@ -316,6 +334,14 @@ public class Main {
 
     public static void clearHashTableFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/database/hash_table.txt"))) {
+            writer.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void clearFile(String filLog) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filLog))) {
             writer.write("");
         } catch (IOException e) {
             e.printStackTrace();

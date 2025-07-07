@@ -24,7 +24,7 @@ public class MicrocontrollerService {
    public void addMicrocontroller(String name, Location location, String ipAddress, boolean isLog) throws Exception {
       Microcontroller microcontroller = new Microcontroller(name, location, ipAddress);
       try {
-         LogDAO.saveLog("Inserting microcontroller " + microcontroller.getId(), "MC", "INSERT");
+         //LogDAO.saveLog("Inserting microcontroller " + microcontroller.getId(), "MC", "INSERT");
          microcontrollerDAO.save(microcontroller, isLog);
       } catch (Exception e) {
          e.getMessage();
@@ -46,7 +46,33 @@ public class MicrocontrollerService {
 
       microcontroller.incrementRecord(record.getId());
 
-      LogDAO.saveLog("Inserting record " + record.getId() + " for microcontroller " + microcontrollerId, "CR", "INSERT");
+      //LogDAO.saveLog("Inserting record " + record.getId() + " for microcontroller " + microcontrollerId, "CR", "INSERT");
+
+      try {
+         climateRecordDAO.save(record, isLog);
+      } catch (Exception e) {
+         e.getMessage();
+      }
+
+      return record;
+   }
+
+   public ClimateRecord createRecord(int recordId, int microcontrollerId, double temperature, double humidity,
+         double pressure, boolean isLog) throws Exception {
+      if (!microcontrollerDAO.exists(microcontrollerId)) {
+         throw new Exception("Microcontroller " + microcontrollerId + " not found");
+      }
+
+      Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(microcontrollerId);
+
+      ClimateRecord record = new ClimateRecord(recordId, microcontrollerId, temperature, humidity, pressure);
+
+      // linked list logic
+      linkedList.insert(record);
+
+      microcontroller.incrementRecord(record.getId());
+
+      //LogDAO.saveLog("Inserting record " + record.getId() + " for microcontroller " + microcontrollerId, "CR", "INSERT");
 
       try {
          climateRecordDAO.save(record, isLog);
@@ -70,7 +96,7 @@ public class MicrocontrollerService {
       linkedList.remove(id);
       linkedList.insert(oldRecord);
 
-      LogDAO.saveLog("Updating record " + id + " for microcontroller " + oldRecord.getMicrocontrollerId(), "CR", "BD UPDATE");
+      //LogDAO.saveLog("Updating record " + id + " for microcontroller " + oldRecord.getMicrocontrollerId(), "CR", "BD UPDATE");
 
       try {
          climateRecordDAO.updateRecord(id, temperature, humidity, pressure, isLog);
