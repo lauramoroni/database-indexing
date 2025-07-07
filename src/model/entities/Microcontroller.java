@@ -14,7 +14,7 @@ public class Microcontroller {
 
    public Microcontroller(String name, Location location, String ipAddress) {
       this.id = ++nextId;
-      this.recordsIds = new int[100];
+      this.recordsIds = new int[1000];
       this.name = name;
       this.location = location;
       this.ipAddress = ipAddress;
