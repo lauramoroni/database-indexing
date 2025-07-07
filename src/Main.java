@@ -17,10 +17,11 @@ import utils.Location;
 
 public class Main {
     private static Scanner sc = new Scanner(System.in);
-    private static HashTable<Microcontroller> hashTableMicrocontrollers = new HashTable<>(100);
+    private static HashTable<Microcontroller> hashTableMicrocontrollers = new HashTable<>(1000);
     private static HashTable<ClimateRecord> hashTableRecords = new HashTable<>(1000);
     private static LinkedList<ClimateRecord> linkedList = new LinkedList<>();
-    private static UserController userController = new UserController(hashTableMicrocontrollers, hashTableRecords, linkedList);
+    private static UserController userController = new UserController(hashTableMicrocontrollers, hashTableRecords,
+            linkedList);
     private static MicrocontrollerController microcontrollerController = new MicrocontrollerController(
             hashTableMicrocontrollers, hashTableRecords, linkedList);
 
@@ -31,31 +32,37 @@ public class Main {
         for (int i = 1; i <= 100; i++) {
             microcontrollerController.addMicrocontroller("Microcontroller " + i,
                     Location.values()[(int) (Math.random() * 4)],
-                    "192.168.0." + (100 + i));
+                    "192.168.0." + (100 + i), false);
         }
 
         // Create 100 records for each microcontroller
         for (int i = 1; i <= 100; i++) {
             for (int j = 1; j <= 100; j++) {
                 microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
-                        Math.random() * 100);
+                        Math.random() * 100, false);
             }
         }
-
-        clearHashTableFile();
 
         // User interaction
         clearScreen();
         System.out.println(Color.infoMessage("\r\n" + //
-                        "                    _     _            _     __  __             _ _             _                _____           _                 \r\n" + //
-                        "    /\\             | |   (_)          | |   |  \\/  |           (_) |           (_)              / ____|         | |                \r\n" + //
-                        "   /  \\   _ __ ___ | |__  _  ___ _ __ | |_  | \\  / | ___  _ __  _| |_ ___  _ __ _ _ __   __ _  | (___  _   _ ___| |_ ___ _ __ ___  \r\n" + //
-                        "  / /\\ \\ | '_ ` _ \\| '_ \\| |/ _ \\ '_ \\| __| | |\\/| |/ _ \\| '_ \\| | __/ _ \\| '__| | '_ \\ / _` |  \\___ \\| | | / __| __/ _ \\ '_ ` _ \\ \r\n" + //
-                        " / ____ \\| | | | | | |_) | |  __/ | | | |_  | |  | | (_) | | | | | || (_) | |  | | | | | (_| |  ____) | |_| \\__ \\ ||  __/ | | | | |\r\n" + //
-                        "/_/    \\_\\_| |_| |_|_.__/|_|\\___|_| |_|\\__| |_|  |_|\\___/|_| |_|_|\\__\\___/|_|  |_|_| |_|\\__, | |_____/ \\__, |___/\\__\\___|_| |_| |_|\r\n" + //
-                        "                                                                                         __/ |          __/ |                      \r\n" + //
-                        "                                                                                        |___/          |___/                       \r\n" + //
-                        ""));
+                "                    _     _            _     __  __             _ _             _                _____           _                 \r\n"
+                + //
+                "    /\\             | |   (_)          | |   |  \\/  |           (_) |           (_)              / ____|         | |                \r\n"
+                + //
+                "   /  \\   _ __ ___ | |__  _  ___ _ __ | |_  | \\  / | ___  _ __  _| |_ ___  _ __ _ _ __   __ _  | (___  _   _ ___| |_ ___ _ __ ___  \r\n"
+                + //
+                "  / /\\ \\ | '_ ` _ \\| '_ \\| |/ _ \\ '_ \\| __| | |\\/| |/ _ \\| '_ \\| | __/ _ \\| '__| | '_ \\ / _` |  \\___ \\| | | / __| __/ _ \\ '_ ` _ \\ \r\n"
+                + //
+                " / ____ \\| | | | | | |_) | |  __/ | | | |_  | |  | | (_) | | | | | || (_) | |  | | | | | (_| |  ____) | |_| \\__ \\ ||  __/ | | | | |\r\n"
+                + //
+                "/_/    \\_\\_| |_| |_|_.__/|_|\\___|_| |_|\\__| |_|  |_|\\___/|_| |_|_|\\__\\___/|_|  |_|_| |_|\\__, | |_____/ \\__, |___/\\__\\___|_| |_| |_|\r\n"
+                + //
+                "                                                                                         __/ |          __/ |                      \r\n"
+                + //
+                "                                                                                        |___/          |___/                       \r\n"
+                + //
+                ""));
         sc.nextLine();
 
         User loggedUser = null;
@@ -103,6 +110,9 @@ public class Main {
     }
 
     public static void showMenu(String userName, Scanner sc) {
+
+        LogDAO.saveLogHashTableStructure(hashTableRecords);
+
         String[] options = {
                 "Show all records",
                 "Show records by ID",
@@ -111,6 +121,7 @@ public class Main {
                 "Show microcontroller details",
                 "Remove records",
                 "Quantity of records",
+                "Hash table details",
                 "Simulate",
         };
 
@@ -159,7 +170,8 @@ public class Main {
                     break;
                 case 4:
                     // Show all microcontrollers
-                    System.out.println(Color.header("Total Microcontrollers: " + microcontrollerController.getMicrocontrollerCount()));
+                    System.out.println(Color
+                            .header("Total Microcontrollers: " + microcontrollerController.getMicrocontrollerCount()));
                     microcontrollerController.printAllMicrocontrollers();
                     LogDAO.saveLog("User " + userName + " viewed all microcontrollers.", "USER", "INFO");
                     break;
@@ -174,7 +186,7 @@ public class Main {
                     // Remove records
                     System.out.print(Color.inputPrompt("Enter the record ID to remove: "));
                     int removeRecordId = sc.nextInt();
-                    userController.removeRecord(removeRecordId);
+                    userController.removeRecord(removeRecordId, true);
                     break;
                 case 7:
                     // Show record count
@@ -184,59 +196,93 @@ public class Main {
                     LogDAO.saveLog("User " + userName + " viewed the record count.", "USER", "INFO");
                     break;
                 case 8:
+                    // Show hash table details
+                    System.out.println(Color.header("Hash Table Details"));
+                    System.out.println(Color.infoMessage("Total collisions: " + hashTableRecords.getCollisions()));
+                    System.out
+                            .println(Color.infoMessage("Total resized hash tables: " + hashTableRecords.getResizes()));
+                    System.out.println(Color.infoMessage("Current hash table size: " + hashTableRecords.getSize()));
+                    System.out.println(Color.infoMessage("Occupied slots: " + hashTableRecords.getOccupied()));
+                    System.out.println(Color.infoMessage("Current load factor: " + hashTableRecords.getLoadFactor()));
+                    LogDAO.saveLog("User " + userName + " viewed hash table details.", "USER", "INFO");
+
+                    break;
+                case 9:
                     // Simulate new records
                     clearScreen();
 
                     System.out.println(
-                            Color.menuOption("[1] Create new records\n[2] Update records\n[3] Remove records\n[4] Search records\n[5] Back to menu"));
+                            Color.menuOption(
+                                    "[1] Create new records\n[2] Update records\n[3] Remove records\n[4] Search records\n[5] Back to menu"));
                     System.out.print(Color.inputPrompt("Choose an option: "));
                     int simulationOption = sc.nextInt();
+                    sc.nextLine();
+
                     if (simulationOption < 1 || simulationOption > 5) {
                         System.out.println(Color.errorMessage("Invalid option!"));
                         break;
                     }
 
-                    System.out.println(Color.header("Simulation ON"));
-                    if (simulationOption == 1) {
-                        System.out.println(Color.infoMessage("Creating 10 new records..."));
-                        for (int i = 1; i <= 10; i++) {
-                            int randMC = new Random().nextInt(100) + 1; // microcontroller IDs from 1 to 100
-                            microcontrollerController.createRecord(randMC, Math.random() * 100, Math.random() * 100,
-                                    Math.random() * 100);
-                        }
-                        break;
-                    } else if (simulationOption == 2) {
-                        System.out.println(Color.infoMessage("Updating records..."));
-                        System.out.println(Color.infoMessage("Updating 10 records..."));
-                        for (int i = microcontrollerController.getRecordCount() - 9; i <= microcontrollerController.getRecordCount(); i++) {
-                            int rand = new Random().nextInt(1000) + 1;
-                            microcontrollerController.updateRecord(rand, Math.random() * 100,
-                                    Math.random() * 100, Math.random() * 100);
-                        }
-                        break;
-                    } else if (simulationOption == 3) {
-                        System.out.println(Color.infoMessage("Removing records..."));
-                        System.out.println(Color.infoMessage("Removing 50 records..."));
-                        for (int i = 1; i <= 50; i++) {
-                            int rand = new Random().nextInt(1000) + 1;
-                            userController.removeRecord(rand);
-                        }
-                        break;
-                    } else if (simulationOption == 4) {
-                        System.out.println(Color.infoMessage("Searching 10 records..."));
-                        for (int i = 1; i <= 10; i++) {
-                            int rand = new Random().nextInt(1000) + 1;
-                            System.out.println(Color.infoMessage("Searching for record: " + rand));
-                            userController.getRecordById(rand);
-                        }
-                        break;
-                    } else if (simulationOption == 5) {
-                        // Back to menu
+                    if (simulationOption == 5) {
                         System.out.println(Color.infoMessage("Returning to the main menu..."));
+                        break;
                     }
 
+                    System.out.println(Color.header("Simulation ON"));
+                    if (simulationOption == 1) {
+                        System.out.println(Color.infoMessage("Creating 100 new records..."));
+                        for (int i = 1; i <= 10; i++) {
+                            for (int j = 1; j <= 10; j++) {
+                                microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
+                                        Math.random() * 100, true);
+                            }
+                        }
+                        clearScreen();
+                        System.out.println(Color.successMessage("100 records created successfully."));
+                    } else if (simulationOption == 2) {
+                        System.out.println(Color.infoMessage("Updating 10 random records..."));
+                        for (int k = 0; k < 10; k++) {
+                            int currentRecordCount = microcontrollerController.getRecordCount();
+                            if (currentRecordCount == 0) {
+                                System.out.println(Color.warningMessage("No records to update."));
+                                break;
+                            }
+                            int randId = new Random().nextInt(currentRecordCount) + 1;
+                            microcontrollerController.updateRecord(randId, Math.random() * 100,
+                                    Math.random() * 100, Math.random() * 100, true);
+                        }
+                        clearScreen();
+                        System.out.println(Color.successMessage("Update simulation finished."));
+                    } else if (simulationOption == 3) {
+                        System.out.println(Color.infoMessage("Removing 50 random records..."));
+                        for (int k = 0; k < 50; k++) {
+                            int currentRecordCount = microcontrollerController.getRecordCount();
+                            if (currentRecordCount == 0) {
+                                System.out.println(Color.warningMessage("No records to remove."));
+                                break;
+                            }
+                            int randId = new Random().nextInt(currentRecordCount) + 1;
+                            if (userController.getRecordById(randId) != null) {
+                                userController.removeRecord(randId, true);
+                            }
+                        }
+                        clearScreen();
+                        System.out.println(Color.successMessage("Remove simulation finished."));
+                    } else if (simulationOption == 4) {
+                        System.out.println(Color.infoMessage("Searching 10 random records..."));
+                        for (int k = 0; k < 10; k++) {
+                            int currentRecordCount = microcontrollerController.getRecordCount();
+                            if (currentRecordCount == 0) {
+                                System.out.println(Color.warningMessage("No records to search."));
+                                break;
+                            }
+                            int randId = new Random().nextInt(currentRecordCount) + 1;
+                            System.out.println(Color.infoMessage("Searching for record: " + randId));
+                            System.out.println(userController.getRecordById(randId).toString(false));
+                        }
+                    }
                     break;
-                case 9:
+                case 10:
                     // Exit
                     LogDAO.saveLog("User " + userName + " exited the system.", "USER", "INFO");
                     clearScreen();
@@ -267,6 +313,7 @@ public class Main {
             e.printStackTrace();
         }
     }
+
     public static void clearHashTableFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/database/hash_table.txt"))) {
             writer.write("");
@@ -275,7 +322,8 @@ public class Main {
         }
     }
 
-    public static void clearFile(String fileLog, String fileMicrocontrollers, String fileRecords, String fileAVL, String fileHashTable) {
+    public static void clearFile(String fileLog, String fileMicrocontrollers, String fileRecords, String fileAVL,
+            String fileHashTable) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileLog))) {
             writer.write("");
         } catch (IOException e) {
