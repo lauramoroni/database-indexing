@@ -93,7 +93,7 @@ public class UserService {
       Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(record.getMicrocontrollerId());
 
       linkedList.remove(id);
-      LogDAO.saveLog("Removed record " + id, "CR", "REMOVE");
+      //LogDAO.saveLog("Removed record " + id, "CR", "REMOVE");
 
       microcontroller.decrementRecord(id);
 
