@@ -20,13 +20,17 @@ public class ClimateRecordDAO {
 
    // operations
 
-   public void save(ClimateRecord record) throws Exception {
+   public void save(ClimateRecord record, boolean isLog) throws Exception {
       if (exists(record.getId())) {
          throw new Exception("Climate record " + record.getId() + " already exists");
       } else {
          hashTable.insert(record.getId(), record);
          LogDAO.saveLogHashTable("Inserted key " + record.getId() + " with value " + record.toString(), "INSERT", "HASH TABLE");
+         
+         if (isLog) {
          LogDAO.saveLogHashTableStructure(hashTable);
+         }
+
          writeFile(record);
       }
    }
@@ -35,24 +39,26 @@ public class ClimateRecordDAO {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       }
-      LogDAO.saveLogHashTable("Found key " + id + " at index " + hashTable.search(id).key, "SEARCH", "HASH TABLE");
       return hashTable.search(id).value; 
    }
 
-   public void removeRecord(int id) throws Exception {
+   public void removeRecord(int id, boolean isLog) throws Exception {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       } else {
          hashTable.remove(id);
          LogDAO.saveLogHashTable("Removed key " + id, "REMOVE", "HASH TABLE");
+
+         if (isLog) {
          LogDAO.saveLogHashTableStructure(hashTable);
+         }
 
          writeFile(null);
          
       }
    }
 
-   public void updateRecord(int id, double temperature, double humidity, double pressure) throws Exception {
+   public void updateRecord(int id, double temperature, double humidity, double pressure, boolean isLog) throws Exception {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       } else {
@@ -62,7 +68,10 @@ public class ClimateRecordDAO {
          record.setPressure(pressure);
 
          hashTable.insert(id, record);
-         LogDAO.saveLogHashTableStructure(hashTable);
+
+         if (isLog) {
+            LogDAO.saveLogHashTableStructure(hashTable);
+         }
 
          writeFile(record);
       }

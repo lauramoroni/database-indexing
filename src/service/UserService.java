@@ -84,7 +84,7 @@ public class UserService {
       return record;
    }
 
-   public void removeRecord(int id) throws Exception {
+   public void removeRecord(int id, boolean isLog) throws Exception {
       if (!climateRecordDAO.exists(id)) {
          throw new Exception("Record " + id + " not found.");
       }
@@ -97,6 +97,6 @@ public class UserService {
 
       microcontroller.decrementRecord(id);
 
-      climateRecordDAO.removeRecord(id);
+      climateRecordDAO.removeRecord(id, isLog);
    }
 }

@@ -15,15 +15,16 @@ public class MicrocontrollerDAO {
       this.hashTable = hashTableMicrocontrollers;
    }
 
-   public void save(Microcontroller microcontroller) throws Exception {
+   public void save(Microcontroller microcontroller, boolean isLog) throws Exception {
       if (exists(microcontroller.getId())) {
          throw new Exception("Microcontroller " + microcontroller.getId() + " already exists");
       }
 
       hashTable.insert(microcontroller.getId(), microcontroller);
       LogDAO.saveLogHashTable("Inserted key " + microcontroller.getId() + " with value " + microcontroller.toString(true), "INSERT", "HASH TABLE");
-      LogDAO.saveLogHashTableStructure(hashTable);
-
+      if (isLog) {
+         LogDAO.saveLogHashTableStructure(hashTable);
+      }
       writeFile(microcontroller);
    }
 
@@ -32,7 +33,6 @@ public class MicrocontrollerDAO {
    }
 
    public Microcontroller getMicrocontroller(int id) {
-      LogDAO.saveLogHashTable("Found key " + id + " at index " + hashTable.search(id).key, "SEARCH", "HASH TABLE");
       return hashTable.search(id).value;
    }
 

@@ -21,18 +21,18 @@ public class MicrocontrollerService {
       this.linkedList = linkedList;
    }
 
-   public void addMicrocontroller(String name, Location location, String ipAddress) throws Exception {
+   public void addMicrocontroller(String name, Location location, String ipAddress, boolean isLog) throws Exception {
       Microcontroller microcontroller = new Microcontroller(name, location, ipAddress);
       try {
          LogDAO.saveLog("Inserting microcontroller " + microcontroller.getId(), "MC", "INSERT");
-         microcontrollerDAO.save(microcontroller);
+         microcontrollerDAO.save(microcontroller, isLog);
       } catch (Exception e) {
          e.getMessage();
       }
    }
 
    public ClimateRecord createRecord(int microcontrollerId, double temperature, double humidity,
-         double pressure) throws Exception {
+         double pressure, boolean isLog) throws Exception {
       if (!microcontrollerDAO.exists(microcontrollerId)) {
          throw new Exception("Microcontroller " + microcontrollerId + " not found");
       }
@@ -49,7 +49,7 @@ public class MicrocontrollerService {
       LogDAO.saveLog("Inserting record " + record.getId() + " for microcontroller " + microcontrollerId, "CR", "INSERT");
 
       try {
-         climateRecordDAO.save(record);
+         climateRecordDAO.save(record, isLog);
       } catch (Exception e) {
          e.getMessage();
       }
@@ -57,7 +57,7 @@ public class MicrocontrollerService {
       return record;
    }
 
-   public void updateRecord(int id, double temperature, double humidity, double pressure) throws Exception {
+   public void updateRecord(int id, double temperature, double humidity, double pressure, boolean isLog) throws Exception {
       if (!climateRecordDAO.exists(id)) {
          throw new Exception("Record " + id + " not found");
       }
@@ -73,7 +73,7 @@ public class MicrocontrollerService {
       LogDAO.saveLog("Updating record " + id + " for microcontroller " + oldRecord.getMicrocontrollerId(), "CR", "BD UPDATE");
 
       try {
-         climateRecordDAO.updateRecord(id, temperature, humidity, pressure);
+         climateRecordDAO.updateRecord(id, temperature, humidity, pressure, isLog);
       } catch (Exception e) {
          e.getMessage();
       }
@@ -97,7 +97,7 @@ public class MicrocontrollerService {
    public void printMicrocontroller(int id) throws Exception {
       Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(id);
       if (microcontroller != null) {
-         System.out.println(microcontroller.toString(true));
+         System.out.println(microcontroller.toString(false));
       } else {
          throw new Exception("Microcontroller " + id + " not found");
       }
