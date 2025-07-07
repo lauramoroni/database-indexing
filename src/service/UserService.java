@@ -3,7 +3,7 @@ package service;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
 import model.entities.User;
-import datastructures.AVL;
+import datastructures.HashTable;
 import datastructures.LinkedList;
 import model.DAO.ClimateRecordDAO;
 import model.DAO.LogDAO;
@@ -16,11 +16,11 @@ public class UserService {
    private MicrocontrollerDAO microcontrollerDAO;
    private LinkedList<ClimateRecord> linkedList;
 
-   public UserService(AVL<Microcontroller> avlMicrocontrollers, AVL<ClimateRecord> avlRecords,
+   public UserService(HashTable<Microcontroller> hashTableMicrocontrollers, HashTable<ClimateRecord> hashTableRecords,
          LinkedList<ClimateRecord> linkedList) {
       this.userDAO = new UserDAO();
-      this.climateRecordDAO = new ClimateRecordDAO(avlRecords);
-      this.microcontrollerDAO = new MicrocontrollerDAO(avlMicrocontrollers);
+      this.climateRecordDAO = new ClimateRecordDAO(hashTableRecords);
+      this.microcontrollerDAO = new MicrocontrollerDAO(hashTableMicrocontrollers);
       this.linkedList = linkedList;
    }
 
@@ -84,7 +84,7 @@ public class UserService {
       return record;
    }
 
-   public void removeRecord(int id) throws Exception {
+   public void removeRecord(int id, boolean isLog) throws Exception {
       if (!climateRecordDAO.exists(id)) {
          throw new Exception("Record " + id + " not found.");
       }
@@ -93,10 +93,10 @@ public class UserService {
       Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(record.getMicrocontrollerId());
 
       linkedList.remove(id);
-      LogDAO.saveLog("Removed record " + id, "CR", "REMOVE");
+      //LogDAO.saveLog("Removed record " + id, "CR", "REMOVE");
 
       microcontroller.decrementRecord(id);
 
-      climateRecordDAO.removeRecord(id);
+      climateRecordDAO.removeRecord(id, isLog);
    }
 }

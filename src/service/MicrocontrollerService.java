@@ -3,7 +3,7 @@ package service;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
 
-import datastructures.AVL;
+import datastructures.HashTable;
 import datastructures.LinkedList;
 import model.DAO.ClimateRecordDAO;
 import model.DAO.LogDAO;
@@ -15,24 +15,24 @@ public class MicrocontrollerService {
    private ClimateRecordDAO climateRecordDAO;
    private LinkedList<ClimateRecord> linkedList;
 
-   public MicrocontrollerService(AVL<Microcontroller> avlMicrocontrollers, AVL<ClimateRecord> avlRecords, LinkedList<ClimateRecord> linkedList) {
-      this.microcontrollerDAO = new MicrocontrollerDAO(avlMicrocontrollers);
-      this.climateRecordDAO = new ClimateRecordDAO(avlRecords);
+   public MicrocontrollerService(HashTable<Microcontroller> hashTableMicrocontrollers, HashTable<ClimateRecord> hashTableRecords, LinkedList<ClimateRecord> linkedList) {
+      this.microcontrollerDAO = new MicrocontrollerDAO(hashTableMicrocontrollers);
+      this.climateRecordDAO = new ClimateRecordDAO(hashTableRecords);
       this.linkedList = linkedList;
    }
 
-   public void addMicrocontroller(String name, Location location, String ipAddress) throws Exception {
+   public void addMicrocontroller(String name, Location location, String ipAddress, boolean isLog) throws Exception {
       Microcontroller microcontroller = new Microcontroller(name, location, ipAddress);
       try {
-         LogDAO.saveLog(microcontroller.toLog(), "MC", "INSERT");
-         microcontrollerDAO.save(microcontroller);
+         //LogDAO.saveLog("Inserting microcontroller " + microcontroller.getId(), "MC", "INSERT");
+         microcontrollerDAO.save(microcontroller, isLog);
       } catch (Exception e) {
          e.getMessage();
       }
    }
 
    public ClimateRecord createRecord(int microcontrollerId, double temperature, double humidity,
-         double pressure) throws Exception {
+         double pressure, boolean isLog) throws Exception {
       if (!microcontrollerDAO.exists(microcontrollerId)) {
          throw new Exception("Microcontroller " + microcontrollerId + " not found");
       }
@@ -46,10 +46,10 @@ public class MicrocontrollerService {
 
       microcontroller.incrementRecord(record.getId());
 
-      LogDAO.saveLog(record.toLog(), "CR", "INSERT");
+      //LogDAO.saveLog("Inserting record " + record.getId() + " for microcontroller " + microcontrollerId, "CR", "INSERT");
 
       try {
-         climateRecordDAO.save(record);
+         climateRecordDAO.save(record, isLog);
       } catch (Exception e) {
          e.getMessage();
       }
@@ -57,7 +57,33 @@ public class MicrocontrollerService {
       return record;
    }
 
-   public void updateRecord(int id, double temperature, double humidity, double pressure) throws Exception {
+   public ClimateRecord createRecord(int recordId, int microcontrollerId, double temperature, double humidity,
+         double pressure, boolean isLog) throws Exception {
+      if (!microcontrollerDAO.exists(microcontrollerId)) {
+         throw new Exception("Microcontroller " + microcontrollerId + " not found");
+      }
+
+      Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(microcontrollerId);
+
+      ClimateRecord record = new ClimateRecord(recordId, microcontrollerId, temperature, humidity, pressure);
+
+      // linked list logic
+      linkedList.insert(record);
+
+      microcontroller.incrementRecord(record.getId());
+
+      //LogDAO.saveLog("Inserting record " + record.getId() + " for microcontroller " + microcontrollerId, "CR", "INSERT");
+
+      try {
+         climateRecordDAO.save(record, isLog);
+      } catch (Exception e) {
+         e.getMessage();
+      }
+
+      return record;
+   }
+
+   public void updateRecord(int id, double temperature, double humidity, double pressure, boolean isLog) throws Exception {
       if (!climateRecordDAO.exists(id)) {
          throw new Exception("Record " + id + " not found");
       }
@@ -70,10 +96,10 @@ public class MicrocontrollerService {
       linkedList.remove(id);
       linkedList.insert(oldRecord);
 
-      LogDAO.saveLog(oldRecord.toLog(), "CR", "BD UPDATE");
+      //LogDAO.saveLog("Updating record " + id + " for microcontroller " + oldRecord.getMicrocontrollerId(), "CR", "BD UPDATE");
 
       try {
-         climateRecordDAO.updateRecord(id, temperature, humidity, pressure);
+         climateRecordDAO.updateRecord(id, temperature, humidity, pressure, isLog);
       } catch (Exception e) {
          e.getMessage();
       }
@@ -97,7 +123,7 @@ public class MicrocontrollerService {
    public void printMicrocontroller(int id) throws Exception {
       Microcontroller microcontroller = microcontrollerDAO.getMicrocontroller(id);
       if (microcontroller != null) {
-         System.out.println(microcontroller.toString());
+         System.out.println(microcontroller.toString(false));
       } else {
          throw new Exception("Microcontroller " + id + " not found");
       }

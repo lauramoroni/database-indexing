@@ -36,6 +36,16 @@ public class ClimateRecord {
       this.next = null;
    }
 
+   public ClimateRecord(int recordId, int microcontrollerId, double temperature, double humidity, double pressure) {
+      this.id = recordId;
+      this.microcontrollerId = microcontrollerId;
+      this.timestamp = LocalDateTime.now();
+      this.temperature = temperature;
+      this.humidity = humidity;
+      this.pressure = pressure;
+      this.next = null;
+   }
+
    public int getId() {
       return id;
    }
@@ -80,29 +90,34 @@ public class ClimateRecord {
       this.next = next;
    }
 
-   public String toLog() {
-      return String.format("ClimateRecord{id=%d, microcontrollerId='%s', timestamp=%s, temperature=%.1f°C, humidity=%.1f%%, pressure=%.1f hPa}",
-            id,
-            microcontrollerId,
-            timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")),
-            temperature,
-            humidity,
-            pressure);
+   public String toString() {
+      return toString(true);
    }
 
-   @Override
-   public String toString() {
-      return String.format(Color.infoMessage("Climate Record #%d\n" +
-                  "├─ Microcontroller: %d\n" +
-                  "├─ Date/Time: %s\n" +
-                  "├─ Temperature: %.1f°C\n" +
-                  "├─ Humidity: %.1f%%\n" +
-                  "└─ Pressure: %.1f hPa"), 
-            id,
-            microcontrollerId,
-            timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")),
-            temperature,
-            humidity,
-            pressure);
+   public String toString(boolean log) {
+      if (log) {
+         return String.format(
+               "ClimateRecord{id=%d, microcontrollerId='%s', timestamp=%s, temperature=%.1f°C, humidity=%.1f%%, pressure=%.1f hPa}",
+               id,
+               microcontrollerId,
+               timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")),
+               temperature,
+               humidity,
+               pressure);
+      } else {
+         return String.format(Color.infoMessage("Climate Record #%d\n" +
+               "├─ Microcontroller: %d\n" +
+               "├─ Date/Time: %s\n" +
+               "├─ Temperature: %.1f°C\n" +
+               "├─ Humidity: %.1f%%\n" +
+               "└─ Pressure: %.1f hPa"),
+               id,
+               microcontrollerId,
+               timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")),
+               temperature,
+               humidity,
+               pressure);
+      }
    }
+
 }

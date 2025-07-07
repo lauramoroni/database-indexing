@@ -2,16 +2,21 @@ package datastructures;
 
 import model.DAO.LogDAO;
 
-@SuppressWarnings({"unchecked", "hiding"})
+@SuppressWarnings({ "unchecked", "hiding" })
 public class HashTable<T> {
    private Node<T>[] table;
    private int size;
    private int occupied = 0;
 
+   private int resizes = 0;
+   private int collisions = 0;
+
+   private final int TAM_BASE = 3;
+
    public class Node<T> {
-      int key;
-      T value;
-      Node<T> next;
+      public int key;
+      public T value;
+      public Node<T> next;
 
       public Node(int key, T value) {
          this.key = key;
@@ -20,33 +25,61 @@ public class HashTable<T> {
       }
    }
 
-   public HashTable(int size) {
-      if (size <= 0) {
-         throw new IllegalArgumentException("Size must be greater than zero");
+   public HashTable(int capacity) {
+      if (capacity <= 0) {
+         throw new IllegalArgumentException("Capacity must be greater than zero");
       }
-      this.size = size;
+      int power2 = nearestPower2(capacity);
+      int prime = largestPrimeSmallerThan(power2);
+
+      // use the largest prime number smaller than the nearest power of 2
+      size = Math.max(prime, TAM_BASE);
+
       table = new Node[size];
    }
-
-   
 
    public int getSize() {
       return size;
    }
 
-
-
    public int getOccupied() {
       return occupied;
    }
 
+   public int getCollisions() {
+      return collisions;
+   }
 
+   public int getResizes() {
+      return resizes;
+   }
 
-   private int nextPrime(int n) {
-      while (!isPrime(n)) {
-         n++;
+   public double getLoadFactor() {
+      return (double) occupied / size;
+   }
+
+   public Node<T>[] getTable() {
+      return table;
+   }
+
+   public int nearestPower2(int n) {
+      if (n < 1) {
+         throw new IllegalArgumentException("n must be greater than 0");
       }
-      return n;
+      int power = 1;
+      while (power < n) {
+         power *= 2;
+      }
+      return power;
+   }
+
+   private int largestPrimeSmallerThan(int n) {
+      for (int i = n - 1; i > 1; i--) {
+         if (isPrime(i)) {
+            return i;
+         }
+      }
+      return 2;
    }
 
    private boolean isPrime(int n) {
@@ -59,98 +92,157 @@ public class HashTable<T> {
    }
 
    private int hash(int key) {
-      return key % size;
+      // metodo da divisão
+      return (key & 0x7FFFFFFF) % size;
+      // metodo da multiplicação
+      //double A = (Math.sqrt(5) - 1) / 2; // constante de Knuth
+      //return (int) (size * ((key * A) % 1)) & 0x7FFFFFFF; 
+   }
+
+   private void testLoadFactor() {
+      double loadFactor = getLoadFactor();
+
+      if (loadFactor > 0.7) {
+         resize(2 * size);
+      } else if (loadFactor < 0.2 && size > TAM_BASE) {
+         resize(size / 2);
+      }
    }
 
    public int hashCollision(int index, int i) {
-      // colisao por endereçamento aberto
-      return (hash(i) + index) % size;
+      // linear
+      //return (hash(i) + index) % size;
+      // quadratic
+      //  h(x, k) = (hash(x) + c1k + c2k2) mod m, 0 ≤ k ≤ m-1
+      int c1 = 1; // constante para o termo linear
+      int c2 = 1; // constante para o termo quadrático
+      return (hash(index) + c1 * i + c2 * i * i) % size;
    }
 
+   // tratamento de colisão por encadeamento separado
    public void insert(int key, T value) {
       int index = hash(key);
+      Node<T> currentNode = table[index];
 
-      if (table[index] == null) {
-         // if the index is empty, insert the new node
-         table[index] = new Node<>(key, value);
-         occupied++;
-      } else {
-         if (table[index].key == key) {
-            table[index].value = value; // update value
-            LogDAO.saveLogHashTable("Updated value for key " + key, "UPDATE", "HASH TABLE");
+      while (currentNode != null) {
+         if (currentNode.key == key) {
+            currentNode.value = value;
+            LogDAO.saveLogHashTable("Updated key " + key + " with value " + value.toString(), "UPDATE", "HASH TABLE");
             return;
          }
-         
-         // handle collision
-         LogDAO.saveLogHashTable("Collision occurred while inserting key " + key, "COLLISION", "HASH TABLE");
-
-         int i = 1;
-         while(table[hashCollision(index, i)] != null) {
-            if (table[hashCollision(index, i)].key == key) {
-               table[hashCollision(index, i)].value = value; // update value
-
-               LogDAO.saveLogHashTable("Updated value for key " + key, "UPDATE", "HASH TABLE");
-
-               return;
-            }
-            i++;
-         }
-
-         table[hashCollision(index, i)] = new Node<>(key, value);
-         occupied++;
+         currentNode = currentNode.next;
       }
-      LogDAO.saveLogHashTable("Inserted key " + key + " with value " + value, "INSERT", "HASH TABLE");
+
+      Node<T> newNode = new Node<>(key, value);
+      newNode.next = table[index];
+      table[index] = newNode;
+      occupied++;
+
+      // contabiliza colisão se a lista já tinha pelo menos 1 elemento
+      if (table[index].next != null) {
+         collisions++;
+         LogDAO.saveLogHashTable("N° " + collisions + " | Collision detected for key " + key, "COLLISION",
+               "HASH TABLE");
+      }
+
+      testLoadFactor(); 
+   }
+
+   private void reinsert(int key, T value) {
+      int index = hash(key);
+      Node<T> newNode = new Node<>(key, value);
+      newNode.next = table[index];
+      table[index] = newNode;
+      occupied++;
+      if (table[index].next != null) {
+         collisions++;
+         LogDAO.saveLogHashTable("N° " + collisions + " | Collision detected for key " + key, "COLLISION", "HASH TABLE");
+      }
+   }
+
+   private void resize(int capacity) {
+
+      resizes++;
+      Node<T>[] oldTable = table;
+
+      int newSize = largestPrimeSmallerThan(nearestPower2(capacity));
+      this.size = newSize;
+      this.table = new Node[newSize];
+      this.occupied = 0; // reset occupied count
+
+      for (Node<T> node : oldTable) {
+         Node<T> currentNode = node;
+         while (currentNode != null) {
+            reinsert(currentNode.key, currentNode.value); // reinsert nodes into the new table
+            currentNode = currentNode.next;
+         }
+      }
+
+      LogDAO.saveLogHashTable("N° " + resizes + " | Resized hash table to new size " + size, "RESIZE", "HASH TABLE");
+
+      LogDAO.saveLogHashTable("Load factor after resize: " + getLoadFactor(), "RESIZE", "HASH TABLE");
    }
 
    public Node<T> search(int key) {
-      int h = hash(key);
+      int index = hash(key);
+      Node<T> currentNode = table[index];
 
-      while (table[h] != null) {
-         if (table[h].key == key) {
-            LogDAO.saveLogHashTable("Found key " + key + " with value " + table[h].value, "SEARCH", "HASH TABLE");
-            return table[h]; // found
+      while (currentNode != null) {
+         if (currentNode.key == key) {
+            return currentNode;
          }
-         h = hashCollision(h, 1); // handle collision
-      }  
+         currentNode = currentNode.next;
+      }
       return null;
    }
 
-   void remove(int key) {
-      // implement removal logic
+   public void remove(int key) {
+      int index = hash(key);
+      Node<T> currentNode = table[index];
+      Node<T> previousNode = null;
+
+      while (currentNode != null) {
+         if (currentNode.key == key) {
+            if (previousNode == null) {
+               // first node in the list
+               table[index] = currentNode.next;
+            } else {
+               // middle or last node in the list
+               previousNode.next = currentNode.next;
+            }
+            occupied--;
+            testLoadFactor();
+            return;
+         }
+         previousNode = currentNode;
+         currentNode = currentNode.next;
+      }
+      throw new IllegalArgumentException("Key not found: " + key);
    }
 
-   void print() {
-      Node<T> node;
-
-      for(int i = 0; i < size; i++) {
-         node = table[i];
-         if (node != null) {
-            System.out.print("Index " + i + ": ");
-            while (node != null) {
-               System.out.print("[" + node.key + ": " + node.value + "] ");
-               node = node.next;
-            }
-            System.out.println();
-         } else {
-            System.out.println("Index " + i + ": empty");
+   public Node<T>[] print() {
+      Node<T>[] nodes = new Node[occupied];
+      int count = 0;
+      for (int i = 0; i < size; i++) {
+         Node<T> currentNode = table[i];
+         while (currentNode != null) {
+            nodes[count++] = currentNode;
+            currentNode = currentNode.next;
          }
       }
+      return nodes;
    }
 
-   public static void main(String[] args) {
-      HashTable<String> hashTable = new HashTable<>(10);
-      hashTable.insert(1, "One");
-      hashTable.insert(2, "Two");
-      hashTable.insert(12, "Twelve"); // Collision with key 2
-      hashTable.insert(3, "Three");
+   public boolean exists(int key) {
+      int index = hash(key);
+      Node<T> currentNode = table[index];
 
-      hashTable.print();
-
-      HashTable<String>.Node<String> searchResult = hashTable.search(12);
-      if (searchResult != null) {
-         System.out.println("Found: [" + searchResult.key + ": " + searchResult.value + "]");
-      } else {
-         System.out.println("Not found");
+      while (currentNode != null) {
+         if (currentNode.key == key) {
+            return true;
+         }
+         currentNode = currentNode.next;
       }
+      return false;
    }
 }

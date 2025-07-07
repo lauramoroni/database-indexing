@@ -1,6 +1,6 @@
 package controller;
 
-import datastructures.AVL;
+import datastructures.HashTable;
 import datastructures.LinkedList;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
@@ -11,22 +11,22 @@ import utils.Location;
 public class MicrocontrollerController {
    private MicrocontrollerService microcontrollerService;
 
-   public MicrocontrollerController(AVL<Microcontroller> avl, AVL<ClimateRecord> avlRecords, LinkedList<ClimateRecord> linkedList) {
-      this.microcontrollerService = new MicrocontrollerService(avl, avlRecords, linkedList);
+   public MicrocontrollerController(HashTable<Microcontroller> hashTableMicrocontrollers, HashTable<ClimateRecord> hashTableRecords, LinkedList<ClimateRecord> linkedList) {
+      this.microcontrollerService = new MicrocontrollerService(hashTableMicrocontrollers, hashTableRecords, linkedList);
    }
 
-   public void addMicrocontroller(String name, Location location, String ipAddress) {
+   public void addMicrocontroller(String name, Location location, String ipAddress, boolean isLog) {
       try {
-         microcontrollerService.addMicrocontroller(name, location, ipAddress);
+         microcontrollerService.addMicrocontroller(name, location, ipAddress, isLog);
          System.out.println(Color.successMessage("Microcontroller added successfully!"));
       } catch (Exception e) {
          System.out.println(Color.errorMessage(e.getMessage()));
       }
    }
 
-   public ClimateRecord createRecord(int microcontrollerId, double temperature, double humidity, double pressure) {
+   public ClimateRecord createRecord(int microcontrollerId, double temperature, double humidity, double pressure, boolean isLog) {
       try {
-         ClimateRecord record = microcontrollerService.createRecord(microcontrollerId, temperature, humidity, pressure);
+         ClimateRecord record = microcontrollerService.createRecord(microcontrollerId, temperature, humidity, pressure, isLog);
          System.out.println(Color.successMessage("Record created successfully!"));
          return record;
       } catch (Exception e) {
@@ -35,9 +35,20 @@ public class MicrocontrollerController {
       }
    }
 
-   public void updateRecord(int id, double temperature, double humidity, double pressure) {
+   public ClimateRecord createRecord(int recordId, int microcontrollerId, double temperature, double humidity, double pressure, boolean isLog) {
       try {
-         microcontrollerService.updateRecord(id, temperature, humidity, pressure);
+         ClimateRecord record = microcontrollerService.createRecord(recordId, microcontrollerId, temperature, humidity, pressure, isLog);
+         System.out.println(Color.successMessage("Record created successfully!"));
+         return record;
+      } catch (Exception e) {
+         System.out.println(Color.errorMessage(e.getMessage()));
+         return null;
+      }
+   }
+
+   public void updateRecord(int id, double temperature, double humidity, double pressure, boolean isLog) {
+      try {
+         microcontrollerService.updateRecord(id, temperature, humidity, pressure, isLog);
          System.out.println(Color.successMessage("Record updated successfully!"));
       } catch (Exception e) {
          System.out.println(Color.errorMessage(e.getMessage()));
