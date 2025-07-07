@@ -1,9 +1,6 @@
 package datastructures;
 
-import java.util.Random;
-
 import model.DAO.LogDAO;
-import utils.Color;
 
 @SuppressWarnings({ "unchecked", "hiding" })
 public class HashTable<T> {
@@ -95,49 +92,59 @@ public class HashTable<T> {
    }
 
    private int hash(int key) {
-      return Math.abs(key) % size;
+      // metodo da divisão
+      //return (key & 0x7FFFFFFF) % size;
+      // metodo da multiplicação
+      double A = (Math.sqrt(5) - 1) / 2; // constante de Knuth
+      return (int) (size * ((key * A) % 1)) & 0x7FFFFFFF; 
    }
 
    private void testLoadFactor() {
       double loadFactor = getLoadFactor();
 
-      if (loadFactor >= 1.0) {
-         resize(size * 2);
+      if (loadFactor > 0.7) {
+         resize(2 * size);
+      } else if (loadFactor < 0.2 && size > TAM_BASE) {
+         resize(size / 2);
       }
    }
 
    public int hashCollision(int index, int i) {
-      return (hash(i) + index) % size;
+      // linear
+      //return (hash(i) + index) % size;
+      // quadratic
+      //  h(x, k) = (hash(x) + c1k + c2k2) mod m, 0 ≤ k ≤ m-1
+      int c1 = 1; // constante para o termo linear
+      int c2 = 1; // constante para o termo quadrático
+      return (hash(index) + c1 * i + c2 * i * i) % size;
    }
 
    public void insert(int key, T value) {
       int index = hash(key);
       Node<T> currentNode = table[index];
 
-      // Percorre a lista para verificar se a chave já existe
       while (currentNode != null) {
          if (currentNode.key == key) {
-            currentNode.value = value; // Atualiza o valor se a chave for encontrada
+            currentNode.value = value;
             LogDAO.saveLogHashTable("Updated key " + key + " with value " + value.toString(), "UPDATE", "HASH TABLE");
             return;
          }
          currentNode = currentNode.next;
       }
 
-      // Insere o novo nó no início da lista
       Node<T> newNode = new Node<>(key, value);
       newNode.next = table[index];
       table[index] = newNode;
       occupied++;
 
-      // Contabiliza colisão se a lista já tinha pelo menos 1 elemento
+      // contabiliza colisão se a lista já tinha pelo menos 1 elemento
       if (table[index].next != null) {
          collisions++;
          LogDAO.saveLogHashTable("N° " + collisions + " | Collision detected for key " + key, "COLLISION",
                "HASH TABLE");
       }
 
-      testLoadFactor(); // Verifica a necessidade de redimensionamento
+      testLoadFactor(); 
    }
 
    private void reinsert(int key, T value) {
@@ -161,7 +168,6 @@ public class HashTable<T> {
       this.size = newSize;
       this.table = new Node[newSize];
       this.occupied = 0; // reset occupied count
-      this.collisions = 0; // reset collisions count
 
       for (Node<T> node : oldTable) {
          Node<T> currentNode = node;
