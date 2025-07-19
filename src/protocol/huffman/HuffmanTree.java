@@ -1,0 +1,156 @@
+package protocol.huffman;
+
+public class HuffmanTree {
+   public HuffmanNode root;
+   HuffmanHeap heap;
+   char[] characters;
+   String[] codes;
+   int[] frequencies;
+   int uniqueCount;
+
+   public void countCharFrequencie(String message) {
+      char[] tempCharArray = new char[message.length()];
+      int[] tempFreqArray = new int[message.length()];
+      uniqueCount = 0;
+
+      for (int i = 0; i < message.length(); i++) {
+         char c = message.charAt(i);
+         int index = getIndex(c, tempCharArray, uniqueCount); 
+
+         // se não existe o caracter no array, adiciona
+         if (index == -1) {
+            tempCharArray[uniqueCount] = c;
+            tempFreqArray[uniqueCount] = 1; 
+            uniqueCount++;
+         } else {
+            tempFreqArray[index]++;
+         }
+      }
+
+      // Copia para os arrays finais com o tamanho correto
+      characters = new char[uniqueCount];
+      frequencies = new int[uniqueCount];
+      codes = new String[uniqueCount];
+      
+      for (int i = 0; i < uniqueCount; i++) {
+         characters[i] = tempCharArray[i];
+         frequencies[i] = tempFreqArray[i];
+      }
+   }
+
+   private int getIndex(char c, char[] charArray, int uniqueCount) {
+      for (int i = 0; i < uniqueCount; i++) {
+         if (charArray[i] == c) {
+            return i;
+         }
+      }
+      return -1; // não encontrado
+   }
+
+   public void buildTree(String message) {
+      // Primeiro conta as frequências
+      countCharFrequencie(message);
+      
+      heap = new HuffmanHeap(uniqueCount);
+
+      // Insere nós com caracteres e frequências reais
+      for (int i = 0; i < uniqueCount; i++) {
+         HuffmanNode node = new HuffmanNode(characters[i], frequencies[i]);
+         heap.insert(node);
+      }
+
+      // Caso especial: apenas um caractere único
+      if (uniqueCount == 1) {
+         root = heap.removeMin();
+         codes[0] = "0"; // Código simples para um único caractere
+         return;
+      }
+
+      while (heap.getSize() > 1) {
+         HuffmanNode x = heap.removeMin();
+         HuffmanNode y = heap.removeMin();
+
+         HuffmanNode newNode = new HuffmanNode(x.frequency + y.frequency, x, y);
+         newNode.left = x;
+         newNode.right = y;
+
+         heap.insert(newNode);
+      }
+
+      root = heap.removeMin();
+      generateCodes(root, "");
+   }
+
+   private void generateCodes(HuffmanNode node, String code) {
+      if (node == null) {
+         return;
+      }
+
+      if (node.isLeaf()) {
+         int index = getIndex(node.character, characters, uniqueCount);
+         if (index != -1) {
+            codes[index] = code.isEmpty() ? "0" : code; // Garante que não seja vazio
+         }
+      }
+      
+      generateCodes(node.left, code + "0");
+      generateCodes(node.right, code + "1");
+   }
+
+   public String compress(String message) {
+      StringBuilder compressed = new StringBuilder();
+
+      for (int i = 0; i < message.length(); i++) {
+         char c = message.charAt(i);
+         for (int j = 0; j < uniqueCount; j++) {
+            if (characters[j] == c) {
+               compressed.append(codes[j]);
+               break;
+            }
+         }
+      }
+
+      return compressed.toString();
+   }
+
+   public String decompress(String compressed) {
+      StringBuilder decompressed = new StringBuilder();
+      HuffmanNode currentNode = root;
+
+      for (int i = 0; i < compressed.length(); i++) {
+         char bit = compressed.charAt(i);
+
+         if (bit == '0') {
+            currentNode = currentNode.left;
+         } else {
+            currentNode = currentNode.right;
+         }
+
+         if (currentNode.isLeaf()) {
+            decompressed.append(currentNode.character);
+            currentNode = root; 
+         }
+      }
+
+      return decompressed.toString();
+   }
+
+   public void printCodes() {
+      for (int i = 0; i < uniqueCount; i++) {
+         System.out.println(characters[i] + ": " + codes[i]);
+      }
+   }
+
+   public static void main(String[] args) {
+      String message = "laura";
+      HuffmanTree huffmanTree = new HuffmanTree();
+      huffmanTree.buildTree(message);
+      huffmanTree.printCodes();
+
+      String compressed = huffmanTree.compress(message);
+      System.out.println("Compressed: " + compressed);
+
+      String decompressed = huffmanTree.decompress(compressed);
+      System.out.println("Decompressed: " + decompressed);
+   }
+}
