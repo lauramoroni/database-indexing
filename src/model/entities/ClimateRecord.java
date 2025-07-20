@@ -120,4 +120,9 @@ public class ClimateRecord {
       }
    }
 
+   public String toMessage() {
+      return String.format("%d | %d | %s | %.1f | %.1f | %.1f", id, microcontrollerId,
+            timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), temperature, humidity, pressure);
+   }
+
 }

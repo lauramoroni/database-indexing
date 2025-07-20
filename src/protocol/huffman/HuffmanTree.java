@@ -145,7 +145,7 @@ public class HuffmanTree {
    }
 
    public static void main(String[] args) {
-      String message = "laur";
+      String message = "90.39";
       HuffmanTree huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(message);
       huffmanTree.printCodes();

@@ -245,4 +245,8 @@ public class HashTable<T> {
       }
       return false;
    }
+
+   public String toMessage() {
+      return String.format("%d | %d | %.2f | %d | %d", size, occupied, getLoadFactor(), collisions, resizes);
+   }
 }

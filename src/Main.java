@@ -121,7 +121,7 @@ public class Main {
                 "Show records by Microcontroller ID",
                 "Show all microcontrollers",
                 "Show microcontroller details",
-                "Remove records",
+                "Remove record by ID",
                 "Quantity of records",
                 "Hash table details",
                 "Simulate",

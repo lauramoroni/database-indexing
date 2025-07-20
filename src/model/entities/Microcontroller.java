@@ -85,4 +85,8 @@ public class Microcontroller {
       }
    }
 
+   public String toMessage() {
+      return String.format("%d | %s | %s | %s", id, name, location, ipAddress);
+   }
+
 }
