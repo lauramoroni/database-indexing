@@ -27,7 +27,7 @@ public class HuffmanHeap {
    public void up(int index) {
       while (index > 0) {
          int parent = (index - 1) / 2;
-         if (heap[index].frequency >= heap[parent].frequency) {
+         if (heap[index].frequency <= heap[parent].frequency) { // menor frequencia sobe
             swap(index, parent);
             index = parent;
          } else {
@@ -49,20 +49,29 @@ public class HuffmanHeap {
    }
 
    private void down1(int i) {
-      int j = 2 * i + 1;
+      int smallestChild;
+      while (true) {
+         int leftChild = 2 * i + 1;
+         int rightChild = 2 * i + 2;
 
-      if (j < size) {
-
-         if (j < size - 1) {
-            if (heap[j + 1].frequency > heap[j].frequency) {
-               j++;
-            }
+         if (leftChild >= size) {
+            break;
          }
 
-         if (heap[j].frequency < heap[i].frequency) {
-            swap(i, j);
-            down1(j);
+         // índice do menor filho
+         smallestChild = leftChild;
+         if (rightChild < size && heap[rightChild].frequency < heap[leftChild].frequency) {
+            smallestChild = rightChild;
          }
+
+         // se o pai for menor ou igual ao menor dos filhos, a propriedade do heap está correta
+         if (heap[i].frequency <= heap[smallestChild].frequency) {
+            break;
+         }
+
+         //  troca o pai com o menor filho e continua a descida
+         swap(i, smallestChild);
+         i = smallestChild;
       }
    }
 

@@ -2,11 +2,11 @@ package protocol.huffman;
 
 public class HuffmanTree {
    public HuffmanNode root;
-   HuffmanHeap heap;
-   char[] characters;
-   String[] codes;
-   int[] frequencies;
-   int uniqueCount;
+   public String[] codes;
+   private HuffmanHeap heap;
+   private char[] characters;
+   private int[] frequencies;
+   private int uniqueCount;
 
    public void countCharFrequencie(String message) {
       char[] tempCharArray = new char[message.length()];
@@ -27,7 +27,7 @@ public class HuffmanTree {
          }
       }
 
-      // Copia para os arrays finais com o tamanho correto
+      // copia para os arrays finais com o tamanho correto
       characters = new char[uniqueCount];
       frequencies = new int[uniqueCount];
       codes = new String[uniqueCount];
@@ -47,38 +47,33 @@ public class HuffmanTree {
       return -1; // não encontrado
    }
 
-   public void buildTree(String message) {
+   public HuffmanNode buildTree(String message) {
       // Primeiro conta as frequências
       countCharFrequencie(message);
       
       heap = new HuffmanHeap(uniqueCount);
 
-      // Insere nós com caracteres e frequências reais
       for (int i = 0; i < uniqueCount; i++) {
          HuffmanNode node = new HuffmanNode(characters[i], frequencies[i]);
          heap.insert(node);
       }
 
-      // Caso especial: apenas um caractere único
-      if (uniqueCount == 1) {
-         root = heap.removeMin();
-         codes[0] = "0"; // Código simples para um único caractere
-         return;
-      }
+      heap.buildHeap();
 
       while (heap.getSize() > 1) {
          HuffmanNode x = heap.removeMin();
          HuffmanNode y = heap.removeMin();
 
          HuffmanNode newNode = new HuffmanNode(x.frequency + y.frequency, x, y);
-         newNode.left = x;
-         newNode.right = y;
 
          heap.insert(newNode);
       }
 
       root = heap.removeMin();
+
       generateCodes(root, "");
+
+      return root;
    }
 
    private void generateCodes(HuffmanNode node, String code) {
@@ -137,12 +132,20 @@ public class HuffmanTree {
 
    public void printCodes() {
       for (int i = 0; i < uniqueCount; i++) {
-         System.out.println(characters[i] + ": " + codes[i]);
+         System.out.print(characters[i] + ": " + codes[i] + " | ");
       }
+      System.out.println();
+   }
+
+   public float getCompressionRatio(String original, String compressed) {
+      if (original.isEmpty()) {
+         return 0; 
+      }
+      return (float) compressed.length() / original.length();
    }
 
    public static void main(String[] args) {
-      String message = "laura";
+      String message = "laur";
       HuffmanTree huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(message);
       huffmanTree.printCodes();
