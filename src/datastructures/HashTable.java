@@ -102,9 +102,9 @@ public class HashTable<T> {
    private void testLoadFactor() {
       double loadFactor = getLoadFactor();
 
-      if (loadFactor > 0.7) {
+      if (loadFactor > 1.5) {
          resize(2 * size);
-      } else if (loadFactor < 0.2 && size > TAM_BASE) {
+      } else if (loadFactor < 0.5 && size > TAM_BASE) {
          resize(size / 2);
       }
    }
