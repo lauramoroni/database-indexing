@@ -103,6 +103,43 @@ public class Message {
       this.content = huffmanTree.compress(this.content);
    }
 
+   // getters para descomprimir o conteúdo
+   public String getContent() {
+      return huffmanTree.decompress(content);
+   }
+
+   public ClimateRecord getClimateRecord() {
+      this.content = huffmanTree.decompress(content);
+
+      String[] parts = this.content.split(" \\| ");
+
+      //parts[0] é o conteúdo
+      return new ClimateRecord(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
+   }
+
+   public ClimateRecord[] getClimateRecords() {
+      this.content = huffmanTree.decompress(content);
+
+      String[] parts = this.content.split(" \\| ");
+      ClimateRecord[] records = new ClimateRecord[parts.length - 1];
+
+      for (int i = 1; i < parts.length; i++) {
+         String[] recordParts = parts[i].split(",");
+         records[i - 1] = new ClimateRecord(Integer.parseInt(recordParts[0]), Integer.parseInt(recordParts[1]), Double.parseDouble(recordParts[2]), Double.parseDouble(recordParts[3]), Double.parseDouble(recordParts[4]));
+      }
+
+      return records;
+   }
+
+   public Microcontroller getMicrocontroller() {
+      this.content = huffmanTree.decompress(content);
+
+      String[] parts = this.content.split(" \\| ");
+
+      // parts[0] é o conteúdo
+      return new Microcontroller(parts[1], Location.valueOf(parts[2]), parts[3]);
+   }
+
    public static void main(String[] args) {
       Microcontroller microcontroller = new Microcontroller("MC1", Location.FORTALEZA, "v1.0");
       ClimateRecord record = new ClimateRecord(1, microcontroller.getId(), 25.5, 60.0, 1013.0);
