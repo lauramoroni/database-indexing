@@ -39,6 +39,17 @@ public class Message {
       this.content = huffmanTree.compress(this.content);
    }
 
+   public Message(String content, int microcontrollerId, double temperature, double humidity, double pressure) {
+      this.content = content + "-" + microcontrollerId + "-" + temperature + "-" + humidity + "-" + pressure;
+
+      this.huffmanTree = new HuffmanTree();
+      huffmanTree.buildTree(this.content);
+      huffmanTree.printCodes();
+
+      this.content = huffmanTree.compress(this.content);
+   }
+
+
    // ex: Show record by ID, Show records by Microcontroller ID, Show microcontroller by ID, Quantity of records, update record, Remove record by ID
    public Message(String content, int number) {
       this.content = content + "-" + number;
@@ -62,9 +73,29 @@ public class Message {
       this.content = huffmanTree.compress(this.content);
    }
 
+   public Message(String content, String name, Location location, String ipAddress) {
+      this.content = content + "-" + name + "-" + location.toString() + "-" + ipAddress;
+
+      this.huffmanTree = new HuffmanTree();
+      huffmanTree.buildTree(this.content);
+      huffmanTree.printCodes();
+
+      this.content = huffmanTree.compress(this.content);
+   }
+
    public Message(String content, User user) {
       // destrinchar o objeto
       this.content = content + "-" + user.toMessage();
+
+      this.huffmanTree = new HuffmanTree();
+      huffmanTree.buildTree(this.content);
+      huffmanTree.printCodes();
+
+      this.content = huffmanTree.compress(this.content);
+   }
+
+   public Message(String content, String userId, String userName, String userPassword) {
+      this.content = content + "-" + userId + "-" + userName + "-" + userPassword;
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);

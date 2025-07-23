@@ -21,8 +21,7 @@ public class MicrocontrollerController {
 
    public void addMicrocontroller(String name, Location location, String ipAddress, boolean isLog) {
       try {
-         Microcontroller microcontroller = new Microcontroller(name, location, ipAddress);
-         Message message = new Message("CREATE_MC", microcontroller);
+         Message message = new Message("CREATE_MC", name, location, ipAddress);
          Message response = messageHandler.handleMessage(message, isLog);
          if (response.getContent().equals("Microcontroller created successfully")) {
             System.out.println(Color.successMessage("Microcontroller added successfully!"));
@@ -36,10 +35,9 @@ public class MicrocontrollerController {
 
    public ClimateRecord createRecord(int microcontrollerId, double temperature, double humidity, double pressure, boolean isLog) {
       try {
-         ClimateRecord record = new ClimateRecord(microcontrollerId, temperature, humidity, pressure);
-         Message message = new Message("CREATE_CR", record);
+         Message message = new Message("CREATE_CR", microcontrollerId, temperature, humidity, pressure);
          Message response = messageHandler.handleMessage(message, isLog);
-         if (response.getContent().startsWith("Climate record created successfully")) {
+         if (response.getContent().equals("Climate record created successfully")) {
             System.out.println(Color.successMessage("Record created successfully!"));
             return response.getClimateRecord();
          } else {
@@ -54,7 +52,7 @@ public class MicrocontrollerController {
 
    public void updateRecord(int id, double temperature, double humidity, double pressure, boolean isLog) {
       try {
-         Message message = new Message("UPDATE_CR", id);
+         Message message = new Message("UPDATE_CR", id, temperature, humidity, pressure);
          Message response = messageHandler.handleMessage(message, isLog);
          if (response.getContent().equals("Climate record updated successfully")) {
             System.out.println(Color.successMessage("Record updated successfully!"));

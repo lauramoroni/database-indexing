@@ -28,9 +28,9 @@ public class MessageHandler {
       switch (operation) {
          case "CREATE_MC":
             // Handle create microcontroller
-            String name = parts[2];
-            String location = parts[3];
-            String ipAddress = parts[4];
+            String name = parts[1];
+            String location = parts[2];
+            String ipAddress = parts[3];
             try {
                microcontrollerService.addMicrocontroller(name, Location.fromString(location), ipAddress, isLog);
                return new Message("Microcontroller created successfully");
@@ -38,21 +38,21 @@ public class MessageHandler {
                return new Message("Error adding microcontroller: " + e.getMessage());
             }
          case "CREATE_CR":
-            int microcontrollerId = Integer.parseInt(parts[2].trim().replace(",", "."));
-            double temperature = Double.parseDouble(parts[4].trim().replace(",", "."));
-            double humidity = Double.parseDouble(parts[5].trim().replace(",", "."));
-            double pressure = Double.parseDouble(parts[6].trim().replace(",", "."));
+            int microcontrollerId = Integer.parseInt(parts[1].trim().replace(",", "."));
+            double temperature = Double.parseDouble(parts[2].trim().replace(",", "."));
+            double humidity = Double.parseDouble(parts[3].trim().replace(",", "."));
+            double pressure = Double.parseDouble(parts[4].trim().replace(",", "."));
             try {
-               ClimateRecord createdRecord = microcontrollerService.createRecord(microcontrollerId, temperature, humidity, pressure, isLog);
-               return new Message("Climate record created successfully", createdRecord);
+               microcontrollerService.createRecord(microcontrollerId, temperature, humidity, pressure, isLog);
+               return new Message("Climate record created successfully");
             } catch (Exception e) {
                return new Message("Error creating climate record: " + e.getMessage());
             }
             case "UPDATE_CR":
             int recordId = Integer.parseInt(parts[1]);
-            double newTemperature = Double.parseDouble(parts[4].trim().replace(",", "."));
-            double newHumidity = Double.parseDouble(parts[5].trim().replace(",", "."));
-            double newPressure = Double.parseDouble(parts[6].trim().replace(",", "."));
+            double newTemperature = Double.parseDouble(parts[2].trim().replace(",", "."));
+            double newHumidity = Double.parseDouble(parts[3].trim().replace(",", "."));
+            double newPressure = Double.parseDouble(parts[4].trim().replace(",", "."));
             try {
                microcontrollerService.updateRecord(recordId, newTemperature, newHumidity, newPressure, isLog);
                return new Message("Climate record updated successfully");
@@ -60,7 +60,7 @@ public class MessageHandler {
                return new Message("Error updating climate record: " + e.getMessage());
             }
             case "GET_CR_BY_MC":
-            int mcId = Integer.parseInt(parts[2]);
+            int mcId = Integer.parseInt(parts[1]);
             try {
                ClimateRecord[] records = microcontrollerService.getRecordsByMicrocontrollerId(mcId);
                return new Message("Records retrieved successfully", records);

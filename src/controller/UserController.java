@@ -21,8 +21,7 @@ public class UserController {
 
    public void addUser(String id, String name, String password) {
       try {
-         User user = new User(id, name, password);
-         Message message = new Message("CREATE_USER", user);
+         Message message = new Message("CREATE_USER", id, name, password);
          Message response = messageHandler.handleMessage(message, true);
          if (response.getContent().equals("User created successfully")) {
             System.out.println(Color.successMessage("User added successfully!"));
@@ -37,7 +36,7 @@ public class UserController {
    public User login(String id, String password) throws Exception {
       Message message = new Message("LOGIN", id, password);
       Message response = messageHandler.handleMessage(message, true);
-      if (response.getContent().equals("User logged in successfully")) {
+      if (response.getContent().startsWith("User logged in successfully")) {
          return response.getUser();
       } else {
          throw new Exception(response.getContent());
