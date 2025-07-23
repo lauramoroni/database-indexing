@@ -16,7 +16,7 @@ public enum Location {
       try {
          return Location.valueOf(location.toUpperCase());
       } catch (IllegalArgumentException e) {
-         throw new IllegalArgumentException("Invalid location: " + location);
+         return null; 
       }
    }
 }
