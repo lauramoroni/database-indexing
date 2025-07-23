@@ -40,8 +40,11 @@ public class LinkedList<T> {
          head = newNode;
          tail = newNode;
       } else {
-         tail.next = newNode;
-         tail = newNode;
+         Node<T> current = head;
+         while (current.next != null) {
+            current = current.next;
+         }
+         current.next = newNode;
       }
       size++;
    }
@@ -71,5 +74,49 @@ public class LinkedList<T> {
       }
    }
 
+   public Node<T> search(Node<T> node, T key) {
+      Node<T> current, before = null;
+      T temp;
 
+      for (current = node; current != null; current = current.next) {
+         if (current.data.equals(key)) {
+            if (current != head && before != null) {
+               temp = before.data;
+               before.data = current.data;
+               current.data = temp;
+            }
+            return current;
+         }
+         before = current;
+      }
+      return null;
+   }
+
+   public static void main(String[] args) {
+      LinkedList<Integer> list = new LinkedList<>();
+      list.insert(1);
+      list.insert(2);
+      list.insert(3);
+      list.insert(4);
+      list.insert(5);
+
+      // print
+      for (Node<Integer> current = list.getHead(); current != null; current = current.next) {
+         System.out.print(current.data + " ");
+      }
+
+      // teste metodo de autoajuste transposição
+      System.out.println("\nSearching for 5...");
+      Node<Integer> foundNode = list.search(list.getHead(), 5);
+      if (foundNode != null) {
+         System.out.println("Found: " + foundNode.data);
+      } else {
+         System.out.println("Not found");
+      }
+
+      // print after search
+      for (Node<Integer> current = list.getHead(); current != null; current = current.next) {
+         System.out.print(current.data + " ");
+      }
+   }
 }
