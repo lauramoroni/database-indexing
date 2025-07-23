@@ -3,6 +3,7 @@ package protocol;
 import datastructures.HashTable;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
+import model.entities.User;
 import protocol.huffman.HuffmanTree;
 import utils.Location;
 
@@ -26,10 +27,10 @@ public class Message {
       this.content = huffmanTree.compress(content);
    }
 
-   // ex: create record, update record, Remove record by ID
+   // ex: create record
    public Message(String content, ClimateRecord record) {
       // destrinchar o objeto
-      this.content = content + " | " + record.toMessage();
+      this.content = content + "-" + record.toMessage();
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
@@ -38,9 +39,9 @@ public class Message {
       this.content = huffmanTree.compress(this.content);
    }
 
-   // ex: Show record by ID, Show records by Microcontroller ID, Show microcontroller by ID, Quantity of records
+   // ex: Show record by ID, Show records by Microcontroller ID, Show microcontroller by ID, Quantity of records, update record, Remove record by ID
    public Message(String content, int number) {
-      this.content = content + " | " + number;
+      this.content = content + "-" + number;
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
@@ -52,7 +53,28 @@ public class Message {
    // ex: create microcontroller
    public Message(String content, Microcontroller microcontroller) {
       // destrinchar o objeto
-      this.content = content + " | " + microcontroller.toMessage();
+      this.content = content + "-" + microcontroller.toMessage();
+
+      this.huffmanTree = new HuffmanTree();
+      huffmanTree.buildTree(this.content);
+      huffmanTree.printCodes();
+
+      this.content = huffmanTree.compress(this.content);
+   }
+
+   public Message(String content, User user) {
+      // destrinchar o objeto
+      this.content = content + "-" + user.toMessage();
+
+      this.huffmanTree = new HuffmanTree();
+      huffmanTree.buildTree(this.content);
+      huffmanTree.printCodes();
+
+      this.content = huffmanTree.compress(this.content);
+   }
+
+   public Message(String content, String id, String password) {
+      this.content = content + "-" + id + "-" + password;
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
@@ -67,7 +89,7 @@ public class Message {
       this.content = content;
 
       for (ClimateRecord record : records) {
-         this.content +=  " | " + record.toMessage();
+         this.content +=  "-" + record.toMessage();
       }
 
       this.huffmanTree = new HuffmanTree();
@@ -82,7 +104,7 @@ public class Message {
       this.content = content;
 
       for (Microcontroller microcontroller : microcontrollers) {
-         this.content += " | " + microcontroller.toMessage();
+         this.content += "-" + microcontroller.toMessage();
       }
 
       this.huffmanTree = new HuffmanTree();
@@ -94,7 +116,7 @@ public class Message {
 
    // ex: Hash table details
    public Message(String content, HashTable hashTable) {
-      this.content = content + " | " + hashTable.toMessage();
+      this.content = content + "-" + hashTable.toMessage();
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
@@ -111,7 +133,7 @@ public class Message {
    public ClimateRecord getClimateRecord() {
       this.content = huffmanTree.decompress(content);
 
-      String[] parts = this.content.split(" \\| ");
+      String[] parts = this.content.split("-");
 
       //parts[0] é o conteúdo
       return new ClimateRecord(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
@@ -120,11 +142,11 @@ public class Message {
    public ClimateRecord[] getClimateRecords() {
       this.content = huffmanTree.decompress(content);
 
-      String[] parts = this.content.split(" \\| ");
+      String[] parts = this.content.split("-");
       ClimateRecord[] records = new ClimateRecord[parts.length - 1];
 
       for (int i = 1; i < parts.length; i++) {
-         String[] recordParts = parts[i].split(",");
+         String[] recordParts = parts[i].split("-");
          records[i - 1] = new ClimateRecord(Integer.parseInt(recordParts[0]), Integer.parseInt(recordParts[1]), Double.parseDouble(recordParts[2]), Double.parseDouble(recordParts[3]), Double.parseDouble(recordParts[4]));
       }
 
@@ -134,10 +156,27 @@ public class Message {
    public Microcontroller getMicrocontroller() {
       this.content = huffmanTree.decompress(content);
 
-      String[] parts = this.content.split(" \\| ");
+      String[] parts = this.content.split("-");
 
       // parts[0] é o conteúdo
       return new Microcontroller(parts[1], Location.valueOf(parts[2]), parts[3]);
+   }
+
+   // ex: get microcontroller count, get record count
+   public int getCount() {
+      this.content = huffmanTree.decompress(content);
+      String[] parts = this.content.split("-");
+      return Integer.parseInt(parts[1]);
+   }
+
+   // ex: user
+   public User getUser() {
+      this.content = huffmanTree.decompress(content);
+
+      String[] parts = this.content.split("-");
+
+      // parts[0] é o conteúdo
+      return new User(parts[1], parts[2], parts[3]);
    }
 
    public static void main(String[] args) {
