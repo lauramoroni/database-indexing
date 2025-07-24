@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 import datastructures.HashTable;
+import datastructures.HashTable.Node;
 
 public class ClimateRecordDAO {
    private final String FILE = "src/database/records.txt";
@@ -39,7 +40,9 @@ public class ClimateRecordDAO {
       if (!exists(id)) {
          throw new Exception("Record " + id + " not found");
       }
-      return hashTable.search(id).value; 
+      ClimateRecord record = hashTable.search(id).value;
+      LogDAO.saveLogHashTableStructure(hashTable);
+      return record; 
    }
 
    public void removeRecord(int id, boolean isLog) throws Exception {
@@ -84,6 +87,7 @@ public class ClimateRecordDAO {
             System.out.println(node.value.toString(false));
          }
       }
+      LogDAO.saveLogHashTableStructure(hashTable);
    }
 
    public int getRecordCount() {

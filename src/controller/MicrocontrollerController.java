@@ -2,6 +2,7 @@ package controller;
 
 import datastructures.HashTable;
 import datastructures.LinkedList;
+import model.DAO.LogDAO;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
 import protocol.Message;
@@ -33,20 +34,17 @@ public class MicrocontrollerController {
       }
    }
 
-   public ClimateRecord createRecord(int microcontrollerId, double temperature, double humidity, double pressure, boolean isLog) {
+   public void createRecord(int microcontrollerId, double temperature, double humidity, double pressure, boolean isLog) {
       try {
          Message message = new Message("CREATE_CR", microcontrollerId, temperature, humidity, pressure);
          Message response = messageHandler.handleMessage(message, isLog);
          if (response.getContent().equals("Climate record created successfully")) {
             System.out.println(Color.successMessage("Record created successfully!"));
-            return response.getClimateRecord();
          } else {
             System.out.println(Color.errorMessage(response.getContent()));
-            return null;
          }
       } catch (Exception e) {
          System.out.println(Color.errorMessage(e.getMessage()));
-         return null;
       }
    }
 

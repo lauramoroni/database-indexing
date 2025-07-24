@@ -261,6 +261,7 @@ public class HashTable<T> {
       for (int i = 0; i < size; i++) {
          Node<T> currentNode = table[i];
          while (currentNode != null) {
+            currentNode.frequency++;
             nodes[count++] = currentNode;
             currentNode = currentNode.next;
          }

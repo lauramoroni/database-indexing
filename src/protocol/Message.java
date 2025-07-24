@@ -1,5 +1,7 @@
 package protocol;
 
+import java.time.LocalDateTime;
+
 import datastructures.HashTable;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
@@ -9,7 +11,10 @@ import utils.Location;
 
 public class Message {
    public String content;
-   private HuffmanTree huffmanTree;
+   public HuffmanTree huffmanTree;
+
+   java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
    
    // construtor comprime o conteúdo da mensagem
    // getters descomprimem o conteúdo
@@ -167,7 +172,7 @@ public class Message {
       String[] parts = this.content.split("-");
 
       //parts[0] é o conteúdo
-      return new ClimateRecord(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
+      return new ClimateRecord(Integer.parseInt(parts[1]), LocalDateTime.parse(parts[3], formatter), Double.parseDouble(parts[4].replace(',', '.')), Double.parseDouble(parts[5].replace(',', '.')), Double.parseDouble(parts[6].replace(',', '.')));
    }
 
    public ClimateRecord[] getClimateRecords() {
@@ -176,9 +181,10 @@ public class Message {
       String[] parts = this.content.split("-");
       ClimateRecord[] records = new ClimateRecord[parts.length - 1];
 
+
       for (int i = 1; i < parts.length; i++) {
          String[] recordParts = parts[i].split("-");
-         records[i - 1] = new ClimateRecord(Integer.parseInt(recordParts[0]), Integer.parseInt(recordParts[1]), Double.parseDouble(recordParts[2]), Double.parseDouble(recordParts[3]), Double.parseDouble(recordParts[4]));
+         records[i - 1] = new ClimateRecord(Integer.parseInt(recordParts[1]), LocalDateTime.parse(recordParts[3], formatter), Double.parseDouble(recordParts[4].replace(',', '.')), Double.parseDouble(recordParts[5].replace(',', '.')), Double.parseDouble(recordParts[6].replace(',', '.')));
       }
 
       return records;
