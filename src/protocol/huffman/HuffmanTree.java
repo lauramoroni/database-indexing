@@ -144,6 +144,15 @@ public class HuffmanTree {
       return (float) compressed.length() / original.length();
    }
 
+   public float getCompressionRatio() {
+      StringBuilder original = new StringBuilder();
+      for (int i = 0; i < uniqueCount; i++) {
+         original.append(characters[i]);
+      }
+      String compressed = compress(original.toString());
+      return getCompressionRatio(original.toString(), compressed);
+   }
+
    public static void main(String[] args) {
       String message = "90.39";
       HuffmanTree huffmanTree = new HuffmanTree();
