@@ -34,6 +34,7 @@ public class LogDAO {
       }
    }
 
+
    // Logs for AVL operations
 
    public static void saveLogAVL(String message, String operation, String typeAVL) {
@@ -116,7 +117,7 @@ public class LogDAO {
             } else {
                while (currentNode != null) {
                   lineBuilder.append("--> [key=").append(currentNode.key)
-                        .append(", value=").append(currentNode.value).append("] ");
+                        .append(", value=").append(currentNode.value).append(", frequency=").append(currentNode.frequency).append("] ");
 
                   currentNode = currentNode.next;
                }
