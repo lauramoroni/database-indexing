@@ -46,6 +46,16 @@ public class ClimateRecord {
       this.next = null;
    }
 
+   public ClimateRecord(int recordId, int microcontrollerId, LocalDateTime timestamp, double temperature, double humidity, double pressure) {
+      this.id = recordId;
+      this.microcontrollerId = microcontrollerId;
+      this.timestamp = timestamp;
+      this.temperature = temperature;
+      this.humidity = humidity;
+      this.pressure = pressure;
+      this.next = null;
+   }
+
    public int getId() {
       return id;
    }
@@ -118,6 +128,11 @@ public class ClimateRecord {
                humidity,
                pressure);
       }
+   }
+
+   public String toMessage() {
+      return String.format("%d-%d-%s-%.1f-%.1f-%.1f", id, microcontrollerId,
+            timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), temperature, humidity, pressure);
    }
 
 }

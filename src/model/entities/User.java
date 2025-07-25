@@ -43,4 +43,8 @@ public class User {
          id, name, password
       );
    }
+
+   public String toMessage() {
+      return String.format("%s-%s-%s", id, name, password);
+   }
 }

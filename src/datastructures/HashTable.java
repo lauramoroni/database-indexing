@@ -2,6 +2,7 @@ package datastructures;
 
 import model.DAO.LogDAO;
 
+// TO-DO: implementar método de autoajuste contador de frequência
 @SuppressWarnings({ "unchecked", "hiding" })
 public class HashTable<T> {
    private Node<T>[] table;
@@ -17,6 +18,7 @@ public class HashTable<T> {
       public int key;
       public T value;
       public Node<T> next;
+      public int frequency = 0; 
 
       public Node(int key, T value) {
          this.key = key;
@@ -102,9 +104,9 @@ public class HashTable<T> {
    private void testLoadFactor() {
       double loadFactor = getLoadFactor();
 
-      if (loadFactor > 0.7) {
+      if (loadFactor > 1.5) {
          resize(2 * size);
-      } else if (loadFactor < 0.2 && size > TAM_BASE) {
+      } else if (loadFactor < 0.5 && size > TAM_BASE) {
          resize(size / 2);
       }
    }
@@ -119,7 +121,7 @@ public class HashTable<T> {
       return (hash(index) + c1 * i + c2 * i * i) % size;
    }
 
-   // tratamento de colisão por encadeamento separado
+   // tratamento de colisão por encadeamento exterior
    public void insert(int key, T value) {
       int index = hash(key);
       Node<T> currentNode = table[index];
@@ -186,15 +188,48 @@ public class HashTable<T> {
    public Node<T> search(int key) {
       int index = hash(key);
       Node<T> currentNode = table[index];
+      Node<T> previousNode = null;
 
       while (currentNode != null) {
          if (currentNode.key == key) {
-            return currentNode;
+            break;
          }
+         previousNode = currentNode;
          currentNode = currentNode.next;
       }
-      return null;
+
+      if (currentNode == null) {
+         return null;   
+      }
+      
+      // increment frequency
+      currentNode.frequency++;
+      
+      // ajuste na ordem dos nós
+      if (previousNode != null){
+         previousNode.next = currentNode.next; // remove currentNode from its position
+         Node<T> temp = table[index];
+         Node<T> prev = null;
+
+         while (temp != null && temp.frequency >= currentNode.frequency) {
+            prev = temp;
+            temp = temp.next;
+         }
+
+         if (prev == null) {
+            // insert at the head
+            currentNode.next = table[index];
+            table[index] = currentNode;
+         } else {
+            // insert in the middle or end
+            currentNode.next = prev.next;
+            prev.next = currentNode;
+         }  
+      }
+
+      return currentNode;
    }
+
 
    public void remove(int key) {
       int index = hash(key);
@@ -226,6 +261,7 @@ public class HashTable<T> {
       for (int i = 0; i < size; i++) {
          Node<T> currentNode = table[i];
          while (currentNode != null) {
+            currentNode.frequency++;
             nodes[count++] = currentNode;
             currentNode = currentNode.next;
          }
@@ -244,5 +280,9 @@ public class HashTable<T> {
          currentNode = currentNode.next;
       }
       return false;
+   }
+
+   public String toMessage() {
+      return String.format("%d | %d | %.2f | %d | %d", size, occupied, getLoadFactor(), collisions, resizes);
    }
 }

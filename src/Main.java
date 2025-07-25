@@ -12,13 +12,14 @@ import model.DAO.LogDAO;
 import model.entities.ClimateRecord;
 import model.entities.Microcontroller;
 import model.entities.User;
+import protocol.huffman.HuffmanTree;
 import utils.Color;
 import utils.Location;
 
 public class Main {
     private static Scanner sc = new Scanner(System.in);
-    private static HashTable<Microcontroller> hashTableMicrocontrollers = new HashTable<>(1000);
-    private static HashTable<ClimateRecord> hashTableRecords = new HashTable<>(1000);
+    private static HashTable<Microcontroller> hashTableMicrocontrollers = new HashTable<>(70);
+    private static HashTable<ClimateRecord> hashTableRecords = new HashTable<>(70);
     private static LinkedList<ClimateRecord> linkedList = new LinkedList<>();
     private static UserController userController = new UserController(hashTableMicrocontrollers, hashTableRecords,
             linkedList);
@@ -36,7 +37,7 @@ public class Main {
         }
 
         clearFile("src/database/log.txt"); // remove os registros do microcontrolador
-
+        
         // Create 100 records for each microcontroller
         for (int i = 1; i <= 100; i++) {
             for (int j = 1; j <= 100; j++) {
@@ -121,7 +122,7 @@ public class Main {
                 "Show records by Microcontroller ID",
                 "Show all microcontrollers",
                 "Show microcontroller details",
-                "Remove records",
+                "Remove record by ID",
                 "Quantity of records",
                 "Hash table details",
                 "Simulate",
@@ -215,7 +216,7 @@ public class Main {
 
                     System.out.println(
                             Color.menuOption(
-                                    "[1] Create new records\n[2] Update records\n[3] Remove records\n[4] Search records\n[5] Force collision\n[6] Back to menu"));
+                                    "[1] Create new records\n[2] Update records\n[3] Remove records\n[4] Search records\n[5] Back to menu"));
                     System.out.print(Color.inputPrompt("Choose an option: "));
                     int simulationOption = sc.nextInt();
                     sc.nextLine();
@@ -268,36 +269,12 @@ public class Main {
                     } else if (simulationOption == 4) {
                         System.out.println(Color.infoMessage("Searching 10 random records..."));
                         for (int k = 0; k < 10; k++) {
-                            int randId = new Random().nextInt(15000);
+                            int randId = new Random().nextInt(hashTableRecords.getSize());
                             ClimateRecord searchedRecord = userController.getRecordById(randId);
                             if (searchedRecord != null) {
                                 System.out.println(searchedRecord.toString(false));
                             }
                         }
-                    } else if (simulationOption == 5) {
-                        System.out.println(Color.warningMessage("\n--- Collision Test ---"));
-
-                        int currentTableSize = hashTableRecords.getSize();
-                        System.out.println(Color.infoMessage("Hash table current size: " + currentTableSize));
-                        System.out.println(Color
-                                .infoMessage("Total collisions before test: " + hashTableRecords.getCollisions()));
-
-                        int baseKey = hashTableRecords.getOccupied(); // chave que já existe
-                        int collisionKey = baseKey + currentTableSize;
-
-                        System.out.println(Color.infoMessage("Inserting record with base key: " + baseKey));
-                        microcontrollerController.createRecord(baseKey, 50, 50, 50, true);
-
-                        System.out.println(
-                                Color.infoMessage("Forcing collision by inserting record with key: " + collisionKey));
-                        // o novo registro será adicionado à lista ligada no mesmo índice da chave 500.
-                        microcontrollerController.createRecord(collisionKey, hashTableMicrocontrollers.getOccupied(),
-                                99, 99, 99, true);
-
-                        System.out.println(Color
-                                .highlight("Total collisions after test: " + hashTableRecords.getCollisions()));
-                        System.out.println(Color.warningMessage("--- END OF FORCE COLLISION TEST ---\n"));
-                        sc.nextLine();
                     }
                     break;
                 case 10:
@@ -306,6 +283,13 @@ public class Main {
                     clearScreen();
                     System.out.println(Color.successMessage("Exiting the system..."));
                     System.out.println(Color.highlight("Thank you for using the Ambient Monitoring System!"));
+
+                    HuffmanTree compressedLog = LogDAO.compressLog();
+                    System.out.println(Color.successMessage("Log compressed successfully."));
+                    System.out.println(Color.infoMessage("Huffman Codes:"));
+                    compressedLog.printCodes();
+                    System.out.println(Color.infoMessage("Compression ratio: " + compressedLog.getCompressionRatio() + "%"));
+
                     System.exit(0);
                     break;
                 default:
@@ -349,7 +333,7 @@ public class Main {
     }
 
     public static void clearFile(String fileLog, String fileMicrocontrollers, String fileRecords, String fileAVL,
-            String fileHashTable) {
+            String fileHashTable, String fileCompressedLog, String fileDescompressedLog) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileLog))) {
             writer.write("");
         } catch (IOException e) {
@@ -375,10 +359,21 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileCompressedLog))) {
+            writer.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileDescompressedLog))) {
+            writer.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void clearFile() {
         clearFile("src/database/log.txt", "src/database/microcontrollers.txt", "src/database/records.txt",
-                "src/database/avl.txt", "src/database/hash_table.txt");
+                "src/database/avl.txt", "src/database/hash_table.txt", "src/database/compressed_log.txt",
+                "src/database/descompressed_log.txt");
     }
 }

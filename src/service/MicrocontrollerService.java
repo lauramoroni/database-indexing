@@ -6,7 +6,6 @@ import model.entities.Microcontroller;
 import datastructures.HashTable;
 import datastructures.LinkedList;
 import model.DAO.ClimateRecordDAO;
-import model.DAO.LogDAO;
 import model.DAO.MicrocontrollerDAO;
 import utils.Location;
 
@@ -31,7 +30,7 @@ public class MicrocontrollerService {
       }
    }
 
-   public ClimateRecord createRecord(int microcontrollerId, double temperature, double humidity,
+   public void createRecord(int microcontrollerId, double temperature, double humidity,
          double pressure, boolean isLog) throws Exception {
       if (!microcontrollerDAO.exists(microcontrollerId)) {
          throw new Exception("Microcontroller " + microcontrollerId + " not found");
@@ -53,8 +52,6 @@ public class MicrocontrollerService {
       } catch (Exception e) {
          e.getMessage();
       }
-
-      return record;
    }
 
    public ClimateRecord createRecord(int recordId, int microcontrollerId, double temperature, double humidity,

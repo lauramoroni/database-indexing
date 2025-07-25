@@ -10,5 +10,13 @@ public enum Location {
    MACEIO,
    JOAO_PESSOA,
    ARACAJU,
-   MOSSORO
+   MOSSORO;
+
+   public static Location fromString(String location) {
+      try {
+         return Location.valueOf(location.toUpperCase());
+      } catch (IllegalArgumentException e) {
+         return null; 
+      }
+   }
 }
