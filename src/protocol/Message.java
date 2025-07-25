@@ -172,19 +172,18 @@ public class Message {
       String[] parts = this.content.split("-");
 
       //parts[0] é o conteúdo
-      return new ClimateRecord(Integer.parseInt(parts[1]), LocalDateTime.parse(parts[3], formatter), Double.parseDouble(parts[4].replace(',', '.')), Double.parseDouble(parts[5].replace(',', '.')), Double.parseDouble(parts[6].replace(',', '.')));
+      return new ClimateRecord(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), LocalDateTime.parse(parts[3], formatter), Double.parseDouble(parts[4].replace(',', '.')), Double.parseDouble(parts[5].replace(',', '.')), Double.parseDouble(parts[6].replace(',', '.')));
    }
 
    public ClimateRecord[] getClimateRecords() {
       this.content = huffmanTree.decompress(content);
 
       String[] parts = this.content.split("-");
-      ClimateRecord[] records = new ClimateRecord[parts.length - 1];
+      ClimateRecord[] records = new ClimateRecord[(parts.length - 1) / 6];
 
-
-      for (int i = 1; i < parts.length; i++) {
-         String[] recordParts = parts[i].split("-");
-         records[i - 1] = new ClimateRecord(Integer.parseInt(recordParts[1]), LocalDateTime.parse(recordParts[3], formatter), Double.parseDouble(recordParts[4].replace(',', '.')), Double.parseDouble(recordParts[5].replace(',', '.')), Double.parseDouble(recordParts[6].replace(',', '.')));
+      int recordCount = 0;
+      for (int i = 1; i < (parts.length - 1); i += 6) {
+         records[recordCount++] = new ClimateRecord(Integer.parseInt(parts[i]), Integer.parseInt(parts[i + 1]), LocalDateTime.parse(parts[i + 2], formatter), Double.parseDouble(parts[i + 3].replace(',', '.')), Double.parseDouble(parts[i + 4].replace(',', '.')), Double.parseDouble(parts[i + 5].replace(',', '.')));
       }
 
       return records;
