@@ -27,7 +27,7 @@ public class Message {
       this.huffmanTree = new HuffmanTree();
 
       huffmanTree.buildTree(content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
       
       this.content = huffmanTree.compress(content);
    }
@@ -39,7 +39,7 @@ public class Message {
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
 
       this.content = huffmanTree.compress(this.content);
    }
@@ -49,7 +49,7 @@ public class Message {
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
 
       this.content = huffmanTree.compress(this.content);
    }
@@ -61,7 +61,7 @@ public class Message {
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
 
       this.content = huffmanTree.compress(this.content);
    }
@@ -73,7 +73,7 @@ public class Message {
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
 
       this.content = huffmanTree.compress(this.content);
    }
@@ -83,7 +83,7 @@ public class Message {
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
 
       this.content = huffmanTree.compress(this.content);
    }
@@ -94,7 +94,7 @@ public class Message {
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
 
       this.content = huffmanTree.compress(this.content);
    }
@@ -104,7 +104,7 @@ public class Message {
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
 
       this.content = huffmanTree.compress(this.content);
    }
@@ -114,7 +114,7 @@ public class Message {
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
 
       this.content = huffmanTree.compress(this.content);
    }
@@ -130,7 +130,7 @@ public class Message {
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
 
       this.content = huffmanTree.compress(this.content);
    }
@@ -145,7 +145,7 @@ public class Message {
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
 
       this.content = huffmanTree.compress(this.content);
    }
@@ -156,7 +156,7 @@ public class Message {
 
       this.huffmanTree = new HuffmanTree();
       huffmanTree.buildTree(this.content);
-      huffmanTree.printCodes();
+      //huffmanTree.printCodes();
 
       this.content = huffmanTree.compress(this.content);
    }

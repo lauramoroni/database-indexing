@@ -18,8 +18,8 @@ import utils.Location;
 
 public class Main {
     private static Scanner sc = new Scanner(System.in);
-    private static HashTable<Microcontroller> hashTableMicrocontrollers = new HashTable<>(1000);
-    private static HashTable<ClimateRecord> hashTableRecords = new HashTable<>(1000);
+    private static HashTable<Microcontroller> hashTableMicrocontrollers = new HashTable<>(70);
+    private static HashTable<ClimateRecord> hashTableRecords = new HashTable<>(70);
     private static LinkedList<ClimateRecord> linkedList = new LinkedList<>();
     private static UserController userController = new UserController(hashTableMicrocontrollers, hashTableRecords,
             linkedList);
@@ -30,17 +30,17 @@ public class Main {
         clearFile();
 
         // Create 100 microcontrollers
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 100; i++) {
             microcontrollerController.addMicrocontroller("Microcontroller " + i,
                     Location.values()[(int) (Math.random() * 4)],
                     "192.168.0." + (100 + i), false);
         }
 
         clearFile("src/database/log.txt"); // remove os registros do microcontrolador
-
+        
         // Create 100 records for each microcontroller
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
+        for (int i = 1; i <= 100; i++) {
+            for (int j = 1; j <= 100; j++) {
                 microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
                         Math.random() * 100, false);
             }
@@ -333,7 +333,7 @@ public class Main {
     }
 
     public static void clearFile(String fileLog, String fileMicrocontrollers, String fileRecords, String fileAVL,
-            String fileHashTable) {
+            String fileHashTable, String fileCompressedLog, String fileDescompressedLog) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileLog))) {
             writer.write("");
         } catch (IOException e) {
@@ -359,10 +359,21 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileCompressedLog))) {
+            writer.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileDescompressedLog))) {
+            writer.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void clearFile() {
         clearFile("src/database/log.txt", "src/database/microcontrollers.txt", "src/database/records.txt",
-                "src/database/avl.txt", "src/database/hash_table.txt");
+                "src/database/avl.txt", "src/database/hash_table.txt", "src/database/compressed_log.txt",
+                "src/database/descompressed_log.txt");
     }
 }
