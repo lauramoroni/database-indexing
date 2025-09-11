@@ -39,12 +39,41 @@ public class Main {
         clearFile("src/database/log.txt"); // remove os registros do microcontrolador
         
         // Create 100 records for each microcontroller
-        for (int i = 1; i <= 100; i++) {
-            for (int j = 1; j <= 100; j++) {
-                microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
-                        Math.random() * 100, false);
+        //for (int i = 1; i <= 100; i++) {
+        //    for (int j = 1; j <= 100; j++) {
+        //        microcontrollerController.createRecord(i, Math.random() * 100, Math.random() * 100,
+        //                Math.random() * 100, false);
+        //    }
+        //}
+
+        // Create records through threads
+        Runnable recordCreator = () -> {
+            Random random = new Random();
+            while (true) { 
+            int microcontrollerId = random.nextInt(100) + 1; // ID aleatório entre 1 e 100
+            try {
+                microcontrollerController.createRecord(
+                microcontrollerId,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                false
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+            }
+        };
+
+        Thread recordThread = new Thread(recordCreator);
+        recordThread.setDaemon(true); // Thread não impede o encerramento do programa
+        recordThread.start();
 
         // User interaction
         clearScreen();
